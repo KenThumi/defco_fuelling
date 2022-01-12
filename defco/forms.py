@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from .models import User
 
+# input select rank choices
 ranks = [
     ('','-select-'),
     ('Gen','General'),

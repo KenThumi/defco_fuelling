@@ -116,7 +116,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Nairobi'
 
 USE_I18N = True
 
@@ -138,11 +138,17 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Custom User Model
 AUTH_USER_MODEL = 'defco.User'
 
-
+# Cloudinary conf.
 cloudinary.config( 
   cloud_name = config('CLOUD_NAME'), 
   api_key = config("API_KEY"), 
   api_secret = config("API_SECRET") 
 )
+
+# login
+LOGIN_REDIRECT_URL='/'
+LOGOUT_REDIRECT_URL='login'
+LOGIN_URL = 'login'
