@@ -148,11 +148,49 @@
           <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
         </div>
       </li>
-      <li class="nav-item">
+      <!-- user img >>> profile & logout -->
+      <li class="nav-item dropdown user-menu show">
+        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+          <img src="{% static 'images/avatar.png' %}" class="user-image img-circle elevation-2" alt="User Image">
+          <!-- <span class="d-none d-md-inline">Alexander Pierce</span> -->
+        </a>
+        <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right hide">
+          <!-- User image -->
+          <li class="user-header bg-primary">
+            <img src="{% static 'images/avatar.png' %}" class="img-circle elevation-2" alt="User Image">
+
+            <p>
+              {{user.username | title}}
+              <small>Member since Nov. 2012</small>
+            </p>
+          </li>
+          <!-- Menu Body -->
+          <!-- <li class="user-body">
+            <div class="row">
+              <div class="col-4 text-center">
+                <a href="#">Followers</a>
+              </div>
+              <div class="col-4 text-center">
+                <a href="#">Sales</a>
+              </div>
+              <div class="col-4 text-center">
+                <a href="#">Friends</a>
+              </div>
+            </div>
+          </li> -->
+          <!-- Menu Footer-->
+          <li class="user-footer">
+            <a href="#" class="btn btn-default btn-flat">Profile</a>
+            <a href="/logout" class="btn btn-default btn-flat float-right">Sign out</a>
+          </li>
+        </ul>
+      </li>
+      <!-- /user img >>> profile & logout -->
+      <!-- <li class="nav-item">
         <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
           <i class="fas fa-th-large"></i>
         </a>
-      </li>
+      </li> -->
     </ul>
   </nav>
   <!-- /.navbar -->
@@ -169,14 +207,14 @@
     <!-- Sidebar -->
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+      <!-- <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
           <img src="http://carismartes.com.br/assets/global/images/avatars/avatar1.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
           <a href="#" class="d-block">Alexander Pierce</a>
         </div>
-      </div>
+      </div> -->
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
