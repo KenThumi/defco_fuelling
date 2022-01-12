@@ -29,7 +29,7 @@ ranks = [
 class UserRegisterForm(UserCreationForm):
     # email = forms.EmailField()
     rank =   forms.CharField( widget=forms.Select(choices=ranks))
-    svc_id_img = forms.FileField( label='Upload copy of your Job ID')
+    image = forms.FileField( label='Upload copy of your Job ID')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -38,7 +38,7 @@ class UserRegisterForm(UserCreationForm):
             'required':'',
             'name':'svc_no',
             'type':'text',
-            'class':'form-control',
+            'class':'form-control form-control-sm',
             'placeholder':'Service No.',
         })
 
@@ -46,7 +46,7 @@ class UserRegisterForm(UserCreationForm):
             'required':'',
             'name':'rank',
             'type':'select',
-            'class':'form-control',
+            'class':'form-control form-control-sm',
             'placeholder':'Rank',
         })
 
@@ -54,15 +54,23 @@ class UserRegisterForm(UserCreationForm):
             'required':'',
             'name':'name',
             'type':'text',
-            'class':'form-control',
+            'class':'form-control form-control-sm',
             'placeholder':'Name',
+        })
+
+        self.fields['username'].widget.attrs.update({
+            'required':'',
+            'name':'username',
+            'type':'text',
+            'class':'form-control form-control-sm',
+            'placeholder':'Username',
         })
 
         self.fields['unit'].widget.attrs.update({
             'required':'',
             'name':'unit',
             'type':'text',
-            'class':'form-control',
+            'class':'form-control form-control-sm',
             'placeholder':'Enter your Unit',
         })
 
@@ -70,7 +78,7 @@ class UserRegisterForm(UserCreationForm):
             'required':'',
             'name':'mobile',
             'type':'text',
-            'class':'form-control',
+            'class':'form-control form-control-sm',
             'placeholder':'Phone No.',
         })
 
@@ -78,23 +86,22 @@ class UserRegisterForm(UserCreationForm):
             'required':'',
             'name':'email',
             'type':'email',
-            'class':'form-control',
+            'class':'form-control form-control-sm',
             'placeholder':'Enter your Email',
         })
 
-        self.fields['svc_id_img'].widget.attrs.update({
-            'required':'',
-            'name':'svc_id_img',
+        self.fields['image'].widget.attrs.update({
+            'name':'image',
             'type':'file',
-            'class':'form-control',
-            'placeholder':'Service ID Copy',
+            'class':'form-control form-control-sm',
+            # 'required':'False'
         })
 
         self.fields['password1'].widget.attrs.update({
             'required':'',
             'name':'password1',
             'type':'password',
-            'class':'form-control',
+            'class':'form-control form-control-sm',
             'placeholder':'Password',
         })
 
@@ -102,7 +109,7 @@ class UserRegisterForm(UserCreationForm):
             'required':'',
             'name':'password2',
             'type':'password',
-            'class':'form-control',
+            'class':'form-control form-control-sm',
             'placeholder':'Retype Password',
         })
 
@@ -119,15 +126,16 @@ class UserRegisterForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ['svc_no','rank','name','unit','mobile','email','svc_id_img','password1','password2']
+        fields = ['svc_no','rank','name','unit','username','email','mobile','image','password1','password2']
         icons = { 
                   'password1':'lock',
                   'password2':'lock', 
                   'svc_no':'user',
                   'mobile':'phone',
                   'rank':'user-tie',
-                  'svc_id_img':'id-card',
+                  'image':'id-card',
                   'name':'user-circle',
+                  'username':'user-circle',
                   'unit':'users',
                   'email':'envelope'
                 }

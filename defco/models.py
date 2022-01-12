@@ -12,10 +12,20 @@ class User(AbstractUser):
     mobile = models.CharField(max_length=255, unique=True)
     email=models.EmailField(unique=True)
     password=models.CharField(max_length=255)
-    svc_id_img = CloudinaryField('image')
+    image = CloudinaryField('image',default='https://image.shutterstock.com/image-vector/modern-id-card-photo-man-260nw-1718677939.jpg')
     is_admin = models.BooleanField(default=False)
     is_customer = models.BooleanField(default=True)
     is_valid = models.BooleanField(default=False)
+
+
+    # class Meta:
+    #     permissions = (
+    #                 ("make_admin", "Can view and edit most admin features."),
+    #                 ("edit_permissions", "Admin user can modify user permissions."),
+    #                 ("edit_nacha", "User can edit and modify NACHA files."),
+    #                 ("edit_commissions", "User can override commisions."),
+    #                 ("view_reports", "User can view admin reports."),
+    #                 )
     
     def __str__(self):
         return str(self.username)
