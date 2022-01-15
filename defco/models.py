@@ -17,6 +17,8 @@ class User(AbstractUser):
     is_customer = models.BooleanField(default=True)
     is_valid = models.BooleanField(default=False)
 
+    class Meta:
+        ordering = ['date_joined']
 
     # class Meta:
     #     permissions = (
