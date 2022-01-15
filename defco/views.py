@@ -24,6 +24,6 @@ def register(request):
     return render(request, 'registration/register.html',{'form':form})
 
 def customers(request):
-    users = User.objects.all().latest('date_joined')
-    print(users)
+    users = User.objects.all().exclude(is_superuser=True)#.latest('date_joined')
+    
     return render(request, 'customers.html', {'users':users})
