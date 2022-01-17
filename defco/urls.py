@@ -11,5 +11,6 @@ urlpatterns = [
     path('customers/', views.customers, name='customers'),
     path('user/<int:id>', views.getuser, name='user'),
     path('newapplications', views.newapplications, name='newapplications'),
+    path('approve/<int:id>', views.approve, name='approve'),
     
 ]

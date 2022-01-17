@@ -23,3 +23,15 @@ def profile_user(view_func):
        
         return view_func(request, *args, **kwargs)
     return wrapper_func
+
+
+# Action by admin or superadmin
+def admin_or_superuser(view_func):
+    def wrapper_func(request, *args, **kwargs):
+
+        if not request.user.is_superuser and not request.user.is_admin:
+            raise PermissionDenied
+            # return redirect('home')
+       
+        return view_func(request, *args, **kwargs)
+    return wrapper_func

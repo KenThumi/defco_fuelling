@@ -1,5 +1,5 @@
 from defco.models import User
-from defco.decorators import profile_user, unauthenticated_user
+from defco.decorators import admin_or_superuser, profile_user, unauthenticated_user
 from defco.forms import UserRegisterForm
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
@@ -25,7 +25,7 @@ def register(request):
 
 @login_required
 def customers(request):
-    users = User.objects.all().exclude(is_superuser=True)#.latest('date_joined')
+    users = User.objects.filter(is_valid=True).exclude(is_superuser=True)#.latest('date_joined')
     
     return render(request, 'customers.html', {'users':users})
 
@@ -41,3 +41,11 @@ def newapplications(request):
     users = User.objects.filter(is_valid=False).exclude(is_superuser=True)
     
     return render(request, 'newapplications.html', {'users':users})
+
+
+@login_required
+@admin_or_superuser
+def approve(request,id):
+    User.objects.filter(pk=id).update(is_valid=True)
+
+    return redirect('newapplications')
