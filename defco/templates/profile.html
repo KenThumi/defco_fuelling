@@ -37,21 +37,54 @@
                     {{ user.name | title}}
                 </h3>
 
-                <p class="text-muted text-center">Software Engineer</p>
+                <p class="text-muted text-center">{{user.unit}}</p>
 
                 <ul class="list-group list-group-unbordered mb-3">
                   <li class="list-group-item">
-                    <b>Followers</b> <a class="float-right">1,322</a>
+                    <i class="fas fa-id-card mr-1"></i>
+                    <b>Service No.</b> <a class="float-right">{{ user.svc_no }}</a>
                   </li>
                   <li class="list-group-item">
-                    <b>Following</b> <a class="float-right">543</a>
+                    <i class="fas fa-user mr-1"></i>
+                    <b>Username</b> <a class="float-right">{{ user.username }}</a>
                   </li>
                   <li class="list-group-item">
-                    <b>Friends</b> <a class="float-right">13,287</a>
+                    <i class="fas fa-envelope mr-1"></i>
+                    <b>Email</b> <a class="float-right">{{ user.email }}</a>
                   </li>
-                </ul>
+                  <li class="list-group-item">
+                    <i class="fas fa-phone mr-1"></i>
+                    <b>Mobile</b> <a class="float-right">{{ user.mobile }}</a>
+                  </li>
 
-                <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
+                  <!-- <li class="list-group-item">
+                    <b>Friends</b> <a class="float-right">13,287</a>
+                  </li> -->
+                </ul>
+                {% if request.user.id == user.id %}
+                <a href="#" class="btn btn-sm btn-warning btn-block">
+                    <b>Edit</b>
+                    <i class="fas fa-edit"></i>
+                </a>
+                {% endif %}
+                <ul class="list-group list-group-unbordered mb-3">
+                    <!-- <li class="list-group-item">
+                        <i class="fas fa-book mr-1"></i>
+                      <b>Card No.</b> <a class="float-right">#</a>
+                    </li> -->
+                    <li class="list-group-item">
+                        <i class="fas fa-book mr-1"></i>
+                      <b>Card No.</b> <a class="float-right">#</a>
+                    </li>
+                    <li class="list-group-item">
+                      <i class="fas fa-clock mr-1"></i>
+                      <b>Date Registered</b> <a class="float-right">#</a>
+                    </li>
+  
+                    <!-- <li class="list-group-item">
+                      <b>Friends</b> <a class="float-right">13,287</a>
+                    </li> -->
+                  </ul>
               </div>
               <!-- /.card-body -->
             </div>

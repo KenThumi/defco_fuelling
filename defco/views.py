@@ -30,6 +30,6 @@ def customers(request):
     return render(request, 'customers.html', {'users':users})
 
 def getuser(request, id):
-    user = User.objects.get(pk=3)
+    user = User.objects.get(pk=id)
     print(user)
     return render(request, 'profile.html',{'user':user})
