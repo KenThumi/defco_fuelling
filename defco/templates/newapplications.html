@@ -1,0 +1,93 @@
+{%extends 'base.html'%}
+{% block content %}
+ <!-- Content Header (Page header) -->
+ <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Applications</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">New Customers</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+  <!-- Main content -->
+<section class="content">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Table below shows new Customer Applications</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <table id="example1" class="table table-bordered table-hover">
+              <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Name</th>
+                <th>Service No.</th>
+                <th>Username</th>
+                <th>Unit</th>
+                <th>Service ID</th>
+                <th>Approve</th>
+                <th>Delete</th>
+              </tr>
+              </thead>
+              <tbody>
+                  {%for user in users%}
+                    <tr>
+                        <td>{{ user.rank | title }}</td>
+                        <td>{{ user.name | title}}</td>
+                        <td>{{ user.svc_no}}</td>
+                        <td>
+                            <a href="/user/{{user.id}}">
+                                {{ user.username | title}}
+                            </a>
+                        </td>
+                        <td>{{ user.unit | title }}</td>
+                        <td  class="text-center ">
+                            <a href="#" data-toggle="modal" data-target="#modal-{{user.id}}">
+                                <i class="fas fa-eye text-info"></i>
+                            </a>
+                        </td>
+                        <td class="text-center ">
+                            <a href="#">
+                                <i class="fas fa-thumbs-up text-success"></i>
+                            </a> 
+                        </td>
+                        <td class=" text-center ">
+                            <a href="#">
+                                <i class="fas fa-trash text-danger"></i>
+                            </a> 
+                        </td>
+                    </tr>
+                    {% include 'modalSvcId.html' %}
+                  {%endfor%}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th>Service No.</th>
+                        <th>Username</th>
+                        <th>Unit</th>
+                        <th>Service ID</th>
+                        <th>Approve</th>
+                        <th>Delete</th>
+                      </tr>
+                </tfoot>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+    </div><!-- Main content -->
+</section>
+  {%endblock%}

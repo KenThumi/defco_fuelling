@@ -34,3 +34,10 @@ def customers(request):
 def getuser(request, id):
     user = User.objects.get(pk=id)
     return render(request, 'profile.html',{'user':user})
+
+
+@login_required
+def newapplications(request):
+    users = User.objects.filter(is_valid=False).exclude(is_superuser=True)
+    
+    return render(request, 'newapplications.html', {'users':users})
