@@ -1,5 +1,5 @@
 from defco.models import User
-from defco.decorators import unauthenticated_user
+from defco.decorators import profile_user, unauthenticated_user
 from defco.forms import UserRegisterForm
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
@@ -29,7 +29,8 @@ def customers(request):
     
     return render(request, 'customers.html', {'users':users})
 
+@login_required
+@profile_user
 def getuser(request, id):
     user = User.objects.get(pk=id)
-    print(user)
     return render(request, 'profile.html',{'user':user})
