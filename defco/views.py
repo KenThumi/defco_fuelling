@@ -28,3 +28,8 @@ def customers(request):
     users = User.objects.all().exclude(is_superuser=True)#.latest('date_joined')
     
     return render(request, 'customers.html', {'users':users})
+
+def getuser(request, id):
+    user = User.objects.get(pk=3)
+    print(user)
+    return render(request, 'profile.html',{'user':user})
