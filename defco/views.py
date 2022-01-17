@@ -23,6 +23,7 @@ def register(request):
             return redirect('home')
     return render(request, 'registration/register.html',{'form':form})
 
+@login_required
 def customers(request):
     users = User.objects.all().exclude(is_superuser=True)#.latest('date_joined')
     
