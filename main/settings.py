@@ -15,6 +15,7 @@ import os
 import cloudinary
 import cloudinary.uploader
 from decouple import Csv,config
+from django.contrib.messages import constants as messages
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -152,3 +153,10 @@ cloudinary.config(
 LOGIN_REDIRECT_URL='/'
 LOGOUT_REDIRECT_URL='login'
 LOGIN_URL = 'login'
+
+
+# flash msgs
+
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger',
+}

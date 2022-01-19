@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.core.exceptions import PermissionDenied
+from django.contrib import messages
 
 # Redirects login/register routes home if authenticated
 def unauthenticated_user(view_func):
@@ -32,6 +33,19 @@ def admin_or_superuser(view_func):
         if not request.user.is_superuser and not request.user.is_admin:
             raise PermissionDenied
             # return redirect('home')
+       
+        return view_func(request, *args, **kwargs)
+    return wrapper_func
+
+
+# Check account locked 
+def account_not_locked(view_func):
+    def wrapper_func(request, *args, **kwargs):
+
+        if request.user.is_locked:
+            messages.error(request, 'Your account is locked, contact admin.')
+            
+            return redirect('logout')
        
         return view_func(request, *args, **kwargs)
     return wrapper_func

@@ -1,0 +1,14 @@
+<!-- flash messages -->
+<div class="container">
+    {% if messages %}
+<div class="col-12">
+  
+  {% for msg in messages %}
+    <div class="alert alert-{{msg.tags}} alert-dismissable mt-2">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      {{msg.message}}
+    </div>
+  {% endfor %}   
+</div>
+  {% endif %}
+</div>

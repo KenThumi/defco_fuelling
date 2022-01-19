@@ -6,12 +6,12 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1>Customers</h1>
+          <h1>Locked Customers</h1>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active">Customers</li>
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active">Locked Customers</li>
           </ol>
         </div>
       </div>
@@ -23,7 +23,7 @@
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-            <h3 class="card-title">Table below shows all Customers</h3>
+            <h3 class="card-title">Table below shows all Locked Customers</h3>
           </div>
           <!-- /.card-header -->
           <div class="card-body">
@@ -35,8 +35,7 @@
                 <th>Username</th>
                 <th>Unit</th>
                 <th>Card No.</th>
-                <th>Lock</th>
-                <th>Edit</th>
+                <th>Unlock</th>
                 <th>Delete</th>
               </tr>
               </thead>
@@ -53,16 +52,11 @@
                         <td>{{ user.unit | title }}</td>
                         <td>456855</td>
                         <td class="text-center">
-                          <a href="{% url 'lock' user.id %}"  onclick="return confirm('Are you sure you want to lock this account?');">
-                            <i class="fas fa-lock text-danger"></i>
+                          <a href="{% url 'unlock' user.id %}">
+                            <i class="fas fa-lock-open text-success"></i>
                           </a>
                         </td>
-                        <td class="text-center ">
-                            <a href="{% url 'editprofile' user.id %}">
-                                <i class="fas fa-edit text-warning"></i>
-                            </a> 
-                        </td>
-                        <td class=" text-center" onclick="return confirm('Are you sure you want to delete this account?');">
+                        <td class=" text-center ">
                             <a href="#">
                                 <i class="fas fa-trash text-danger"></i>
                             </a> 
@@ -77,8 +71,7 @@
                         <th>Username</th>
                         <th>Unit</th>
                         <th>Card No.</th>
-                        <th>Lock</th>
-                        <th>Edit</th>
+                        <th>Unlock</th>
                         <th>Delete</th>
                       </tr>
                 </tfoot>

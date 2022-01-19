@@ -12,5 +12,8 @@ urlpatterns = [
     path('user/<int:id>', views.getuser, name='user'),
     path('newapplications', views.newapplications, name='newapplications'),
     path('approve/<int:id>', views.approve, name='approve'),
-    
+    path('lock/<int:id>', views.lock, name='lock'),
+    path('lockusers', views.lockusers, name='lockusers'),
+    path('unlock/<int:id>', views.unlock, name='unlock'),
+    path('editprofile/<int:id>', views.editProfile, name='editprofile')
 ]
