@@ -33,11 +33,12 @@
               <tr>
                 <th>Rank</th>
                 <th>Name</th>
+                <th>Service No.</th>
                 <th>Username</th>
                 <th>Unit</th>
-                <th>Card No.</th>
+               
+                <th>Joined</th>
                 <th>Unlock</th>
-                <th>Delete</th>
               </tr>
               </thead>
               <tbody>
@@ -45,35 +46,36 @@
                     <tr>
                         <td>{{ user.rank | title }}</td>
                         <td>{{ user.name | title}}</td>
+                        <td>{{ user.svc_no }}</td>
                         <td>
                             <a href="/user/{{user.id}}">
                                 {{ user.username | title}}
                             </a>
                         </td>
                         <td>{{ user.unit | title }}</td>
-                        <td>456855</td>
+                        
+                       
+                        <td >
+                            {{ user.date_joined | date:"d M Y"}}
+                        </td>
                         <td class="text-center">
-                          <a href="{% url 'unlock' user.id %}">
+                          <a href="{% url 'unlock' user.id %}"  onclick="return confirm('Are you sure you want to unlock this account?');">
                             <i class="fas fa-lock-open text-success"></i>
                           </a>
-                        </td>
-                        <td class=" text-center ">
-                            <a href="#">
-                                <i class="fas fa-trash text-danger"></i>
-                            </a> 
                         </td>
                     </tr>
                   {%endfor%}
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th>Rank</th>
-                        <th>Name</th>
-                        <th>Username</th>
-                        <th>Unit</th>
-                        <th>Card No.</th>
-                        <th>Unlock</th>
-                        <th>Delete</th>
+                      <th>Rank</th>
+                      <th>Name</th>
+                      <th>Service No.</th>
+                      <th>Username</th>
+                      <th>Unit</th>
+                     
+                      <th>Joined</th>
+                      <th>Unlock</th>
                       </tr>
                 </tfoot>
             </table>

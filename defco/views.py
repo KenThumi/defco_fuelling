@@ -26,6 +26,7 @@ def register(request):
     return render(request, 'registration/register.html',{'form':form})
 
 @login_required
+@admin_or_superuser
 def customers(request):
     users = User.objects.filter(is_valid=True, is_locked=False).exclude(is_superuser=True)#.latest('date_joined')
     
@@ -39,6 +40,7 @@ def getuser(request, id):
 
 
 @login_required
+@admin_or_superuser
 def newapplications(request):
     users = User.objects.filter(is_valid=False).exclude(is_superuser=True)
     
@@ -77,6 +79,7 @@ def unlock(request,id):
     messages.success(request, 'User account has been unlocked successfully.')
     return redirect('lockusers')
 
+@login_required
 @profile_user
 def editProfile(request,id):
     user = User.objects.get(pk=id)

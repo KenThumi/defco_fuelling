@@ -63,7 +63,7 @@
                   </li> -->
                 </ul>
                 {% if request.user.id == user.id %}
-                <a href="#" class="btn btn-sm btn-warning btn-block">
+                <a href="{% url 'editprofile' user.id%}" class="btn btn-sm btn-warning btn-block">
                     <b>Edit</b>
                     <i class="fas fa-edit"></i>
                 </a>

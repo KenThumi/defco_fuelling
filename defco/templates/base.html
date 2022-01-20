@@ -163,7 +163,7 @@
 
             <p>
               {{user.username | title}}
-              <small>Last log in:</small>
+              <small>Last log in:{{ user.last_login | date:"H:m, d M Y"}}</small>
             </p>
           </li>
           <!-- Menu Body -->
