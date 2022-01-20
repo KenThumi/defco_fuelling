@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.core.exceptions import PermissionDenied
 from django.contrib import messages
+from django.http import HttpResponseRedirect
 
 # Redirects login/register routes home if authenticated
 def unauthenticated_user(view_func):
@@ -19,8 +20,9 @@ def profile_user(view_func):
         id = kwargs['id']
 
         if request.user.id !=id and not request.user.is_superuser:
-            raise PermissionDenied
-            # return redirect('home')
+            messages.error(request, 'Insufficient permission.')
+        
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
        
         return view_func(request, *args, **kwargs)
     return wrapper_func

@@ -140,3 +140,19 @@ class UserRegisterForm(UserCreationForm):
                   'unit':'users',
                   'email':'envelope'
                 }
+
+
+class ProfileEditForm(UserRegisterForm):
+    image = forms.FileField(required=False)
+
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+
+    #     for field_name, field in self.fields.items():
+    #             # add form-control class to all fields
+    #             # field.widget.attrs['class'] = 'form-control'
+    #             # set icon attr on field object
+    #             if field_name in self.icons:
+    #                 if field_name == 'image':
+    #                     field.icon = self.icons['']
+
