@@ -1,6 +1,6 @@
 from defco.models import User
 from defco.decorators import account_not_locked, admin_or_superuser, profile_user, unauthenticated_user
-from defco.forms import ProfileEditForm, UserRegisterForm
+from defco.forms import ProfileEditForm, UserRegisterForm, VehicleForm
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -109,3 +109,12 @@ def editProfile(request,id):
             ctx = {'form':form}
 
     return render(request,'registration/updateprofile.html',ctx)
+
+
+def insertVehicle(request):
+    form = VehicleForm()
+
+    ctx = {'form':form}
+
+
+    return render(request, 'insertVehicle.html',ctx)

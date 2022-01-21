@@ -1,9 +1,9 @@
 
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
-from .models import User
+from .models import User, Vehicle
 
-# input select rank choices
+# input select  choices
 ranks = [
     ('','-select-'),
     ('Gen','General'),
@@ -26,6 +26,28 @@ ranks = [
     ('Pte','Pte'),
     ('Civ','Civ')
 ]
+
+vehicle_makes = [
+            ('','-select-'),
+            ('Toyota','Toyota'),
+            ('Nissan','Nissan'),
+            ('Honda','Honda'),
+            ('Mitsubishi','Mitsubishi'),
+            ('Mercedes-Benz','Mercedes-Benz'),
+            ('BMW','BMW'),
+            ('Mazda','Mazda'),
+            ('Subaru','Subaru'),
+            ('Volkswagen','Volkswagen'),
+            ('Suzuki','Suzuki'),
+            ('Land Rover','Land Rover'),
+            ('Isuzu','Isuzu'),
+            ('Audi','Audi'),
+            ('Ford','Ford'),
+            ('Daihatsu','Daihatsu'),
+            ('Lexus','Lexus'),
+            ('Motorbike','Motorbike')
+        ]
+
 
 class UserRegisterForm(UserCreationForm):
     # email = forms.EmailField()
@@ -145,14 +167,70 @@ class UserRegisterForm(UserCreationForm):
 class ProfileEditForm(UserRegisterForm):
     image = forms.FileField(required=False)
 
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
 
-    #     for field_name, field in self.fields.items():
-    #             # add form-control class to all fields
-    #             # field.widget.attrs['class'] = 'form-control'
-    #             # set icon attr on field object
-    #             if field_name in self.icons:
-    #                 if field_name == 'image':
-    #                     field.icon = self.icons['']
+class VehicleForm(forms.ModelForm):
+    make =   forms.CharField( widget=forms.Select(choices=vehicle_makes))
+    image = forms.FileField( label='Upload vehicle image')
+    logbook = forms.FileField( label='Upload logbook image or scanned documents proving vehicle ownership')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['reg_no'].widget.attrs.update({
+            'required':'',
+            'name':'reg_no',
+            'type':'text',
+            'class':'form-control form-control-sm',
+            'placeholder':'e.g., KCC 123K',
+        })
+
+        self.fields['make'].widget.attrs.update({
+            'required':'',
+            'name':'make',
+            'type':'select',
+            'class':'form-control form-control-sm',
+        })
+
+        self.fields['model'].widget.attrs.update({
+            'required':'',
+            'name':'model',
+            'type':'text',
+            'class':'form-control form-control-sm',
+            'placeholder':'Vehicle Model',
+        })
+
+        self.fields['image'].widget.attrs.update({
+            'name':'image',
+            'type':'file',
+            'class':'form-control form-control-sm',
+        })
+
+        self.fields['logbook'].widget.attrs.update({
+            'name':'logbook',
+            'type':'file',
+            'class':'form-control form-control-sm',
+        })
+
+
+        icons = getattr(self.Meta, 'icons', dict())
+
+        for field_name, field in self.fields.items():
+            if field_name in icons:
+                field.icon = icons[field_name]
+
+
+    class Meta:
+        model = Vehicle
+        fields = ['reg_no','make','model','image','logbook']
+        icons = { 
+                  'reg_no':'registered',
+                  'make':'car', 
+                  'model':'car',
+                  'image':'car',
+                  'logbook':'file-alt',
+                }
+
+
+
+
 

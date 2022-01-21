@@ -32,3 +32,17 @@ class User(AbstractUser):
     
     def __str__(self):
         return str(self.username)
+
+
+class Vehicle(models.Model):
+    user = models.ForeignKey(User,related_name='vehicles',on_delete=models.CASCADE)
+    reg_no = models.CharField(max_length=255)
+    make = models.CharField(max_length=255)
+    model = models.CharField(max_length=255)
+    image = CloudinaryField('image',default='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4m5y8gjoV6xbZvyuHwvOLEYc6tdocBYFdxA&usqp=CAU')
+    logbook = CloudinaryField('image',default='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4m5y8gjoV6xbZvyuHwvOLEYc6tdocBYFdxA&usqp=CAU')
+    approval_status = models.BooleanField(default=False)
+
+
+    def __str__(self):
+        return self.reg_no
