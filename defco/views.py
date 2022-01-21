@@ -1,4 +1,4 @@
-from defco.models import User
+from defco.models import User, Vehicle
 from defco.decorators import account_not_locked, admin_or_superuser, profile_user, unauthenticated_user
 from defco.forms import ProfileEditForm, UserRegisterForm, VehicleForm
 from django.shortcuts import redirect, render
@@ -123,7 +123,15 @@ def insertVehicle(request):
             vehicle = v_form.save(commit=False)
             vehicle.user = request.user
             vehicle.save()
+
+            return redirect('verifiedvehicles')
         else:
             ctx = {'form':v_form}
 
     return render(request, 'insertVehicle.html',ctx)
+
+
+def verifiedVehicles(request):
+    vehicles = Vehicle.objects.filter(approval_status=False)
+
+    return render(request, 'vehicles/verifiedVehicles.html', {'vehicles':vehicles})

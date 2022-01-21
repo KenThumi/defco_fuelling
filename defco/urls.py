@@ -17,5 +17,6 @@ urlpatterns = [
     path('unlock/<int:id>', views.unlock, name='unlock'),
     path('editprofile/<int:id>', views.editProfile, name='editprofile'),
     # vehicles
-    path('insertvehicle/', views.insertVehicle, name='insertvehicle')
+    path('insertvehicle/', views.insertVehicle, name='insertvehicle'),
+    path('verifiedvehicles/', views.verifiedVehicles, name='verifiedvehicles')
 ]
