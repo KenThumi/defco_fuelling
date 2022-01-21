@@ -199,6 +199,14 @@ class VehicleForm(forms.ModelForm):
             'placeholder':'Vehicle Model',
         })
 
+        self.fields['logbook_no'].widget.attrs.update({
+            'required':'',
+            'name':'logbook_no',
+            'type':'text',
+            'class':'form-control form-control-sm',
+            'placeholder':'Logbook No.',
+        })
+
         self.fields['image'].widget.attrs.update({
             'name':'image',
             'type':'file',
@@ -221,12 +229,13 @@ class VehicleForm(forms.ModelForm):
 
     class Meta:
         model = Vehicle
-        fields = ['reg_no','make','model','image','logbook']
+        fields = ['reg_no','make','model','image','logbook_no','logbook']
         icons = { 
                   'reg_no':'registered',
                   'make':'car', 
                   'model':'car',
                   'image':'car',
+                  'logbook_no':'car',
                   'logbook':'file-alt',
                 }
 

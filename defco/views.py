@@ -116,5 +116,14 @@ def insertVehicle(request):
 
     ctx = {'form':form}
 
+    if request.method == 'POST':
+        v_form = VehicleForm(request.POST, request.FILES)
+
+        if v_form.is_valid():
+            vehicle = v_form.save(commit=False)
+            vehicle.user = request.user
+            vehicle.save()
+        else:
+            ctx = {'form':v_form}
 
     return render(request, 'insertVehicle.html',ctx)
