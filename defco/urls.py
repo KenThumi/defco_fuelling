@@ -18,5 +18,8 @@ urlpatterns = [
     path('editprofile/<int:id>', views.editProfile, name='editprofile'),
     # vehicles
     path('insertvehicle/', views.insertVehicle, name='insertvehicle'),
-    path('verifiedvehicles/', views.verifiedVehicles, name='verifiedvehicles')
+    path('verifiedvehicles/', views.verifiedVehicles, name='verifiedvehicles'),
+    path('unverifiedvehicles/', views.unverifiedVehicles, name='unverifiedvehicles'),
+    path('revokevehapproval/<int:id>', views.revokeVehApproval, name='revokevehapproval'),
+    path('approveVehicle/<int:id>', views.approveVehicle, name='approvevehicle')
 ]

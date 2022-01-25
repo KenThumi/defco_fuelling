@@ -124,14 +124,37 @@ def insertVehicle(request):
             vehicle.user = request.user
             vehicle.save()
 
-            return redirect('verifiedvehicles')
+            messages.success(request, 'Successful insertion.')
+            return redirect('unverifiedvehicles')
         else:
             ctx = {'form':v_form}
 
     return render(request, 'insertVehicle.html',ctx)
 
 
-def verifiedVehicles(request):
+def unverifiedVehicles(request):
     vehicles = Vehicle.objects.filter(approval_status=False)
 
+    return render(request, 'vehicles/unverifiedVehicles.html', {'vehicles':vehicles})
+
+
+def verifiedVehicles(request):
+    vehicles = Vehicle.objects.filter(approval_status=True)
+
     return render(request, 'vehicles/verifiedVehicles.html', {'vehicles':vehicles})
+
+
+def revokeVehApproval(request, id):
+    Vehicle.objects.filter(pk=id).update(approval_status=False)
+
+    messages.success(request, 'Approval successfully revoked.')
+
+    return redirect('verifiedvehicles')
+
+
+def approveVehicle(request, id):
+    Vehicle.objects.filter(pk=id).update(approval_status=True)
+
+    messages.success(request, 'Successful Vehicle Approval.')
+
+    return redirect('unverifiedvehicles')

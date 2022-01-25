@@ -55,15 +55,15 @@
         </a>
         <ul class="nav nav-treeview" style="display: none;">
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="{% url 'verifiedvehicles'%}" class="nav-link">
               <i class="far fa-circle nav-icon text-success"></i>
-              <p>Registered</p>
+              <p>Verified</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="{% url 'unverifiedvehicles' %}" class="nav-link">
               <i class="far fa-circle nav-icon text-info"></i>
-              <p>Unregistered</p>
+              <p>Unverified</p>
             </a>
           </li>
           
