@@ -1,6 +1,6 @@
 from defco.models import User, Vehicle
-from defco.decorators import account_not_locked, admin_or_superuser, profile_user, unauthenticated_user
-from defco.forms import ProfileEditForm, UserRegisterForm, VehicleForm
+from defco.decorators import _user, account_not_locked, admin_or_superuser, profile_user, unauthenticated_user
+from defco.forms import EditVehicleForm, ProfileEditForm, UserRegisterForm, VehicleForm
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -110,11 +110,11 @@ def editProfile(request,id):
 
     return render(request,'registration/updateprofile.html',ctx)
 
-
+@_user
 def insertVehicle(request):
     form = VehicleForm()
 
-    ctx = {'form':form}
+    ctx = {'form':form, 'btn_label':'Add'}
 
     if request.method == 'POST':
         v_form = VehicleForm(request.POST, request.FILES)
@@ -144,6 +144,7 @@ def verifiedVehicles(request):
     return render(request, 'vehicles/verifiedVehicles.html', {'vehicles':vehicles})
 
 
+
 def revokeVehApproval(request, id):
     Vehicle.objects.filter(pk=id).update(approval_status=False)
 
@@ -152,9 +153,27 @@ def revokeVehApproval(request, id):
     return redirect('verifiedvehicles')
 
 
+
 def approveVehicle(request, id):
     Vehicle.objects.filter(pk=id).update(approval_status=True)
 
     messages.success(request, 'Successful Vehicle Approval.')
 
     return redirect('unverifiedvehicles')
+
+
+@_user
+def editVehicle(request,id):
+    vehicle = Vehicle.objects.get(pk=id)
+
+    v_form = EditVehicleForm(instance=vehicle)
+
+    if request.method == 'POST':
+        v_form = EditVehicleForm(request.POST, request.FILES, instance = vehicle)
+
+        if v_form.is_valid():
+            v_form.save()
+
+            return redirect('verifiedvehicles')
+
+    return render(request, 'insertVehicle.html', {'form':v_form, 'btn_label':'Update'})

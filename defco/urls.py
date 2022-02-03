@@ -21,5 +21,6 @@ urlpatterns = [
     path('verifiedvehicles/', views.verifiedVehicles, name='verifiedvehicles'),
     path('unverifiedvehicles/', views.unverifiedVehicles, name='unverifiedvehicles'),
     path('revokevehapproval/<int:id>', views.revokeVehApproval, name='revokevehapproval'),
-    path('approveVehicle/<int:id>', views.approveVehicle, name='approvevehicle')
+    path('approveVehicle/<int:id>', views.approveVehicle, name='approvevehicle'),
+    path('editvehicle/<int:id>', views.editVehicle, name='editvehicle')
 ]

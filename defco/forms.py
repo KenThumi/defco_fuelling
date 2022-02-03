@@ -45,7 +45,8 @@ vehicle_makes = [
             ('Ford','Ford'),
             ('Daihatsu','Daihatsu'),
             ('Lexus','Lexus'),
-            ('Motorbike','Motorbike')
+            ('Motorbike','Motorbike'),
+            ('Other','Other')
         ]
 
 
@@ -240,6 +241,8 @@ class VehicleForm(forms.ModelForm):
                 }
 
 
-
+class EditVehicleForm(VehicleForm):
+    image = forms.FileField( required=False )
+    logbook = forms.FileField( required=False)
 
 
