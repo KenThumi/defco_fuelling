@@ -248,10 +248,7 @@ class EditVehicleForm(VehicleForm):
 
 
 class StationForm(forms.ModelForm):
-    # make =   forms.CharField( widget=forms.Select(choices=vehicle_makes))
-    # image = forms.FileField( label='Upload vehicle image')
-    # logbook = forms.FileField( label='Upload logbook image or scanned documents proving vehicle ownership')
-
+    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 

@@ -1,4 +1,4 @@
-from defco.models import User, Vehicle
+from defco.models import Station, User, Vehicle
 from defco.decorators import _user, account_not_locked, admin_or_superuser, profile_user, unauthenticated_user
 from defco.forms import EditVehicleForm, ProfileEditForm, StationForm, UserRegisterForm, VehicleForm
 from django.shortcuts import redirect, render
@@ -182,5 +182,12 @@ def editVehicle(request,id):
 
 def addStation(request):
     form = StationForm()
+
+    if request.method == 'POST':
+        form = StationForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            # redirect to stations
 
     return render(request, 'addstation.html', {'form':form})
