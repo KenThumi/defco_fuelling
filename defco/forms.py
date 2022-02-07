@@ -1,7 +1,7 @@
 
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
-from .models import User, Vehicle
+from .models import Station, User, Vehicle
 
 # input select  choices
 ranks = [
@@ -246,3 +246,43 @@ class EditVehicleForm(VehicleForm):
     logbook = forms.FileField( required=False)
 
 
+
+class StationForm(forms.ModelForm):
+    # make =   forms.CharField( widget=forms.Select(choices=vehicle_makes))
+    # image = forms.FileField( label='Upload vehicle image')
+    # logbook = forms.FileField( label='Upload logbook image or scanned documents proving vehicle ownership')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['admin'].queryset = User.objects.filter(is_admin=True)
+   
+        self.fields['name'].widget.attrs.update({
+            'required':'',
+            'name':'name',
+            'type':'text',
+            'class':'form-control form-control-sm',
+            'placeholder':'Station name',
+        })
+
+        self.fields['admin'].widget.attrs.update({
+            'required':'',
+            'name':'admin',
+            'type':'select',
+            'class':'form-control form-control-sm',
+        })
+
+        icons = getattr(self.Meta, 'icons', dict())
+
+        for field_name, field in self.fields.items():
+            if field_name in icons:
+                field.icon = icons[field_name]
+
+
+    class Meta:
+        model = Station
+        fields = '__all__'
+        icons = { 
+                  'name':'gas-pump',
+                  'admin':'user', 
+                }

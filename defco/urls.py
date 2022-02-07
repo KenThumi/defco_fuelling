@@ -22,5 +22,7 @@ urlpatterns = [
     path('unverifiedvehicles/', views.unverifiedVehicles, name='unverifiedvehicles'),
     path('revokevehapproval/<int:id>', views.revokeVehApproval, name='revokevehapproval'),
     path('approveVehicle/<int:id>', views.approveVehicle, name='approvevehicle'),
-    path('editvehicle/<int:id>', views.editVehicle, name='editvehicle')
+    path('editvehicle/<int:id>', views.editVehicle, name='editvehicle'),
+    # station
+    path( 'addstation/', views.addStation, name='addstation')
 ]

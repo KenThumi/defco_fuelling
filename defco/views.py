@@ -1,6 +1,6 @@
 from defco.models import User, Vehicle
 from defco.decorators import _user, account_not_locked, admin_or_superuser, profile_user, unauthenticated_user
-from defco.forms import EditVehicleForm, ProfileEditForm, UserRegisterForm, VehicleForm
+from defco.forms import EditVehicleForm, ProfileEditForm, StationForm, UserRegisterForm, VehicleForm
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -177,3 +177,10 @@ def editVehicle(request,id):
             return redirect('verifiedvehicles')
 
     return render(request, 'insertVehicle.html', {'form':v_form, 'btn_label':'Update'})
+
+
+
+def addStation(request):
+    form = StationForm()
+
+    return render(request, 'addstation.html', {'form':form})
