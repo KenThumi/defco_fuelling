@@ -47,3 +47,22 @@ class Vehicle(models.Model):
 
     def __str__(self):
         return self.reg_no
+
+
+class Station(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+
+class FuelReplenish(models.Model):
+    station = models.ForeignKey(Station,related_name='replenishment',on_delete=models.CASCADE)
+    current_amount = models.IntegerField()
+    replenished_amount = models.IntegerField()
+    batch_no = models.CharField(max_length=255)
+    supplier = models.CharField(max_length=255)
+    
+    def __str__(self):
+        return self.batch_no
+
