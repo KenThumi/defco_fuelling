@@ -44,13 +44,13 @@ class Vehicle(models.Model):
     logbook = CloudinaryField('image',default='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4m5y8gjoV6xbZvyuHwvOLEYc6tdocBYFdxA&usqp=CAU')
     approval_status = models.BooleanField(default=False)
 
-
     def __str__(self):
         return self.reg_no
 
 
 class Station(models.Model):
     name = models.CharField(max_length=255)
+    admin = models.OneToOneField(User,related_name='station',on_delete=models.CASCADE, default=None)
 
     def __str__(self):
         return self.name
