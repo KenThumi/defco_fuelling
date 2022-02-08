@@ -189,5 +189,19 @@ def addStation(request):
         if form.is_valid():
             form.save()
             # redirect to stations
+            return redirect('stations')
 
     return render(request, 'addstation.html', {'form':form})
+
+
+
+def replenishments(request):
+
+    return render(request, 'replenishments.html')
+
+
+def stations(request):
+    stations = Station.objects.all()
+
+
+    return render(request, 'stations.html', { 'stations':stations })

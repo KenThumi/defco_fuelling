@@ -81,8 +81,16 @@
           </p>
         </a>
         <ul class="nav nav-treeview" style="display: none;">
+          {% if request.user.is_superuser %}
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="{% url 'stations' %}" class="nav-link">
+              <i class="far fa-circle nav-icon text-info"></i>
+              <p>Fuel Stations</p>
+            </a>
+          </li>
+          {%endif%}
+          <li class="nav-item">
+            <a href="{% url 'replenishments' %}" class="nav-link">
               <i class="far fa-circle nav-icon text-success"></i>
               <p>Replenishment</p>
             </a>

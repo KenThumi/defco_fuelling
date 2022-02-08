@@ -1,0 +1,72 @@
+{%extends 'base.html'%}
+
+{% block content %}
+{{ block.super }}
+ <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+            <h1>Fuel Stations</h1>
+            </div>
+            <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">Fuel Stations</li>
+            </ol>
+            </div>
+        </div>
+        </div><!-- /.container-fluid -->
+    </section>
+  <!-- Main content -->
+    <section class="content">
+        <div class="row">
+        <div class="col-12">
+            <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Table below shows the stations</h3>
+                <div class="float-right mx-3">
+                    {% if request.user.is_superuser %}
+                    <a class="btn btn-success btn-sm" href="{% url 'addstation' %}">
+                        Add Station
+                        <i class="fas fa-plus-circle"></i>
+                    </a> 
+                    {% endif %}
+                </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <table id="example1" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Station</th>
+                            <th>Administrator</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                     {% for station in stations %}
+                        <tr>
+                            <td>{{ station.name }}</td>
+                            <td>
+                                <a href="{% url 'user' station.admin_id%}">
+                                      {{ station.admin }}
+                                </a>
+                            </td>
+                        </tr>
+                     {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Station</th>
+                            <th>Administrator</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+        </div><!-- Main content -->
+    </section>
+  {%endblock%}
