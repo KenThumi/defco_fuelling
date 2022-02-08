@@ -194,8 +194,24 @@ def addStation(request):
 
             return redirect('stations')
 
-    return render(request, 'addstation.html', {'form':form})
+    return render(request, 'addstation.html', {'form':form, 'btn_lbl':'Add'})
 
+
+def editStation(request,id):
+    station = Station.objects.get(pk=id)
+
+    form = StationForm(instance=station)
+
+    if request.method == 'POST':
+        form = StationForm(request.POST, instance=station)
+
+        if form.is_valid():
+            form.save()
+
+            messages.success(request, 'Successful Station update.')
+            return redirect('stations')
+
+    return render(request, 'addstation.html', {'form':form,'btn_lbl':'Update'})
 
 
 def replenishments(request):
@@ -222,4 +238,20 @@ def replenish(request):
             messages.success(request, 'Successful resuply recorded.')
             return redirect('replenishments')
 
-    return render(request, 'replenish.html', {'form':form})
+    return render(request, 'replenish.html', {'form':form, 'btn_lbl':'Add'})
+
+
+
+def editReplenish(request,id):
+    replenish = FuelReplenish.objects.get(pk=id)
+    form = ReplenishForm(instance=replenish)
+
+    if request.method == 'POST':
+        form = ReplenishForm(request.POST, instance=replenish)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Successful edit.')
+            return redirect('replenishments')
+
+    return render(request, 'replenish.html', {'form':form, 'btn_lbl':'Update'})

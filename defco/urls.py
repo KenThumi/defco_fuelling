@@ -29,4 +29,6 @@ urlpatterns = [
     path('replenishments/', views.replenishments, name='replenishments' ),
     path('stations/', views.stations, name='stations'),
     path('replenish/', views.replenish, name='replenish'),
+    path('editstation/<int:id>', views.editStation, name='editstation'),
+    path('editreplenish/<int:id>', views.editReplenish, name='editreplenish')
 ]
