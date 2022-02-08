@@ -1,6 +1,6 @@
-from defco.models import Station, User, Vehicle
+from defco.models import FuelReplenish, Station, User, Vehicle
 from defco.decorators import _user, account_not_locked, admin_or_superuser, profile_user, unauthenticated_user
-from defco.forms import EditVehicleForm, ProfileEditForm, StationForm, UserRegisterForm, VehicleForm
+from defco.forms import EditVehicleForm, ProfileEditForm, ReplenishForm, StationForm, UserRegisterForm, VehicleForm
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -189,6 +189,9 @@ def addStation(request):
         if form.is_valid():
             form.save()
             # redirect to stations
+
+            messages.success(request, 'Successful Station insertion.')
+
             return redirect('stations')
 
     return render(request, 'addstation.html', {'form':form})
@@ -196,8 +199,9 @@ def addStation(request):
 
 
 def replenishments(request):
+    replenishes = FuelReplenish.objects.all()
 
-    return render(request, 'replenishments.html')
+    return render(request, 'replenishments.html', {'replenishes':replenishes})
 
 
 def stations(request):
@@ -205,3 +209,17 @@ def stations(request):
 
 
     return render(request, 'stations.html', { 'stations':stations })
+
+
+def replenish(request):
+    form = ReplenishForm()
+
+    if request.method == 'POST':
+        form = ReplenishForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Successful resuply recorded.')
+            return redirect('replenishments')
+
+    return render(request, 'replenish.html', {'form':form})

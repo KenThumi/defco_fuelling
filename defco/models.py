@@ -1,3 +1,4 @@
+# from typing_extensions import Required
 from cloudinary.models import CloudinaryField
 from django.db import models
 from django.contrib.auth.models import AbstractUser
@@ -58,7 +59,7 @@ class Station(models.Model):
 
 class FuelReplenish(models.Model):
     station = models.ForeignKey(Station,related_name='replenishment',on_delete=models.CASCADE)
-    current_amount = models.IntegerField()
+    current_amount = models.IntegerField(default=0)
     replenished_amount = models.IntegerField()
     batch_no = models.CharField(max_length=255)
     supplier = models.CharField(max_length=255)

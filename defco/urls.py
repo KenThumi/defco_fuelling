@@ -27,5 +27,6 @@ urlpatterns = [
     # station
     path('addstation/', views.addStation, name='addstation'),
     path('replenishments/', views.replenishments, name='replenishments' ),
-    path('stations/', views.stations, name='stations')
+    path('stations/', views.stations, name='stations'),
+    path('replenish/', views.replenish, name='replenish'),
 ]

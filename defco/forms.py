@@ -1,7 +1,7 @@
 
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
-from .models import Station, User, Vehicle
+from .models import FuelReplenish, Station, User, Vehicle
 
 # input select  choices
 ranks = [
@@ -282,4 +282,62 @@ class StationForm(forms.ModelForm):
         icons = { 
                   'name':'gas-pump',
                   'admin':'user', 
+                }
+
+
+class ReplenishForm(forms.ModelForm):
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # self.fields['admin'].queryset = User.objects.filter(is_admin=True)
+   
+        self.fields['station'].widget.attrs.update({
+            'required':'',
+            'name':'station',
+            'type':'select',
+            'class':'form-control form-control-sm',
+        })
+
+        self.fields['replenished_amount'].widget.attrs.update({
+            'required':'',
+            'name':'replenished_amount',
+            'type':'number',
+            'class':'form-control form-control-sm',
+            'placeholder':'Replenish Amount in Litres',
+        })
+
+
+        self.fields['batch_no'].widget.attrs.update({
+            'required':'',
+            'name':'batch_no',
+            'type':'text',
+            'class':'form-control form-control-sm',
+            'placeholder':'Batch No.',
+        })
+
+
+        self.fields['supplier'].widget.attrs.update({
+            'required':'',
+            'name':'supplier',
+            'type':'select',
+            'class':'form-control form-control-sm',
+            'placeholder':'Supplier',
+        })
+
+        icons = getattr(self.Meta, 'icons', dict())
+
+        for field_name, field in self.fields.items():
+            if field_name in icons:
+                field.icon = icons[field_name]
+
+
+    class Meta:
+        model = FuelReplenish
+        exclude = ['current_amount']
+        icons = { 
+                  'station':'gas-pump',
+                  'replenished_amount':'fill-drip', 
+                  'batch_no':'clipboard-list',
+                  'supplier':'user-tie'
                 }
