@@ -234,7 +234,10 @@ def replenish(request):
         form = ReplenishForm(request.POST)
 
         if form.is_valid():
-            form.save()
+            record = form.save(commit=False)
+            record.current_amount = form.cleaned_data['replenished_amount']
+            record.save()
+
             messages.success(request, 'Successful resuply recorded.')
             return redirect('replenishments')
 
@@ -246,11 +249,18 @@ def editReplenish(request,id):
     replenish = FuelReplenish.objects.get(pk=id)
     form = ReplenishForm(instance=replenish)
 
+    prev_record = replenish.replenished_amount
+
     if request.method == 'POST':
         form = ReplenishForm(request.POST, instance=replenish)
 
         if form.is_valid():
-            form.save()
+            record = form.save(commit=False)
+
+            record.current_amount = replenish.current_amount + (form.cleaned_data['replenished_amount']- prev_record)
+            
+            record.save()
+
             messages.success(request, 'Successful edit.')
             return redirect('replenishments')
 

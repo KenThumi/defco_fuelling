@@ -63,6 +63,9 @@ class FuelReplenish(models.Model):
     replenished_amount = models.IntegerField()
     batch_no = models.CharField(max_length=255)
     supplier = models.CharField(max_length=255)
+
+    class Meta:
+        ordering = ['-pk']
     
     def __str__(self):
         return self.batch_no

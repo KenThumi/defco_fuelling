@@ -1,6 +1,6 @@
-
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
+from django.db.models import fields
 from .models import FuelReplenish, Station, User, Vehicle
 
 # input select  choices
@@ -286,6 +286,7 @@ class StationForm(forms.ModelForm):
 
 
 class ReplenishForm(forms.ModelForm):
+    # current_amount=forms.IntegerField(required=False)
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -335,6 +336,7 @@ class ReplenishForm(forms.ModelForm):
     class Meta:
         model = FuelReplenish
         exclude = ['current_amount']
+        # fields = '__all__'
         icons = { 
                   'station':'gas-pump',
                   'replenished_amount':'fill-drip', 
