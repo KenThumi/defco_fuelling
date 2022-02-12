@@ -265,3 +265,9 @@ def editReplenish(request,id):
             return redirect('replenishments')
 
     return render(request, 'replenish.html', {'form':form, 'btn_lbl':'Update'})
+
+
+
+def getTransactions(request):
+
+    return render(request,'records/transactions.html')
