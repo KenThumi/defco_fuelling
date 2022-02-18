@@ -2,6 +2,7 @@
 from cloudinary.models import CloudinaryField
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db.models.fields import DateField
 
 # Create your models here.
 
@@ -70,3 +71,18 @@ class FuelReplenish(models.Model):
     def __str__(self):
         return self.batch_no
 
+
+class Transaction(models.Model):
+    reg_no = models.ForeignKey(Vehicle,related_name='transactions',on_delete=models.CASCADE)
+    litres = models.IntegerField()
+    amount = models.IntegerField()
+    station = models.ForeignKey(Station,related_name='transactions',on_delete=models.CASCADE)
+    batch_no = models.ForeignKey(FuelReplenish,related_name='transactions',on_delete=models.CASCADE)
+    attendant = models.IntegerField()
+    date = DateField()
+
+    class Meta:
+        ordering = ['-pk']
+    
+    def __str__(self):
+        return 'Veh:'+self.reg_no+' Litres:'+self.litres+' Batch no:'+self.batch_no

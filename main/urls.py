@@ -17,7 +17,9 @@ from django.conf.urls import include
 from django.contrib import admin
 from django.urls import path
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('defco.urls'))
+    path('', include('defco.urls')),
+    path("select2/", include("django_select2.urls")),
 ]
