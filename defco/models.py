@@ -73,9 +73,10 @@ class FuelReplenish(models.Model):
 
 
 class Transaction(models.Model):
-    reg_no = models.ForeignKey(Vehicle,related_name='transactions',on_delete=models.CASCADE)
+    vehicle = models.ForeignKey(Vehicle,related_name='transactions',on_delete=models.CASCADE)
     litres = models.IntegerField()
     amount = models.IntegerField()
+    payment_mode = models.CharField(max_length=255)
     station = models.ForeignKey(Station,related_name='transactions',on_delete=models.CASCADE)
     batch_no = models.ForeignKey(FuelReplenish,related_name='transactions',on_delete=models.CASCADE)
     attendant = models.IntegerField()
@@ -85,4 +86,4 @@ class Transaction(models.Model):
         ordering = ['-pk']
     
     def __str__(self):
-        return 'Veh:'+self.reg_no+' Litres:'+self.litres+' Batch no:'+self.batch_no
+        return 'Veh:'+self.vehicle+' Litres:'+self.litres+' Batch no:'+self.batch_no

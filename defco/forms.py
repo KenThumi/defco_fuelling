@@ -343,3 +343,20 @@ class ReplenishForm(forms.ModelForm):
                   'batch_no':'clipboard-list',
                   'supplier':'user-tie'
                 }
+
+
+# class CoAuthorsWidget(s2forms.ModelSelect2MultipleWidget):
+#     search_fields = [
+#         "username__icontains",
+#         "email__icontains",
+#     ]
+
+
+# class BookForm(forms.ModelForm):
+#     class Meta:
+#         model = models.Book
+#         fields = "__all__"
+#         widgets = {
+#             "author": AuthorWidget,
+#             "co_authors": CoAuthorsWidget,
+#         }
