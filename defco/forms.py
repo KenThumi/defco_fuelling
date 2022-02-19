@@ -1,7 +1,8 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.db.models import fields
-from .models import FuelReplenish, Station, User, Vehicle
+from .models import FuelReplenish, Station, Transaction, User, Vehicle
+from django_select2 import forms as s2forms
 
 # input select  choices
 ranks = [
@@ -49,6 +50,11 @@ vehicle_makes = [
             ('Other','Other')
         ]
 
+modes = [
+    ('Cash','Cash'),
+    ('MPESA','MPESA'),
+    ('Bank ATM','Bank ATM')
+]
 
 class UserRegisterForm(UserCreationForm):
     # email = forms.EmailField()
@@ -345,18 +351,85 @@ class ReplenishForm(forms.ModelForm):
                 }
 
 
-# class CoAuthorsWidget(s2forms.ModelSelect2MultipleWidget):
-#     search_fields = [
-#         "username__icontains",
-#         "email__icontains",
-#     ]
+class VehicleWidget(s2forms.ModelSelect2Widget):
+    search_fields = [
+        "reg_no__icontains",
+    ]
 
 
-# class BookForm(forms.ModelForm):
-#     class Meta:
-#         model = models.Book
-#         fields = "__all__"
-#         widgets = {
-#             "author": AuthorWidget,
-#             "co_authors": CoAuthorsWidget,
-#         }
+class TransactionForm(forms.ModelForm):
+    payment_mode =    forms.CharField( widget=forms.Select(choices=modes))
+    amount =  forms.IntegerField( label='Amount (Ksh)')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # self.fields['admin'].queryset = User.objects.filter(is_admin=True)
+   
+        self.fields['vehicle'].widget.attrs.update({
+            'required':'',
+            'name':'vehicle',
+            'type':'select',
+            'class':'form-control form-control-sm',
+        })
+
+        self.fields['litres'].widget.attrs.update({
+            'required':'',
+            'name':'litres',
+            'type':'number',
+            'class':'form-control form-control-sm',
+        })
+
+        self.fields['amount'].widget.attrs.update({
+            'required':'',
+            'name':'amount',
+            'type':'number',
+            'class':'form-control form-control-sm',
+        })
+
+        self.fields['payment_mode'].widget.attrs.update({
+            'required':'',
+            'name':'payment_mode',
+            'type':'text',
+            'class':'form-control form-control-sm',
+
+        })
+        
+        self.fields['station'].widget.attrs.update({
+            'required':'',
+            'name':'station',
+            'type':'select',
+            'class':'form-control form-control-sm',
+        })
+
+        self.fields['batch_no'].widget.attrs.update({
+            'required':'',
+            'name':'batch_no',
+            'type':'select',
+            'class':'form-control form-control-sm',
+        })
+
+        icons = getattr(self.Meta, 'icons', dict())
+
+        for field_name, field in self.fields.items():
+            if field_name in icons:
+                field.icon = icons[field_name]
+
+
+    class Meta:
+        model = Transaction
+        exclude = ['attendant','date']
+        widgets = {
+            "vehicle": VehicleWidget,
+           
+        }
+        icons={ 
+                'vehicle':'car',
+                'litres':'fill-drip',
+                'amount':'dollar-sign',
+                'payment_mode':'money-bill',
+                'station':'gas-pump',
+                'batch_no':'clipboard-list',
+              }
+            
+       
