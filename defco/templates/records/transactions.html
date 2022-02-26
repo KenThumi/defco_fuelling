@@ -68,7 +68,7 @@
                                 <td>{{ transaction.payment_mode }}</td>
                                 <td>{{ transaction.date  | date:"d M Y" }}</td>
                                 <td class="text-center">
-                                    <a href="#">
+                                    <a href="{% url 'edittransaction' transaction.id %}">
                                         <i class="fas fa-edit text-warning"></i>
                                     </a>
                                     /

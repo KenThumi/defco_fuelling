@@ -32,6 +32,6 @@ urlpatterns = [
     path('editstation/<int:id>', views.editStation, name='editstation'),
     path('editreplenish/<int:id>', views.editReplenish, name='editreplenish'),
     path('transactions/', views.getTransactions, name='transactions'),
-    path('addtransaction/', views.addTransaction, name='addtransaction')
-
+    path('addtransaction/', views.addTransaction, name='addtransaction'),
+    path('edittransaction/<int:id>', views.editTransaction, name='edittransaction'),
 ]

@@ -293,6 +293,27 @@ def addTransaction( request ):
             transaction.save()
 
             messages.success(request, 'Successful.')
-            # return redirect('replenishments')
+            return redirect('transactions')
 
     return render(request, 'records/addtransaction.html', {'form':form})
+
+
+
+def editTransaction( request, id ):
+    transaction = Transaction.objects.get(pk=id)
+
+    form = TransactionForm(user=request.user, instance=transaction)
+
+    if request.method == 'POST':
+        form = TransactionForm(request.POST,  user=request.user, instance=transaction)
+
+        if form.is_valid():
+            transaction = form.save(commit=False)  
+            transaction.attendant = request.user.id 
+            transaction.save()
+
+            messages.success(request, 'Successful update.')
+            return redirect('transactions')
+
+    return render(request, 'records/addtransaction.html', {'form':form})
+
