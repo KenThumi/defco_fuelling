@@ -1,4 +1,4 @@
-from defco.models import FuelReplenish, Station, User, Vehicle
+from defco.models import FuelReplenish, Station, Transaction, User, Vehicle
 from defco.decorators import _user, account_not_locked, admin_or_superuser, profile_user, unauthenticated_user
 from defco.forms import EditVehicleForm, ProfileEditForm, ReplenishForm, StationForm, TransactionForm, UserRegisterForm, VehicleForm
 from django.shortcuts import redirect, render
@@ -270,11 +270,29 @@ def editReplenish(request,id):
 
 def getTransactions(request):
 
-    return render(request,'records/transactions.html')
+    transactions = Transaction.objects.all()
+
+
+    return render(request,'records/transactions.html', {'transactions':transactions})
 
 
 def addTransaction( request ):
 
-    form = TransactionForm()
+    form = TransactionForm(initial={
+                                    'station':request.user.station,
+                                    'batch_no':request.user.station.replenishment.latest('id')
+                                    }
+                            , user=request.user)
+
+    if request.method == 'POST':
+        form = TransactionForm(request.POST,  user=request.user)
+
+        if form.is_valid():
+            transaction = form.save(commit=False)  
+            transaction.attendant = request.user.id #consider having a 1:n relationship in model
+            transaction.save()
+
+            messages.success(request, 'Successful.')
+            # return redirect('replenishments')
 
     return render(request, 'records/addtransaction.html', {'form':form})

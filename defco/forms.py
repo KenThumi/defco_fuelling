@@ -1,6 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.db.models import fields
+# from django.http import request
 from .models import FuelReplenish, Station, Transaction, User, Vehicle
 from django_select2 import forms as s2forms
 
@@ -360,11 +361,14 @@ class VehicleWidget(s2forms.ModelSelect2Widget):
 class TransactionForm(forms.ModelForm):
     payment_mode =    forms.CharField( widget=forms.Select(choices=modes))
     amount =  forms.IntegerField( label='Amount (Ksh)')
+    
 
     def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop("user")
         super().__init__(*args, **kwargs)
+        # self.fields['batch_no'].queryset = User.objects.filter(is_admin=True)
 
-        # self.fields['admin'].queryset = User.objects.filter(is_admin=True)
+        self.fields['batch_no'].queryset = FuelReplenish.objects.filter(station=self.user.station)
    
         self.fields['vehicle'].widget.attrs.update({
             'required':'',
@@ -399,6 +403,7 @@ class TransactionForm(forms.ModelForm):
             'required':'',
             'name':'station',
             'type':'select',
+            'disabled':True,
             'class':'form-control form-control-sm',
         })
 

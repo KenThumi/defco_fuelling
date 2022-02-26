@@ -80,7 +80,7 @@ class Transaction(models.Model):
     station = models.ForeignKey(Station,related_name='transactions',on_delete=models.CASCADE)
     batch_no = models.ForeignKey(FuelReplenish,related_name='transactions',on_delete=models.CASCADE)
     attendant = models.IntegerField()
-    date = DateField()
+    date = DateField(auto_now_add=True)
 
     class Meta:
         ordering = ['-pk']

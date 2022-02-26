@@ -310,6 +310,11 @@
     //   "autoWidth": false,
     // });
   });
+  jQuery(function ($) {        
+    $('form').bind('submit', function () {
+      $(this).find(':input').prop('disabled', false);
+      });
+  });
 </script>
 <!-- select2 js -->
 {% if form %}
