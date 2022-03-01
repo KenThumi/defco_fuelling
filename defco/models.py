@@ -19,6 +19,7 @@ class User(AbstractUser):
     is_customer = models.BooleanField(default=True)
     is_valid = models.BooleanField(default=False)
     is_locked = models.BooleanField(default=False)
+    is_attendant = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['-date_joined']
@@ -79,7 +80,7 @@ class Transaction(models.Model):
     payment_mode = models.CharField(max_length=255)
     station = models.ForeignKey(Station,related_name='transactions',on_delete=models.CASCADE)
     batch_no = models.ForeignKey(FuelReplenish,related_name='transactions',on_delete=models.CASCADE)
-    attendant = models.IntegerField()
+    attendant = models.ForeignKey(User,related_name='transactions',on_delete=models.CASCADE)
     date = DateField(auto_now_add=True)
 
     class Meta:
