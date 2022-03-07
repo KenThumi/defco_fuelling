@@ -1,8 +1,10 @@
 # from typing_extensions import Required
+from datetime import timezone
 from cloudinary.models import CloudinaryField
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db.models.fields import DateField
+from django.forms import DateTimeField
 
 # Create your models here.
 
@@ -81,10 +83,10 @@ class Transaction(models.Model):
     station = models.ForeignKey(Station,related_name='transactions',on_delete=models.CASCADE)
     batch_no = models.ForeignKey(FuelReplenish,related_name='transactions',on_delete=models.CASCADE)
     attendant = models.ForeignKey(User,related_name='transactions',on_delete=models.CASCADE)
-    date = DateField(auto_now_add=True)
+    date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ['-pk']
     
     def __str__(self):
-        return 'Veh:'+self.vehicle+' Litres:'+self.litres+' Batch no:'+self.batch_no
+        return 'Veh:'+self.vehicle.reg_no+' Litres:'+str(self.litres)+' Batch no:'+self.batch_no.batch_no

@@ -289,7 +289,7 @@ def addTransaction( request ):
 
         if form.is_valid():
             transaction = form.save(commit=False)  
-            transaction.attendant = request.user.id #consider having a 1:n relationship in model
+            transaction.attendant = request.user #consider having a 1:n relationship in model
             transaction.save()
 
             messages.success(request, 'Successful.')
@@ -309,7 +309,7 @@ def editTransaction( request, id ):
 
         if form.is_valid():
             transaction = form.save(commit=False)  
-            transaction.attendant = request.user.id 
+            transaction.attendant = request.user
             transaction.save()
 
             messages.success(request, 'Successful update.')
