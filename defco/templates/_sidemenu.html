@@ -106,7 +106,7 @@
       </li>
       <!-- / fuel point -->
 
-      <!-- complaints  -->
+      <!-- reviews  -->
       <li class="nav-item has-treeview">
         <a href="#" class="nav-link">
           <i class="nav-icon fas fa-comments"></i>
@@ -117,14 +117,31 @@
         </a>
         <ul class="nav nav-treeview" style="display: none;">
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="{% url 'getreviews' %}" class="nav-link">
               <i class="far fa-circle nav-icon text-info"></i>
-              <p>Inbox</p>
+              <p>All</p>
             </a>
           </li>
-          
+          <li class="nav-item">
+            <a href="{% url 'getspecificreviews' 'complaint' %}" class="nav-link">
+              <i class="far fa-circle nav-icon text-danger"></i>
+              <p>Complains</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'getspecificreviews' 'comment' %}" class="nav-link">
+              <i class="far fa-circle nav-icon text-warning"></i>
+              <p>Comments</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'getspecificreviews' 'recommendation' %}" class="nav-link">
+              <i class="far fa-circle nav-icon text-success"></i>
+              <p>Recommendations</p>
+            </a>
+          </li>
         </ul>
       </li>
-      <!-- / complaints  -->
+      <!-- / reviews  -->
     </ul>
   </nav>

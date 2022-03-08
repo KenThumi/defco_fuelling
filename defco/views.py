@@ -340,3 +340,9 @@ def getReviews(request):
     reviews = Review.objects.all()
 
     return render(request, 'reviews/reviews.html', {'reviews':reviews})
+
+
+def getSpecificReviews(request, review):
+    reviews = Review.objects.filter(review_type=review)
+
+    return render(request, 'reviews/reviews.html', {'reviews':reviews})
