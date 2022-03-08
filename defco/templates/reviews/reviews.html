@@ -51,8 +51,9 @@
                                   <!-- <div class="card card-primary collapsed-card"> -->
                                         <div class="card-header">
                                             <h3 class="card-title">
-                                                {{ review.review_type | title}}| &nbsp;
-                                                {{ review.transaction.station }}| &nbsp;
+                                                {{ review.review_type | title}} | &nbsp;
+                                                {{ review.transaction.station }} | &nbsp;
+                                                Service date:{{review.transaction.date| date:"d/m/Y"}} | 
                                                 Batch No.: {{ review.transaction.batch_no }}
                                             </h3>
                                             <div class="card-tools">
@@ -66,9 +67,13 @@
                                             <blockquote class="quote-secondary">
                                                 <p>{{ review.description }}</p>
                                                 <small>
-                                                    <a href="{% url 'user' review.user.id %}">
-                                                        <cite title="Source Title">- {{ review.user }}</cite>
-                                                    </a>
+                                                    {% if review.reveal_id %}
+                                                        <a href="{% url 'user' review.user.id %}">
+                                                            <cite title="Source Title">- {{ review.user }}</cite>
+                                                        </a>
+                                                    {% else %}
+                                                        <cite title="Source Title">- Anonymous</cite>
+                                                    {% endif %}
                                                 </small>
                                             </blockquote>
                                             <!-- / blockquote -->

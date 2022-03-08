@@ -16,11 +16,16 @@
       {% for field in form %}
       {{field.label_tag}}
       <div class="input-group mb-3">
-        <div class="input-group-prepend">
+           <!-- check whether control has an icon -->
+          {% if field.field.icon %} 
+          <div class="input-group-prepend">
           <span class="input-group-text">
             <i class="fas fa-{{ field.field.icon }}"></i>
           </span>
           </div>
+          {% endif %}
+
+          <!-- display field -->
         {{ field }}
       </div>
       <!-- errors -->

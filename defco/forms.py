@@ -448,7 +448,7 @@ class TransactionForm(forms.ModelForm):
 class ReviewForm(forms.ModelForm):
     review_type =    forms.CharField( widget=forms.Select(choices=review_types))
     description = forms.CharField(widget=forms.Textarea())
-    # amount =  forms.IntegerField( label='Amount (Ksh)')
+    reveal_id =  forms.BooleanField( label='Select to Reveal Identity')
     
 
     def __init__(self, *args, **kwargs):
@@ -480,7 +480,7 @@ class ReviewForm(forms.ModelForm):
 
     class Meta:
         model = Review
-        fields = ['review_type','description']
+        fields = ['review_type','description', 'reveal_id']
         
         icons={ 
                 'review_type':'comments',
