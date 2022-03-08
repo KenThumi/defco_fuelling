@@ -35,5 +35,6 @@ urlpatterns = [
     path('addtransaction/', views.addTransaction, name='addtransaction'),
     path('edittransaction/<int:id>', views.editTransaction, name='edittransaction'),
     # reviews
-    path('addreview/<int:id>', views.addReview, name='addreview')
+    path('addreview/<int:id>', views.addReview, name='addreview'),
+    path('getreviews/', views.getReviews, name='getreviews')
 ]

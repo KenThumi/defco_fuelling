@@ -1,4 +1,4 @@
-from defco.models import FuelReplenish, Station, Transaction, User, Vehicle
+from defco.models import FuelReplenish, Review, Station, Transaction, User, Vehicle
 from defco.decorators import _user, account_not_locked, admin_or_superuser, profile_user, unauthenticated_user
 from defco.forms import EditVehicleForm, ProfileEditForm, ReplenishForm, ReviewForm, StationForm, TransactionForm, UserRegisterForm, VehicleForm
 from django.shortcuts import redirect, render
@@ -321,4 +321,22 @@ def editTransaction( request, id ):
 def addReview(request, id):
     form = ReviewForm()
 
-    return render(request, 'review.html', {'form':form})
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.user = request.user
+            review.transaction = Transaction.objects.get(pk=id)
+            review.save()
+
+            messages.success(request, 'Review added successfully.')
+            # return redirect('transactions')
+
+    return render(request, 'reviews/review.html', {'form':form})
+
+
+def getReviews(request):
+    reviews = Review.objects.all()
+
+    return render(request, 'reviews/reviews.html', {'reviews':reviews})

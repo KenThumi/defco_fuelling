@@ -5,11 +5,11 @@
 <div class="container">
 <div class="card card-info my-3 mx-4">
   <div class="card-header">
-    <h3 class="card-title">Add Review</h3>
+    <h3 class="card-title">Add Review on selected transaction.</h3>
   </div>
   
   
-  <form class="form-horizontal">
+  <form class="form-horizontal" method="post" enctype="multipart/form-data" >
     <div class="card-body">
       {% csrf_token %}
               

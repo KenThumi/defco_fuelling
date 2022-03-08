@@ -51,7 +51,7 @@
                         <th>Action</th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="big-table-font">
                         {% for transaction in transactions %}
                             <tr>
                                 <td>{{ transaction.vehicle }}</td>
@@ -72,12 +72,16 @@
                                     </small>
                                 </td>
                                 <td class="text-center">
-                                    <a href="{% url 'edittransaction' transaction.id %}">
+                                    <a href="{% url 'edittransaction' transaction.id %}"  data-tooltip="tooltip" title="Edit Item">
                                         <i class="fas fa-edit text-warning"></i>
                                     </a>
                                     /
-                                    <a href="#" class="ml-1"   onclick="return confirm('Are you sure you want to delete this item?');">
+                                    <a href="#" class="ml-1"   onclick="return confirm('Are you sure you want to delete this item?');"  data-tooltip="tooltip" title="Delete item">
                                         <i class="fas fa-trash text-danger"></i>
+                                    </a>
+                                    /
+                                    <a href="{% url 'addreview' transaction.id %}" class="ml-1"   onclick="return confirm('Are you sure you want to add a review?');"  data-tooltip="tooltip" title="Add Review">
+                                        <i class="fas fa-comment text-info"></i>
                                     </a>
                                 </td>
                                 
