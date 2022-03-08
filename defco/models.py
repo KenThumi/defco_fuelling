@@ -90,3 +90,17 @@ class Transaction(models.Model):
     
     def __str__(self):
         return 'Veh:'+self.vehicle.reg_no+' Litres:'+str(self.litres)+' Batch no:'+self.batch_no.batch_no
+
+
+class Review(models.Model):
+    user=models.ForeignKey(User,related_name='reviews',on_delete=models.CASCADE)
+    transaction = models.ForeignKey(Transaction,related_name='reviews',on_delete=models.CASCADE)
+    review_type = models.CharField(max_length=255)
+    description = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-pk']
+    
+    def __str__(self):
+        return 'Review:'+self.review_type+' Transaction:'+str(self.transaction)

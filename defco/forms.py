@@ -2,7 +2,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.db.models import fields
 # from django.http import request
-from .models import FuelReplenish, Station, Transaction, User, Vehicle
+from .models import FuelReplenish, Review, Station, Transaction, User, Vehicle
 from django_select2 import forms as s2forms
 
 # input select  choices
@@ -55,6 +55,13 @@ modes = [
     ('Cash','Cash'),
     ('MPESA','MPESA'),
     ('Bank ATM','Bank ATM')
+]
+
+review_types = [
+    ('','- select -'),
+    ('complaint','Complaint'),
+    ('comment','Comment'),
+    ('recommendation','Recommendation')
 ]
 
 class UserRegisterForm(UserCreationForm):
@@ -437,4 +444,46 @@ class TransactionForm(forms.ModelForm):
                 'batch_no':'clipboard-list',
               }
             
-       
+
+class ReviewForm(forms.ModelForm):
+    review_type =    forms.CharField( widget=forms.Select(choices=review_types))
+    description = forms.CharField(widget=forms.Textarea())
+    # amount =  forms.IntegerField( label='Amount (Ksh)')
+    
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # self.fields['batch_no'].queryset = FuelReplenish.objects.filter(station=self.user.station)
+   
+        self.fields['review_type'].widget.attrs.update({
+            'required':'',
+            'name':'review_type',
+            'type':'select',
+            'class':'form-control form-control-sm',
+        })
+
+        self.fields['description'].widget.attrs.update({
+            'required':'',
+            'name':'description',
+            'type':'textarea',
+            'class':'form-control form-control-sm',
+        })
+
+        
+        icons = getattr(self.Meta, 'icons', dict())
+
+        for field_name, field in self.fields.items():
+            if field_name in icons:
+                field.icon = icons[field_name]
+
+
+    class Meta:
+        model = Review
+        fields = ['review_type','description']
+        
+        icons={ 
+                'review_type':'comments',
+                'description':'pen'
+              }
+            

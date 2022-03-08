@@ -1,6 +1,6 @@
 from defco.models import FuelReplenish, Station, Transaction, User, Vehicle
 from defco.decorators import _user, account_not_locked, admin_or_superuser, profile_user, unauthenticated_user
-from defco.forms import EditVehicleForm, ProfileEditForm, ReplenishForm, StationForm, TransactionForm, UserRegisterForm, VehicleForm
+from defco.forms import EditVehicleForm, ProfileEditForm, ReplenishForm, ReviewForm, StationForm, TransactionForm, UserRegisterForm, VehicleForm
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -317,3 +317,8 @@ def editTransaction( request, id ):
 
     return render(request, 'records/addtransaction.html', {'form':form})
 
+
+def addReview(request, id):
+    form = ReviewForm()
+
+    return render(request, 'review.html', {'form':form})

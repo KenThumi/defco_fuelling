@@ -64,11 +64,11 @@
                                         {{ transaction.vehicle.user }}
                                     </a>
                                 </td>
-                                <td>#</td>
+                                <td>{{ transaction.attendant }}</td>
                                 <td>{{ transaction.payment_mode }}</td>
                                 <td>
                                     <small>
-                                        {{ transaction.date  | date:"d M Y @ H:i" }}
+                                        {{ transaction.date  | date:"d/m/Y @H:i" }} hrs
                                     </small>
                                 </td>
                                 <td class="text-center">
