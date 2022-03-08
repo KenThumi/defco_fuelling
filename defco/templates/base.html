@@ -301,7 +301,7 @@
 <!-- page script -->
 <script>
   $(function () {
-    $("#example1").DataTable();
+    $("#example1").DataTable({"ordering": false,});
     // $('#example1').DataTable({
     //   "paging": true,
     //   "lengthChange": false,
@@ -311,6 +311,9 @@
     //   "autoWidth": false,
     // });
   });
+  
+
+  // on submit form set disabled to enabled
   jQuery(function ($) {        
     $('form').bind('submit', function () {
       $(this).find(':input').prop('disabled', false);

@@ -40,22 +40,32 @@
                             <tr>
                                 <td> 
                                 <!-- card -->
-
-                                {% if review.review_type == 'complaint' %}
-                                    <div class="card card-danger collapsed-card">
-                                {% elif review.review_type == 'comment'  %}
-                                    <div class="card card-warning collapsed-card">
-                                {% else %}
-                                     <div class="card card-success collapsed-card">
-                                {% endif %}
-                                  <!-- <div class="card card-primary collapsed-card"> -->
+                                <div class="card card-secondarry bg-light collapsed-card">
                                         <div class="card-header">
-                                            <h3 class="card-title">
+                                           
+                                            <div class="card-title">
+                                                {% if review.review_type == 'complaint' %}
+                                                    <i class="nav-icon fas fa-comment text-danger mr-2"></i>
+                                                {% elif review.review_type == 'comment'  %}
+                                                    <i class="nav-icon fas fa-comment text-warning mr-2"></i>
+                                                {% else %}
+                                                    <i class="nav-icon fas fa-comment text-success mr-2"></i>
+                                                {% endif %}
+
                                                 {{ review.review_type | title}} | &nbsp;
+                                                <i class="nav-icon fas fa-gas-pump mr-1"></i>
                                                 {{ review.transaction.station }} | &nbsp;
+                                                <i class="nav-icon fas fa-clock mr-1"></i>
                                                 Service date:{{review.transaction.date| date:"d/m/Y"}} | 
+                                                <i class="nav-icon fas fa-file mr-1"></i>
                                                 Batch No.: {{ review.transaction.batch_no }}
-                                            </h3>
+
+                                                <!-- new badge -->
+                                                <div class="float-right ml-2">
+                                                    <span class="right badge badge-danger">Unread</span>
+                                                </div>
+                                            </div>
+                                           
                                             <div class="card-tools">
                                                 <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
                                                 </button>
@@ -69,11 +79,14 @@
                                                 <small>
                                                     {% if review.reveal_id %}
                                                         <a href="{% url 'user' review.user.id %}">
-                                                            <cite title="Source Title">- {{ review.user }}</cite>
+                                                            <cite title="Source Title">- {{ review.user.rank }} {{review.user.name | title}}</cite>
                                                         </a>
                                                     {% else %}
                                                         <cite title="Source Title">- Anonymous</cite>
                                                     {% endif %}
+                                                    <br>
+                                                    <i class="fas fa-clock mr-1"></i>
+                                                    {{review.created_at| date:'H:i, d/m/Y'}}
                                                 </small>
                                             </blockquote>
                                             <!-- / blockquote -->

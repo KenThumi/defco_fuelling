@@ -331,18 +331,18 @@ def addReview(request, id):
             review.save()
 
             messages.success(request, 'Review added successfully.')
-            # return redirect('transactions')
+            return redirect('getreviews')
 
     return render(request, 'reviews/review.html', {'form':form})
 
 
 def getReviews(request):
-    reviews = Review.objects.all()
+    reviews = Review.objects.all()#.order_by('-id')
 
     return render(request, 'reviews/reviews.html', {'reviews':reviews})
 
 
 def getSpecificReviews(request, review):
-    reviews = Review.objects.filter(review_type=review)
+    reviews = Review.objects.filter(review_type=review)#.order_by('-id')
 
     return render(request, 'reviews/reviews.html', {'reviews':reviews})

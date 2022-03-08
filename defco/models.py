@@ -96,7 +96,7 @@ class Review(models.Model):
     user=models.ForeignKey(User,related_name='reviews',on_delete=models.CASCADE)
     transaction = models.ForeignKey(Transaction,related_name='reviews',on_delete=models.CASCADE)
     review_type = models.CharField(max_length=255)
-    description = models.CharField(max_length=255)
+    description = models.CharField(max_length=1000)
     reveal_id = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
