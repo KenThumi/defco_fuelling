@@ -37,5 +37,7 @@ urlpatterns = [
     # reviews
     path('addreview/<int:id>', views.addReview, name='addreview'),
     path('getreviews/', views.getReviews, name='getreviews'),
-    path('getspecificreviews/<str:review>', views.getSpecificReviews, name='getspecificreviews')
+    path('getspecificreviews/<str:review>', views.getSpecificReviews, name='getspecificreviews'),
+    path('setreviewread/<int:id>', views.setReviewRead, name='setreviewread'),
+    path('addreply/<int:id>', views.addReply, name='addreply')
 ]

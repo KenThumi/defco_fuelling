@@ -2,7 +2,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.db.models import fields
 # from django.http import request
-from .models import FuelReplenish, Review, Station, Transaction, User, Vehicle
+from .models import FuelReplenish, Reply, Review, Station, Transaction, User, Vehicle
 from django_select2 import forms as s2forms
 
 # input select  choices
@@ -486,4 +486,24 @@ class ReviewForm(forms.ModelForm):
                 'review_type':'comments',
                 'description':'pen'
               }
+
+
+class ReplyForm(forms.ModelForm):
+    description = forms.CharField(widget=forms.Textarea(), label='Reply')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # self.fields['batch_no'].queryset = FuelReplenish.objects.filter(station=self.user.station)
+   
+        self.fields['description'].widget.attrs.update({
+            'required':'',
+            'name':'description',
+            'class':'form-control form-control-sm',
+            'rows':2
             
+        })
+    
+    class Meta:
+        model = Reply
+        fields = ['description']

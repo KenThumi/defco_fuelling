@@ -98,6 +98,7 @@ class Review(models.Model):
     review_type = models.CharField(max_length=255)
     description = models.CharField(max_length=1000)
     reveal_id = models.BooleanField(default=False)
+    is_read = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -105,3 +106,16 @@ class Review(models.Model):
     
     def __str__(self):
         return 'Review:'+self.review_type+' Transaction:'+str(self.transaction)
+
+
+class Reply(models.Model):
+    description = models.CharField(max_length=1000)
+    review = models.ForeignKey(Review,related_name='replies',on_delete=models.CASCADE)
+    user=models.ForeignKey(User,related_name='replies',on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-pk']
+    
+    def __str__(self):
+        return 'Reply on Review:'+str(self.review.id)+' Review Type:'+str(self.review.review_type)

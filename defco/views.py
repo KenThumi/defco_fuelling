@@ -1,6 +1,7 @@
+from django.http import HttpResponseRedirect
 from defco.models import FuelReplenish, Review, Station, Transaction, User, Vehicle
 from defco.decorators import _user, account_not_locked, admin_or_superuser, profile_user, unauthenticated_user
-from defco.forms import EditVehicleForm, ProfileEditForm, ReplenishForm, ReviewForm, StationForm, TransactionForm, UserRegisterForm, VehicleForm
+from defco.forms import EditVehicleForm, ProfileEditForm, ReplenishForm, ReplyForm, ReviewForm, StationForm, TransactionForm, UserRegisterForm, VehicleForm
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -339,10 +340,35 @@ def addReview(request, id):
 def getReviews(request):
     reviews = Review.objects.all()#.order_by('-id')
 
-    return render(request, 'reviews/reviews.html', {'reviews':reviews})
+    form = ReplyForm()
+
+    return render(request, 'reviews/reviews.html', {'reviews':reviews, 'form':form})
 
 
 def getSpecificReviews(request, review):
     reviews = Review.objects.filter(review_type=review)#.order_by('-id')
 
-    return render(request, 'reviews/reviews.html', {'reviews':reviews})
+    form = ReplyForm()
+
+    return render(request, 'reviews/reviews.html', {'reviews':reviews, 'form':form})
+
+
+def setReviewRead(request,id):
+    Review.objects.filter(pk=id).update(is_read=True)
+
+    messages.success(request, 'Review marked as read.')
+    
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+def addReply(request,id):
+    if request.method == 'POST':
+        form = ReplyForm(request.POST)
+
+        if form.is_valid():
+            reply = form.save(commit=False)
+            reply.review_id = id
+            reply.user = request.user
+            reply.save()
+
+            messages.success(request, 'Reply added successfully.')
+            return redirect('getreviews')

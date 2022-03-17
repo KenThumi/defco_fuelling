@@ -1,0 +1,60 @@
+{% load static%}
+<div class="direct-chat-messages">
+    {% if review.replies is not null %}
+        {% for reply in review.replies.all %}
+        <div class="direct-chat-msg">
+            <div class="direct-chat-infos clearfix">
+                <span class="direct-chat-name float-left">
+                    {{ reply.user.username | title }}
+                </span>
+                <span class="direct-chat-timestamp float-right">
+                    <!-- 23 Jan 2:00 pm -->
+                    <small>
+                        <i class="fas fa-clock mr-1"></i>{{ reply.created_at | date:'H:i, d M Y' }}
+                    </small>
+                    
+                </span>
+            </div>
+            
+            <img class="direct-chat-img" src="{% static 'images/avatar.jpeg' %}" alt="Message User Image">
+            
+            <div class="direct-chat-text">
+                {{ reply.description }}
+            </div>
+        </div>
+        {% endfor %}
+    {%endif%}
+    <div>
+        <!-- reply form -->
+        <form class="form-horizontal" action="{% url 'addreply' id=review.id %}" method="post" enctype="multipart/form-data" >
+            <div class="card-body">
+              {% csrf_token %}
+                      
+              {% for field in form %}
+              {{field.label_tag}}
+              <div class="input-group mb-3">
+                  <!-- display field -->
+                {{ field }}
+              </div>
+              <!-- errors -->
+               
+                  <ul class="text-danger my-1">
+                    {% for error in field.errors%}      
+                         <li> {{error}} </li>
+                      {% endfor %}
+                  </ul>
+                
+              <!-- /errors -->
+              {% endfor %}
+              
+              <button type="submit" class="btn btn-success btn-sm">Add</button>
+            </div>
+            
+            <!-- <div class="card-footer"> -->
+              
+            <!-- </div> -->
+          
+          </form>
+        <!-- / reply form -->
+    </div>
+</div>

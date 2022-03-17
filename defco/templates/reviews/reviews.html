@@ -1,5 +1,5 @@
 {%extends 'base.html'%}
-
+{% load static%}
 {% block content %}
 {{ block.super }}
  <!-- Content Header (Page header) -->
@@ -61,9 +61,11 @@
                                                 Batch No.: {{ review.transaction.batch_no }}
 
                                                 <!-- new badge -->
+                                                {% if not review.is_read %}
                                                 <div class="float-right ml-2">
                                                     <span class="right badge badge-danger">Unread</span>
                                                 </div>
+                                                {% endif %}
                                             </div>
                                            
                                             <div class="card-tools">
@@ -90,9 +92,27 @@
                                                 </small>
                                             </blockquote>
                                             <!-- / blockquote -->
+                                            <hr>
+                                            <!-- chat -->
+                                            
+                                                {% include 'reviews/_replies.html' %}
+                                            
+                                            <!-- / chat -->
+                                            <!-- bottom -->
+                                            <div class="float-md-right">
+                                                {% if not review.is_read %}
+                                                <a href="{% url 'setreviewread' review.id %}" class="btn btn-sm btn-outline-success btn-flat mr-2">
+                                                    Mark as Read
+                                                </a>
+                                                {% endif %}
+                                                <a href="#" class="btn btn-sm btn-danger btn-flat">
+                                                    Trash
+                                                </a>
+                                            </div>
+                                            <!-- /bottom -->
                                         </div>
                                     
-                                    </div>
+                                </div>
                                   <!-- / card -->
                                 </td> 
                             </tr>
@@ -106,4 +126,5 @@
         </div>
         </div><!-- Main content -->
     </section>
+   
   {%endblock%}
