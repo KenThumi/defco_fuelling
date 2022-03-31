@@ -24,72 +24,152 @@
 <section class="content">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-md-4">
+          <div class="col-md-4">
 
-            <!-- Profile Image -->
-            <div class="card card-primary card-outline">
-              <div class="card-body box-profile">
-                <div class="text-center">
-                  <img class="profile-user-img img-fluid img-circle" src="{% static 'images/avatar.png' %}" alt="User profile picture">
-                </div>
+              <!-- Profile Image -->
+              <div class="card card-primary card-outline">
+                <div class="card-body box-profile">
+                  <div class="text-center">
+                    <img class="profile-user-img img-fluid img-circle" src="{% static 'images/avatar.png' %}" alt="User profile picture">
+                  </div>
 
-                <h3 class="profile-username text-center">
-                    {{ user.rank | title}} &nbsp;
-                    {{ user.name | title}}
-                </h3>
+                  <h3 class="profile-username text-center">
+                      {{ user.rank | title}} &nbsp;
+                      {{ user.name | title}}
+                  </h3>
 
-                <p class="text-muted text-center">{{user.unit}}</p>
+                  <p class="text-muted text-center">{{user.unit}}</p>
 
-                <ul class="list-group list-group-unbordered mb-3">
-                  <li class="list-group-item">
-                    <i class="fas fa-id-card mr-1"></i>
-                    <b>Service No.</b> <a class="float-right">{{ user.svc_no }}</a>
-                  </li>
-                  <li class="list-group-item">
-                    <i class="fas fa-user mr-1"></i>
-                    <b>Username</b> <a class="float-right">{{ user.username }}</a>
-                  </li>
-                  <li class="list-group-item">
-                    <i class="fas fa-envelope mr-1"></i>
-                    <b>Email</b> <a class="float-right">{{ user.email }}</a>
-                  </li>
-                  <li class="list-group-item">
-                    <i class="fas fa-phone mr-1"></i>
-                    <b>Mobile</b> <a class="float-right">{{ user.mobile }}</a>
-                  </li>
-
-                  <!-- <li class="list-group-item">
-                    <b>Friends</b> <a class="float-right">13,287</a>
-                  </li> -->
-                </ul>
-                {% if request.user.id == user.id %}
-                <a href="{% url 'editprofile' user.id%}" class="btn btn-sm btn-warning btn-block">
-                    <b>Edit</b>
-                    <i class="fas fa-edit"></i>
-                </a>
-                {% endif %}
-                <ul class="list-group list-group-unbordered mb-3">
-                    <!-- <li class="list-group-item">
-                        <i class="fas fa-book mr-1"></i>
-                      <b>Card No.</b> <a class="float-right">#</a>
-                    </li> -->
+                  <ul class="list-group list-group-unbordered mb-3">
                     <li class="list-group-item">
-                        <i class="fas fa-book mr-1"></i>
-                      <b>Card No.</b> <a class="float-right">#</a>
+                      <i class="fas fa-id-card mr-1"></i>
+                      <b>Service No.</b> <a class="float-right">{{ user.svc_no }}</a>
                     </li>
                     <li class="list-group-item">
-                      <i class="fas fa-clock mr-1"></i>
-                      <b>Date Registered</b> <a class="float-right">#</a>
+                      <i class="fas fa-user mr-1"></i>
+                      <b>Username</b> <a class="float-right">{{ user.username }}</a>
                     </li>
-  
+                    <li class="list-group-item">
+                      <i class="fas fa-envelope mr-1"></i>
+                      <b>Email</b> <a class="float-right">{{ user.email }}</a>
+                    </li>
+                    <li class="list-group-item">
+                      <i class="fas fa-phone mr-1"></i>
+                      <b>Mobile</b> <a class="float-right">{{ user.mobile }}</a>
+                    </li>
+
                     <!-- <li class="list-group-item">
                       <b>Friends</b> <a class="float-right">13,287</a>
                     </li> -->
                   </ul>
+                  {% if request.user.id == user.id %}
+                  <a href="{% url 'editprofile' user.id%}" class="btn btn-sm btn-warning btn-block">
+                      <b>Edit</b>
+                      <i class="fas fa-edit"></i>
+                  </a>
+                  {% endif %}
+                  <ul class="list-group list-group-unbordered mb-3">
+                      <!-- <li class="list-group-item">
+                          <i class="fas fa-book mr-1"></i>
+                        <b>Card No.</b> <a class="float-right">#</a>
+                      </li> -->
+                      <li class="list-group-item">
+                          <i class="fas fa-book mr-1"></i>
+                        <b>Card No.</b> <a class="float-right">#</a>
+                      </li>
+                      <li class="list-group-item">
+                        <i class="fas fa-clock mr-1"></i>
+                        <b>Date Registered</b> <a class="float-right">#</a>
+                      </li>
+    
+                      <!-- <li class="list-group-item">
+                        <b>Friends</b> <a class="float-right">13,287</a>
+                      </li> -->
+                    </ul>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+          </div>
+          <div class="col-md-8">
+            <div class="card">
+              <div class="card-header">
+                  <h3 class="card-title">Vehicles</h3>
+                  <div class="float-right mx-3">
+                      {% if not request.user.is_superuser %}
+                      <a class="btn btn-success btn-sm" href="{% url 'insertvehicle' %}">
+                          Add Station
+                          <i class="fas fa-plus-circle"></i>
+                      </a> 
+                      {% endif %}
+                  </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                  <table id="example1" class="table table-bordered table-hover">
+                      <thead>
+                          <tr>
+                              <th>Reg No</th>
+                              <th>Make</th>
+                              <th>Model</th>
+                              <th>Approved</th>
+                              <th>Image</th>
+                              <th>Logbook</th>
+                              <th>QRCode</th>
+                              <th>Trash</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                        {% for vehicle in vehicles %}
+                           <tr>
+                               <td>{{ vehicle.reg_no | upper}}</td>
+                               <td>{{ vehicle.make}}</td>
+                               <td>{{ vehicle.model}}</td>
+                               <td>
+                                 {% if vehicle.approval_status %}
+                                      Yes
+                                 {% else %}
+                                      No
+                                 {%endif%}
+                               </td>
+                               <td class="text-center ">
+                                   <a href="#" data-toggle="modal" data-target="#modal-veh-{{vehicle.id}}">
+                                       <i class="fas fa-eye text-info"></i>
+                                   </a>
+                               </td>
+                               <td>{{ vehicle.logbook_no}}
+                                   <a class="ml-1" href="#" data-toggle="modal" data-target="#modal-log-{{vehicle.id}}">
+                                       <i class="fas fa-eye text-info"></i>
+                                   </a>
+                               </td>
+                               <td>#</td>
+                               <td class=" text-center">
+                                <a href="#"  onclick="return confirm('Are you sure you want to delete this item?');">
+                                       <i class="fas fa-trash text-danger"></i>
+                                   </a> 
+                               </td>
+                               
+                               {% include 'vehicles/_modalLogbookImg.html' %}
+                               {% include 'vehicles/_modalVehicleImage.html' %}
+                           </tr>
+                        {%endfor%}
+                       </tbody>
+                      <tfoot>
+                          <tr>
+                            <th>Reg No</th>
+                            <th>Make</th>
+                            <th>Model</th>
+                            <th>Approved</th>
+                            <th>Image</th>
+                            <th>Logbook</th>
+                              <th>QRCode</th>
+                              <th>Trash</th>
+                          </tr>
+                      </tfoot>
+                  </table>
               </div>
               <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
+              </div>
           </div>
       </div>
     </div><!-- Main content -->

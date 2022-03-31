@@ -24,6 +24,7 @@ urlpatterns = [
     path('revokevehapproval/<int:id>', views.revokeVehApproval, name='revokevehapproval'),
     path('approveVehicle/<int:id>', views.approveVehicle, name='approvevehicle'),
     path('editvehicle/<int:id>', views.editVehicle, name='editvehicle'),
+    path('getvehicle/<int:id>', views.getVehicle, name='getvehicle'),
     # station
     path('addstation/', views.addStation, name='addstation'),
     path('replenishments/', views.replenishments, name='replenishments' ),

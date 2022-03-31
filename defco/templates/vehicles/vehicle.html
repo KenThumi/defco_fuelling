@@ -1,0 +1,100 @@
+{%extends 'base.html'%}
+
+{% block content %}
+{{ block.super }}
+<div class="container pt-3">
+    <!-- card -->
+ <div class="card card-success card-outline mx-auto d-block" style="width: 75%;">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-6 border-right">
+                <h5 class="card-title mb-1">Vehicle</h5>
+            
+                <p class="card-text">
+                    <hr>
+                    <span>
+                        <strong>
+                            Reg No.: 
+                        </strong>
+                            {{ vehicle.reg_no }}
+                    </span>
+                    <br>
+                    <span>
+                        <strong>
+                            Owner:
+                        </strong>
+                            {{ vehicle.user.rank | title}} &nbsp;
+                            {{ vehicle.user.name  }}
+                    </span>
+                    <br>
+                    <span>
+                        <strong>
+                            Make:
+                        </strong>
+                            {{ vehicle.make  }}
+                    </span>
+                    <br>
+                    <span>
+                        <strong>
+                            Model:
+                        </strong>
+                            {{ vehicle.model  }}
+                    </span>
+                    <br>
+                    <span>
+                        <strong>
+                            Approval Status:
+                        </strong>
+                            {% if vehicle.approval_status  %}
+                                <span class="text-success">
+                                    Approved
+                                </span>
+                            {% else %}
+                                <span class="text-danger">
+                                    Not Approved
+                                </span>
+                            {%endif%}
+                    </span>
+                    <br>
+                    <span>
+                        <strong>
+                            Logbook No.:
+                        </strong>
+                            {{ vehicle.logbook_no}}
+                    </span>
+                </p>
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-6">
+                        <h5 class="card-title text-center">Log Book</h5>
+                        <img src="http://res.cloudinary.com/dtw9t2dom/{{vehicle.logbook}}" alt="{{vehicle.reg_no }}" class="img-thumbnail thumbnail"  data-toggle="modal" data-target="#modal-log-{{vehicle.id}}">
+                        <p class="text-center">
+                            <small>
+                                click to zoom
+                            </small>
+                        </p>
+                    </div>
+                    <div class="col-6">
+                        <h5 class="card-title text-center">Vehicle</h5>
+                        <img src="http://res.cloudinary.com/dtw9t2dom/{{vehicle.image}}" alt="{{vehicle.reg_no }}" class="img-thumbnail thumbnail"   data-toggle="modal" data-target="#modal-veh-{{vehicle.id}}">
+                      <p class="text-center">  
+                          <small>
+                            click to zoom
+                        </small>
+                    </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+        
+        <!-- <a href="#" class="card-link">Card link</a>
+        <a href="#" class="card-link">Another link</a> -->
+    </div>
+</div>
+
+</div> 
+{% include 'vehicles/_modalLogbookImg.html' %}
+{% include 'vehicles/_modalVehicleImage.html' %}
+{%endblock%}

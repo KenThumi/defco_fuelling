@@ -4,3 +4,8 @@
 .direct-chat-messages{
     height: auto;
 }
+
+.thumbnail{
+    width: 200px;
+    /* height: 200px; */
+}

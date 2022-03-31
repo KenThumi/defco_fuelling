@@ -5,6 +5,7 @@ from defco.forms import EditVehicleForm, ProfileEditForm, ReplenishForm, ReplyFo
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.http import Http404
 
 # Create your views here.
 @login_required
@@ -37,7 +38,11 @@ def customers(request):
 @profile_user
 def getuser(request, id):
     user = User.objects.get(pk=id)
-    return render(request, 'profile.html',{'user':user})
+
+    # user vehicles
+    vehicles = Vehicle.objects.filter(user=user)
+
+    return render(request, 'profile.html',{'user':user, 'vehicles':vehicles})
 
 
 @login_required
@@ -372,3 +377,14 @@ def addReply(request,id):
 
             messages.success(request, 'Reply added successfully.')
             return redirect('getreviews')
+
+
+# QRCode
+
+def getVehicle(request,id):
+    try:
+        vehicle = Vehicle.objects.get(pk=id)
+    except Vehicle.DoesNotExist:
+        raise Http404('No Vehicle matches the given query')
+    
+    return render(request, 'vehicles/vehicle.html',{'vehicle':vehicle})
