@@ -1,5 +1,6 @@
+from main.settings import BASE_URL
 from django.http import HttpResponseRedirect
-from defco.models import FuelReplenish, Review, Station, Transaction, User, Vehicle
+from defco.models import FuelReplenish, QrCode, Review, Station, Transaction, User, Vehicle
 from defco.decorators import _user, account_not_locked, admin_or_superuser, profile_user, unauthenticated_user
 from defco.forms import EditVehicleForm, ProfileEditForm, ReplenishForm, ReplyForm, ReviewForm, StationForm, TransactionForm, UserRegisterForm, VehicleForm
 from django.shortcuts import redirect, render
@@ -388,3 +389,15 @@ def getVehicle(request,id):
         raise Http404('No Vehicle matches the given query')
     
     return render(request, 'vehicles/vehicle.html',{'vehicle':vehicle})
+
+
+def generateQRCode(request,id):
+    # if request.method=="POST":
+    #   Url=request.POST['url']
+    qrcode_url= BASE_URL+'/getvehicle/'+str(id)
+
+    QrCode.objects.create(url=qrcode_url, vehicle=Vehicle.objects.get(pk=id))
+
+    # return redirect('home')
+#    qr_codQrCode.objects.all()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))

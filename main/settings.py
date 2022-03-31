@@ -196,3 +196,10 @@ CACHES = {
 
 # Set the cache backend to select2
 SELECT2_CACHE_BACKEND = 'default'
+
+# local images
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_URL = '/media/'
+
+# base_url
+BASE_URL = 'http://localhost:8000'

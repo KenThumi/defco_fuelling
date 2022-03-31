@@ -1,10 +1,15 @@
 # from typing_extensions import Required
 from datetime import timezone
+import random
 from cloudinary.models import CloudinaryField
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db.models.fields import DateField
 from django.forms import DateTimeField
+import qrcode
+from PIL import Image, ImageDraw
+from io import BytesIO
+from django.core.files import File
 
 # Create your models here.
 
@@ -114,8 +119,20 @@ class Reply(models.Model):
     user=models.ForeignKey(User,related_name='replies',on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        ordering = ['-pk']
-    
-    def __str__(self):
-        return 'Reply on Review:'+str(self.review.id)+' Review Type:'+str(self.review.review_type)
+
+class QrCode(models.Model):
+   url=models.URLField()
+   vehicle = models.OneToOneField(Vehicle,related_name='qrcode',on_delete=models.CASCADE, default=False)
+   image=models.ImageField(upload_to='qrcode',blank=True)
+#    image = transactionsCloudinaryField('image')
+
+   def save(self,*args,**kwargs):
+      qrcode_img=qrcode.make(self.url)
+      canvas=Image.new("RGB", (375,375),"white")
+      draw=ImageDraw.Draw(canvas)
+      canvas.paste(qrcode_img)
+      buffer=BytesIO()
+      canvas.save(buffer,"PNG")
+      self.image.save(f'image{random.randint(0,9999)}.png',File(buffer),save=False)
+      canvas.close()
+      super().save(*args,**kwargs)
