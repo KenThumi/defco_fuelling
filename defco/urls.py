@@ -41,5 +41,7 @@ urlpatterns = [
     path('getspecificreviews/<str:review>', views.getSpecificReviews, name='getspecificreviews'),
     path('setreviewread/<int:id>', views.setReviewRead, name='setreviewread'),
     path('addreply/<int:id>', views.addReply, name='addreply'),
+
+    # qrcode
     path('generateQRCode/<int:id>', views.generateQRCode, name="generateQRCode")
 ]
