@@ -1,6 +1,6 @@
 from main.settings import BASE_URL
 from django.http import HttpResponseRedirect
-from defco.models import FuelReplenish, QrCode, Review, Station, Transaction, User, Vehicle
+from defco.models import FuelReplenish, QrCode, Review, Search, Station, Transaction, User, Vehicle
 from defco.decorators import _user, account_not_locked, admin_or_superuser, profile_user, unauthenticated_user
 from defco.forms import EditVehicleForm, ProfileEditForm, ReplenishForm, ReplyForm, ReviewForm, StationForm, TransactionForm, UserRegisterForm, VehicleForm
 from django.shortcuts import redirect, render
@@ -12,7 +12,11 @@ from django.http import Http404
 @login_required
 @account_not_locked
 def home(request):
-    ctx = {'lorem':'lorem'}
+    # get recent search results
+    searches = Search.objects.filter(user=request.user)
+
+    ctx = {'searches':searches}
+
     return render(request,'index.html',ctx)
 
 @unauthenticated_user
@@ -129,7 +133,7 @@ def insertVehicle(request):
         if v_form.is_valid():
             vehicle = v_form.save(commit=False)
             vehicle.user = request.user
-            vehicle.reg_no = request.POST.get('reg_no').replace(' ','')
+            vehicle.reg_no = request.POST.get('reg_no').replace(' ','').lower()
             vehicle.save()
 
             messages.success(request, 'Successful insertion.')
@@ -412,7 +416,7 @@ def verifyVehicle(request):
         if reg_no:
             #reg_no = ''.join(vehicle.split())  # remove all white spaces
 
-            reg_no = reg_no.replace(' ','') # remove all white spaces
+            reg_no = reg_no.replace(' ','').lower() # remove all white spaces
 
             # * validation further needed
             try:
@@ -424,6 +428,8 @@ def verifyVehicle(request):
                 messages.error(request, 'No Vehicle matches the given query.')
                 return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
+            recordSearch(request,veh.id)
+
             return redirect(f'/getvehicle/{veh.id}') # get the vehicle
 
         else:
@@ -433,3 +439,10 @@ def verifyVehicle(request):
         
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+
+def recordSearch(request,id):
+        vehicle = Vehicle.objects.get(pk=id)
+
+        Search.objects.create(vehicle = vehicle, user=request.user)
+

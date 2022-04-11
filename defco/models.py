@@ -137,3 +137,12 @@ class QrCode(models.Model):
       self.image.save(f'QRcode_{self.vehicle}.png',File(buffer),save=False)
       canvas.close()
       super().save(*args,**kwargs)
+
+
+class Search(models.Model):
+    vehicle = models.ForeignKey(Vehicle,related_name='searches',on_delete=models.CASCADE, default=False)
+    user=models.ForeignKey(User,related_name='searches',on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.vehicle)
