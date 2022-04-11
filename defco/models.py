@@ -133,6 +133,7 @@ class QrCode(models.Model):
       canvas.paste(qrcode_img)
       buffer=BytesIO()
       canvas.save(buffer,"PNG")
-      self.image.save(f'image{random.randint(0,9999)}.png',File(buffer),save=False)
+    #   self.image.save(f'image{random.randint(0,9999)}.png',File(buffer),save=False)
+      self.image.save(f'QRcode_{self.vehicle}.png',File(buffer),save=False)
       canvas.close()
       super().save(*args,**kwargs)

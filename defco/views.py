@@ -129,6 +129,7 @@ def insertVehicle(request):
         if v_form.is_valid():
             vehicle = v_form.save(commit=False)
             vehicle.user = request.user
+            vehicle.reg_no = request.POST.get('reg_no').replace(' ','')
             vehicle.save()
 
             messages.success(request, 'Successful insertion.')
@@ -390,7 +391,7 @@ def getVehicle(request,id):
     
     return render(request, 'vehicles/vehicle.html',{'vehicle':vehicle})
 
-
+# generateQRCode
 def generateQRCode(request,id):
     # if request.method=="POST":
     #   Url=request.POST['url']
@@ -400,4 +401,35 @@ def generateQRCode(request,id):
 
     # return redirect('home')
 #    qr_codQrCode.objects.all()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+
+#verify
+def verifyVehicle(request):
+    if request.method == 'POST':
+        reg_no = request.POST.get('vehicle','') 
+
+        if reg_no:
+            #reg_no = ''.join(vehicle.split())  # remove all white spaces
+
+            reg_no = reg_no.replace(' ','') # remove all white spaces
+
+            # * validation further needed
+            try:
+                veh = Vehicle.objects.filter(reg_no=reg_no).first()
+            except Vehicle.DoesNotExist:
+                raise Http404('No Vehicle matches the given query')
+
+            if veh == None:
+                messages.error(request, 'No Vehicle matches the given query.')
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+            return redirect(f'/getvehicle/{veh.id}') # get the vehicle
+
+        else:
+            messages.error(request, 'Empty search. Please fill the search field.')
+
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+        
+
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))

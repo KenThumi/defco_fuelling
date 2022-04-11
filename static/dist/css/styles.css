@@ -9,3 +9,11 @@
     width: 200px;
     /* height: 200px; */
 }
+
+.bg-qrcode{
+    background-color: rgb(145,37,21,0.5);
+}
+
+.modal-title-sm{
+    color: black;
+}

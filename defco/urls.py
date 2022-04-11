@@ -1,3 +1,4 @@
+from unicodedata import name
 from defco.decorators import unauthenticated_user
 from django.urls import path
 from . import views
@@ -25,6 +26,7 @@ urlpatterns = [
     path('approveVehicle/<int:id>', views.approveVehicle, name='approvevehicle'),
     path('editvehicle/<int:id>', views.editVehicle, name='editvehicle'),
     path('getvehicle/<int:id>', views.getVehicle, name='getvehicle'),
+    path('verifyvehicle', views.verifyVehicle, name="verifyvehicle"),
     # station
     path('addstation/', views.addStation, name='addstation'),
     path('replenishments/', views.replenishments, name='replenishments' ),
