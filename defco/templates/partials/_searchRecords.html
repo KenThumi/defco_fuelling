@@ -23,7 +23,7 @@
                       {%for search in searches%}
                         <tr>
                             <td>
-                                {{ search.vehicle | title}}
+                                {{ search.vehicle | upper}}
                             </td>
                             
                             <td>
@@ -32,7 +32,7 @@
                                 </a>
                             </td>
                             <td>
-                                {{ search.created_at | date:'d/m/Y @ H:i' }}
+                                {{ search.created_at | date:'d/m/Y @ H:i' }} Hrs
                             </td>
                         </tr>
                       {%endfor%}

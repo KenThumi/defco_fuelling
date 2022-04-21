@@ -1,5 +1,5 @@
 # from typing_extensions import Required
-from datetime import timezone
+from datetime import timezone, datetime
 import random
 from cloudinary.models import CloudinaryField
 from django.db import models
@@ -10,6 +10,7 @@ import qrcode
 from PIL import Image, ImageDraw
 from io import BytesIO
 from django.core.files import File
+# import datetime
 
 # Create your models here.
 
@@ -60,7 +61,22 @@ class Vehicle(models.Model):
 
 class Station(models.Model):
     name = models.CharField(max_length=255)
+    open = models.BooleanField(default=False)
     admin = models.OneToOneField(User,related_name='station',on_delete=models.CASCADE, default=None)
+
+    def isOpen(self):
+        dt = datetime.today()
+
+        # Weekday hours 0900 Hrs to 1800 Hrs
+        if dt.weekday() <= 4:
+            if dt.hour >= 9 and dt.hour <= 18:
+                return True
+        # Weekday hours 0900 Hrs to 1700 Hrs
+        elif dt.weekday() > 4:
+            if dt.hour >= 9 and dt.hour <= 17:
+                return True
+
+        return False
 
     def __str__(self):
         return self.name

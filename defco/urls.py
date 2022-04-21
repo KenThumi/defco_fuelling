@@ -37,6 +37,7 @@ urlpatterns = [
     path('transactions/', views.getTransactions, name='transactions'),
     path('addtransaction/', views.addTransaction, name='addtransaction'),
     path('edittransaction/<int:id>', views.editTransaction, name='edittransaction'),
+    path('switchstationstatus/<int:id>', views.switchStationStatus, name='switchstationstatus'),
     # reviews
     path('addreview/<int:id>', views.addReview, name='addreview'),
     path('getreviews/', views.getReviews, name='getreviews'),

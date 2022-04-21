@@ -292,7 +292,7 @@ class StationForm(forms.ModelForm):
 
     class Meta:
         model = Station
-        fields = '__all__'
+        exclude = ['open']
         icons = { 
                   'name':'gas-pump',
                   'admin':'user', 

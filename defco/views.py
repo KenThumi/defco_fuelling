@@ -440,9 +440,25 @@ def verifyVehicle(request):
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
-
+# record recent searchs
 def recordSearch(request,id):
-        vehicle = Vehicle.objects.get(pk=id)
+    vehicle = Vehicle.objects.get(pk=id)
 
-        Search.objects.create(vehicle = vehicle, user=request.user)
+    Search.objects.create(vehicle = vehicle, user=request.user)
+
+
+
+# close / open station
+def switchStationStatus(request, id):
+    
+    station = Station.objects.get(pk = id)
+
+    station.open = not station.open
+
+    station.save()
+
+    messages.success(request, 'Successfully recorded.')
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
 
