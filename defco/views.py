@@ -7,6 +7,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import Http404
+from datetime import  datetime
 
 # Create your views here.
 @login_required
@@ -15,7 +16,10 @@ def home(request):
     # get recent search results
     searches = Search.objects.filter(user=request.user)
 
-    ctx = {'searches':searches}
+    # get  stations
+    stations = Station.objects.all().count()
+
+    ctx = {'searches':searches, 'stations':stations}
 
     return render(request,'index.html',ctx)
 
@@ -450,6 +454,28 @@ def recordSearch(request,id):
 
 # close / open station
 def switchStationStatus(request, id):
+
+    dt = datetime.today()
+
+    # Weekday hours 0900 Hrs to 1800 Hrs
+    if dt.weekday() <= 4:
+        if dt.hour >= 9 and dt.hour <= 18:
+            pass
+        else:
+
+            messages.error(request, 'Unofficial Hours.')
+
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    # Weekday hours 0900 Hrs to 1700 Hrs
+    elif dt.weekday() > 4:
+        if dt.hour >= 9 and dt.hour <= 17:
+            pass
+        else:
+
+            messages.error(request, 'Unofficial Hours.')
+
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
     
     station = Station.objects.get(pk = id)
 
