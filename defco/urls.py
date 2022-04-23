@@ -46,5 +46,8 @@ urlpatterns = [
     path('addreply/<int:id>', views.addReply, name='addreply'),
 
     # qrcode
-    path('generateQRCode/<int:id>', views.generateQRCode, name="generateQRCode")
+    path('generateQRCode/<int:id>', views.generateQRCode, name="generateQRCode"),
+
+    #price
+    path('addprice/' , views.addPrice, name='addprice')
 ]

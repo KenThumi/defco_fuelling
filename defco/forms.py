@@ -2,7 +2,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.db.models import fields
 # from django.http import request
-from .models import FuelReplenish, Reply, Review, Station, Transaction, User, Vehicle
+from .models import FuelReplenish, Price, Reply, Review, Station, Transaction, User, Vehicle
 from django_select2 import forms as s2forms
 
 # input select  choices
@@ -62,6 +62,12 @@ review_types = [
     ('complaint','Complaint'),
     ('comment','Comment'),
     ('recommendation','Recommendation')
+]
+
+product_types = [
+    ('','- select -'),
+    ('petroleum','Petroleum'),
+    ('diesel','Diesel')
 ]
 
 class UserRegisterForm(UserCreationForm):
@@ -507,3 +513,41 @@ class ReplyForm(forms.ModelForm):
     class Meta:
         model = Reply
         fields = ['description']
+
+
+
+class PriceForm(forms.ModelForm):
+    price = forms.CharField(label='Price per Litre (KSH)')
+    type = forms.CharField( widget=forms.Select(choices=product_types))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # self.fields['batch_no'].queryset = FuelReplenish.objects.filter(station=self.user.station)
+   
+        self.fields['type'].widget.attrs.update({
+            'required':'',
+            'name':'description',
+            'class':'form-control form-control-sm',            
+        })
+
+        self.fields['price'].widget.attrs.update({
+            'required':'',
+            'name':'description',
+            'class':'form-control form-control-sm',            
+        })
+
+        icons = getattr(self.Meta, 'icons', dict())
+
+        for field_name, field in self.fields.items():
+            if field_name in icons:
+                field.icon = icons[field_name]
+    
+    class Meta:
+        model = Price
+        fields = ['type', 'price']
+
+        icons = { 
+                  'type':'gas-pump',
+                  'price':'coins', 
+                }

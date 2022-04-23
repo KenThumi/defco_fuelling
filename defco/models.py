@@ -162,3 +162,11 @@ class Search(models.Model):
 
     def __str__(self):
         return str(self.vehicle)
+
+class Price(models.Model):
+    type = models.CharField(max_length=100)
+    price = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __repr__(self):
+        return self.type + ': Ksh' + str(self.price)

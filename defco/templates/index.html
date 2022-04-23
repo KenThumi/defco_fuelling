@@ -37,22 +37,39 @@
           <div class="icon">
             <i class="nav-icon fas fa-gas-pump"></i>
           </div>
-          <a href="{% url 'stations' %}" class="small-box-footer">View operating Fuel Stations <i class="fas fa-arrow-circle-right"></i></a>
+          <a href="{% url 'stations' %}" class="small-box-footer">View operational Fuel Stations <i class="fas fa-arrow-circle-right"></i></a>
         </div>
       </div>
       <!-- ./col -->
       <div class="col-lg-3 col-6">
         <!-- small box -->
-        <div class="small-box bg-info">
+        <div class="small-box bg-success">
           <div class="inner">
-            <h3>150</h3>
 
-            <p>New Orders</p>
+            <h3>{{petroleum.price}}</h3>
+
+            <p>Petroleum cost per litre (Ksh)</p>
           </div>
           <div class="icon">
-            <i class="ion ion-bag"></i>
+            <i class="nav-icon fas fa-coins"></i>
           </div>
-          <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+          <a href="{% url 'addprice' %}" class="small-box-footer">Update price <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <!-- ./col -->
+      <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-secondary">
+          <div class="inner">
+
+            <h3>{{diesel.price}}</h3>
+
+            <p>Diesel cost per litre (Ksh)</p>
+          </div>
+          <div class="icon">
+            <i class="nav-icon fas fa-coins"></i>
+          </div>
+          <a href="{% url 'addprice' %}" class="small-box-footer">Update price <i class="fas fa-arrow-circle-right"></i></a>
         </div>
       </div>
       <!-- ./col -->

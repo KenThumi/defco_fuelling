@@ -1,8 +1,8 @@
 from main.settings import BASE_URL
 from django.http import HttpResponseRedirect
-from defco.models import FuelReplenish, QrCode, Review, Search, Station, Transaction, User, Vehicle
+from defco.models import FuelReplenish, Price, QrCode, Review, Search, Station, Transaction, User, Vehicle
 from defco.decorators import _user, account_not_locked, admin_or_superuser, profile_user, unauthenticated_user
-from defco.forms import EditVehicleForm, ProfileEditForm, ReplenishForm, ReplyForm, ReviewForm, StationForm, TransactionForm, UserRegisterForm, VehicleForm
+from defco.forms import EditVehicleForm, PriceForm, ProfileEditForm, ReplenishForm, ReplyForm, ReviewForm, StationForm, TransactionForm, UserRegisterForm, VehicleForm
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -19,7 +19,13 @@ def home(request):
     # get  stations
     stations = Station.objects.all().count()
 
-    ctx = {'searches':searches, 'stations':stations}
+    # petroleum price
+    petroleum = Price.objects.filter(type='petroleum').last()
+
+    # petroleum price
+    diesel = Price.objects.filter(type='diesel').last()
+
+    ctx = {'searches':searches, 'stations':stations, 'petroleum':petroleum, 'diesel':diesel}
 
     return render(request,'index.html',ctx)
 
@@ -488,3 +494,16 @@ def switchStationStatus(request, id):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
+def addPrice(request):
+    form = PriceForm()
+
+    if request.method == 'POST':
+        form = PriceForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+
+            messages.success(request, 'Price added successfully.')
+            return redirect('home')
+
+    return render(request, 'price/price.html', {'form':form})
