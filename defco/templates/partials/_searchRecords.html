@@ -16,7 +16,8 @@
                   <tr>
                     <th>Reg No.</th>
                     <th>Owner</th>
-                    <th>Verification at</th>
+                    <th>Flag</th>
+                    <th>Verified at</th>
                   </tr>
                   </thead>
                   <tbody class="text-black">
@@ -27,9 +28,15 @@
                             </td>
                             
                             <td>
-                                <a href="/user/{{user.id}}">
+                                <a href="/user/{{ search.vehicle.user.id}}">
                                     {{ search.vehicle.user | title}}
                                 </a>
+                            </td>
+                            <td>
+                               <a href="{% url 'addflag' search.vehicle.user.id %}"   onclick="return confirm('Are you sure you want to flag this user?');" >
+                                <i class="fa fa-flag text-warning"></i>
+                              </a>
+                                 
                             </td>
                             <td>
                                 {{ search.created_at | date:'d/m/Y @ H:i' }} Hrs
@@ -41,6 +48,7 @@
                         <tr>
                             <th>Reg No.</th>
                             <th>Owner</th>
+                            <th>Flag</th>
                             <th>Verified at</th>
                           </tr>
                     </tfoot>

@@ -40,7 +40,15 @@ class User(AbstractUser):
     #                 ("edit_commissions", "User can override commisions."),
     #                 ("view_reports", "User can view admin reports."),
     #                 )
-    
+    def is_flagged(self):
+
+        if self.flags.filter(flagged=True).exists():
+            return True
+        
+        return False
+
+
+
     def __str__(self):
         return str(self.username)
 
@@ -170,3 +178,17 @@ class Price(models.Model):
 
     def __repr__(self):
         return self.type + ': Ksh' + str(self.price)
+
+class Flag(models.Model):
+    flagged = models.BooleanField(default=False)
+    description = models.CharField(max_length=200)
+    user = models.ForeignKey(User,related_name='flags',on_delete=models.CASCADE)
+    reported_by= models.ForeignKey(User,related_name='reported_flags',on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+    class Meta:
+        ordering = ['-pk']
+
+    def __repr__(self):
+        return self.user +':'+ self.description[0:15]

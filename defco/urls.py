@@ -6,6 +6,7 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('',views.home, name='home'),
+
     # users,authentication
     path('register/', views.register, name='register'),
     path('login/', unauthenticated_user(auth_views.LoginView.as_view(template_name='registration/login.html') ), name='login'),
@@ -18,6 +19,7 @@ urlpatterns = [
     path('lockusers', views.lockusers, name='lockusers'),
     path('unlock/<int:id>', views.unlock, name='unlock'),
     path('editprofile/<int:id>', views.editProfile, name='editprofile'),
+
     # vehicles
     path('insertvehicle/', views.insertVehicle, name='insertvehicle'),
     path('verifiedvehicles/', views.verifiedVehicles, name='verifiedvehicles'),
@@ -27,6 +29,7 @@ urlpatterns = [
     path('editvehicle/<int:id>', views.editVehicle, name='editvehicle'),
     path('getvehicle/<int:id>', views.getVehicle, name='getvehicle'),
     path('verifyvehicle', views.verifyVehicle, name="verifyvehicle"),
+
     # station
     path('addstation/', views.addStation, name='addstation'),
     path('replenishments/', views.replenishments, name='replenishments' ),
@@ -38,6 +41,7 @@ urlpatterns = [
     path('addtransaction/', views.addTransaction, name='addtransaction'),
     path('edittransaction/<int:id>', views.editTransaction, name='edittransaction'),
     path('switchstationstatus/<int:id>', views.switchStationStatus, name='switchstationstatus'),
+    
     # reviews
     path('addreview/<int:id>', views.addReview, name='addreview'),
     path('getreviews/', views.getReviews, name='getreviews'),
@@ -49,5 +53,10 @@ urlpatterns = [
     path('generateQRCode/<int:id>', views.generateQRCode, name="generateQRCode"),
 
     #price
-    path('addprice/' , views.addPrice, name='addprice')
+    path('addprice/' , views.addPrice, name='addprice'),
+
+    # Flagging
+    path('addflag/<int:id>', views.addFlag, name='addflag'),
+    path('listflags/', views.listFlags, name='listflags')
+
 ]

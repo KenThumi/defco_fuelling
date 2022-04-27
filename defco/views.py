@@ -1,9 +1,9 @@
 from main.settings import BASE_URL
 from django.http import HttpResponseRedirect
-from defco.models import FuelReplenish, Price, QrCode, Review, Search, Station, Transaction, User, Vehicle
+from defco.models import Flag, FuelReplenish, Price, QrCode, Review, Search, Station, Transaction, User, Vehicle
 from defco.decorators import _user, account_not_locked, admin_or_superuser, profile_user, unauthenticated_user
-from defco.forms import EditVehicleForm, PriceForm, ProfileEditForm, ReplenishForm, ReplyForm, ReviewForm, StationForm, TransactionForm, UserRegisterForm, VehicleForm
-from django.shortcuts import redirect, render
+from defco.forms import EditVehicleForm, FlagForm, PriceForm, ProfileEditForm, ReplenishForm, ReplyForm, ReviewForm, StationForm, TransactionForm, UserRegisterForm, VehicleForm
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import Http404
@@ -25,7 +25,11 @@ def home(request):
     # petroleum price
     diesel = Price.objects.filter(type='diesel').last()
 
-    ctx = {'searches':searches, 'stations':stations, 'petroleum':petroleum, 'diesel':diesel}
+    # active flags
+    flags = Flag.objects.filter(flagged=True).count()
+
+    # ctx
+    ctx = {'searches':searches, 'stations':stations, 'petroleum':petroleum, 'diesel':diesel, 'flags':flags}
 
     return render(request,'index.html',ctx)
 
@@ -494,6 +498,7 @@ def switchStationStatus(request, id):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
+# adding prices
 def addPrice(request):
     form = PriceForm()
 
@@ -507,3 +512,31 @@ def addPrice(request):
             return redirect('home')
 
     return render(request, 'price/price.html', {'form':form})
+
+
+# flagging customers ***GET request prone manipulation, consider hidden input
+def addFlag(request,id):
+    form = FlagForm()
+
+    if request.method == 'POST':
+        form = FlagForm(request.POST)
+
+        if form.is_valid():
+            flag = form.save(commit=False)
+            flag.flagged = True
+            flag.user = get_object_or_404(User, id=id)
+            flag.reported_by = request.user
+            flag.save()
+
+            messages.success(request, 'Flag added successfully.')
+            return redirect('/user/'+str(id))
+
+    return render(request, 'flags/flagForm.html', {'form':form})
+
+
+
+# list flags
+def listFlags(request):
+    flags = Flag.objects.all()
+
+    return render(request, 'flags/allFlags.html', {'flags':flags})

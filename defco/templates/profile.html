@@ -81,6 +81,37 @@
                         <i class="fas fa-clock mr-1"></i>
                         <b>Date Registered</b> <a class="float-right">#</a>
                       </li>
+                      <li class="list-group-item">
+                        <i class="fas fa-flag mr-1"></i>
+                        <b>Flagged</b> 
+                        <div class="float-right">
+                              {% if user.flags.count > 0 %}
+                                        
+                                          {% if user.is_flagged %}
+                                          <div class="float-left font-weight-bold text-danger">
+                                            Yes
+                                          </div>  
+                                          {% else %}
+                                          <div class="float-left">
+                                              No
+                                          </div>
+                                          {% endif %}
+                                      
+                                          <div class="float-right">
+                                            <a href="#" class="text-success ml-2"   data-toggle="modal" data-target="#modal-flags-{{user.id}}"> ( More details...)</a>
+                                          </div>
+                                          <!-- flag more details modal -->
+                                          {% include 'flags/_flags.html' %}
+                              {% else %}
+                                      No
+                              {% endif %}
+                                      </div>
+                        <br>
+                        <a href="{% url 'addflag' user.id%}"  onclick="return confirm('Are you sure you want to flag this user?');" class="btn btn-sm btn-outline-warning float-right mt-2">
+                          <i class="fas fa-flag mr-1"></i>
+                          Flag User
+                        </a>
+                      </li>
     
                       <!-- <li class="list-group-item">
                         <b>Friends</b> <a class="float-right">13,287</a>
