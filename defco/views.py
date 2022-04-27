@@ -17,7 +17,12 @@ def home(request):
     searches = Search.objects.filter(user=request.user)
 
     # get  stations
-    stations = Station.objects.all().count()
+    stations = 0
+
+    station = Station.objects.all().last() 
+
+    if station.isOpen():  # find out if its official operating hours
+        stations = Station.objects.filter(open=True).count( )
 
     # petroleum price
     petroleum = Price.objects.filter(type='petroleum').last()
