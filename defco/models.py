@@ -192,3 +192,6 @@ class Flag(models.Model):
 
     def __repr__(self):
         return self.user +':'+ self.description[0:15]
+
+
+# class 

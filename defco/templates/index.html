@@ -37,7 +37,7 @@
           <div class="icon">
             <i class="nav-icon fas fa-gas-pump"></i>
           </div>
-          <a href="{% url 'stations' %}" class="small-box-footer">View operational Fuel Stations <i class="fas fa-arrow-circle-right"></i></a>
+          <a href="{% url 'stations' %}" class="small-box-footer">Fuel Stations <i class="fas fa-arrow-circle-right"></i></a>
         </div>
       </div>
       <!-- ./col -->
@@ -111,21 +111,17 @@
         <!-- small box -->
         <div class="small-box bg-info">
           <div class="inner">
-            <h3>Verify Vehicle</h3>
-
-            <p>
-              <div class="icon">
-                <i class="ion ion-search"></i>
-              </div>
-              <button class="btn btn-sm btn-success mx-auto d-block"   data-toggle="modal" data-target="#modal-verify">
-                <i class="fas fa-search ml-1"></i>
-              </button>
-              {% include 'partials/_verifyVehicle.html' %}
-            </p>
+              <h3><i class="fas fa-search ml-1" style="cursor: pointer;"   data-toggle="modal" data-target="#modal-verify"></i></h3>
+              <p>
+                Verify Vehicle
+              </p>
           </div>
           <div class="icon">
-            <i class="ion ion-search-outline"></i>
+            <i class="ion ion-search"></i>
           </div>
+          
+          {% include 'partials/_verifyVehicle.html' %}
+        
           <a href="#" class="small-box-footer"  data-toggle="modal" data-target="#modal-search-records">Recent Search<i class="fas fa-history ml-2"></i></a>
 
           {% include 'partials/_searchRecords.html' %}

@@ -323,6 +323,12 @@ def addTransaction( request ):
             transaction.attendant = request.user #consider having a 1:n relationship in model
             transaction.save()
 
+            # Deduct from main readings
+            current_readings= FuelReplenish.objects.filter(batch_no = form.cleaned_data['batch_no']).last()
+            current_readings.current_amount =  current_readings.current_amount - int( form.cleaned_data['litres'] )
+
+            current_readings.save()
+
             messages.success(request, 'Successful.')
             return redirect('transactions')
 
@@ -545,3 +551,12 @@ def listFlags(request):
     flags = Flag.objects.all()
 
     return render(request, 'flags/allFlags.html', {'flags':flags})
+
+
+# erase flag
+def eraseFlag(request, id):
+    Flag.objects.filter(pk=id).update(flagged=False)
+
+    messages.success(request, 'Flag erased successfully.')
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
