@@ -41,6 +41,9 @@ urlpatterns = [
     path('addtransaction/', views.addTransaction, name='addtransaction'),
     path('edittransaction/<int:id>', views.editTransaction, name='edittransaction'),
     path('switchstationstatus/<int:id>', views.switchStationStatus, name='switchstationstatus'),
+    path('adddailyrecords/', views.addDailyRecords, name='adddailyrecords'),
+    path('dailyrecords/', views.getDailyRecords, name='dailyrecords'),
+    path('deldailyrecord/<int:id>', views.delDailrecord, name='deldailyrecord'),
     
     # reviews
     path('addreview/<int:id>', views.addReview, name='addreview'),

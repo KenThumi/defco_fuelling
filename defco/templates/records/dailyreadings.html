@@ -1,0 +1,89 @@
+{%extends 'base.html'%}
+
+{% block content %}
+{{ block.super }}
+ <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+            <h1>Daily Recordings</h1>
+            </div>
+            <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">Daily Recordings</li>
+            </ol>
+            </div>
+        </div>
+        </div><!-- /.container-fluid -->
+    </section>
+  <!-- Main content -->
+    <section class="content">
+        <div class="row">
+        <div class="col-12">
+            <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Table below shows Daily Recordings</h3>
+                <div class="float-right mx-3">
+                    {% if request.user.is_superuser or request.user.is_admin %}
+                    <a class="btn btn-success btn-sm" href="{% url 'adddailyrecords' %}">
+                         Add Record
+                        <i class="fas fa-plus-circle"></i>
+                    </a> 
+                    {% endif %}
+                </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <table id="example1" class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>Station</th>
+                        <th>Opening Readings</th>
+                        <th>Closing Readings</th>
+                        <th>Dipstick Readings</th>
+                        <th>Time</th>
+                        <th>Delete</th>
+                    </tr>
+                    </thead>
+                    <tbody class="big-table-font">
+                        {% for record in records %}
+                            <tr>
+                                <td>{{ record.station }}</td>
+                                <td>{{ record.opening }}</td>
+                                <td>{{ record.closing }}</td>
+                                <td>{{ record.dipstick }}</td>
+                                <td>
+                                    <small>
+                                        {{ record.created_at  | date:"d/m/Y @H:i" }} hrs
+                                    </small>
+                                </td>
+                                <td class="text-center">
+                                    <a class=" text-danger" href="{% url 'deldailyrecord' record.id %}"   onclick="return confirm('Are you sure you want to delete this item?');"  >
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                    
+                                </td>
+                            </tr>
+                        {%endfor%}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Station</th>
+                        <th>Opening Readings</th>
+                        <th>Closing Readings</th>
+                        <th>Dipstick Readings</th>
+                        <th>Time</th>
+                        <th>Delete</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+        </div><!-- Main content -->
+    </section>
+  {%endblock%}

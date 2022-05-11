@@ -194,4 +194,16 @@ class Flag(models.Model):
         return self.user +':'+ self.description[0:15]
 
 
-# class 
+# daily records
+class DailyLitreRecord(models.Model):
+     opening = models.IntegerField()
+     closing = models.IntegerField()
+     dipstick = models.IntegerField()
+     station = models.ForeignKey(Station,related_name='daily_records',on_delete=models.CASCADE)
+     created_at = models.DateTimeField(auto_now_add=True)
+
+     class Meta:
+        ordering = ['-pk']
+
+     def __repr__(self):
+         return self.station+': Opening Litres-'+int(self.opening)+': Closing Litres-'+int(self.opening)

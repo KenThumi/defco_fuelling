@@ -2,7 +2,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.db.models import fields
 # from django.http import request
-from .models import Flag, FuelReplenish, Price, Reply, Review, Station, Transaction, User, Vehicle
+from .models import DailyLitreRecord, Flag, FuelReplenish, Price, Reply, Review, Station, Transaction, User, Vehicle
 from django_select2 import forms as s2forms
 
 # input select  choices
@@ -584,3 +584,65 @@ class FlagForm(forms.ModelForm):
         icons = { 
                   'description':'pen'
                 }
+
+
+
+class DailyRecordForm(forms.ModelForm):
+    opening = forms.CharField(label='Opening Readings (l)')
+    closing = forms.CharField(label='Closing Readings (l)')
+    dipstick = forms.CharField(label='Dipstick Readings (l)')
+
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+    
+   
+        self.fields['opening'].widget.attrs.update({
+            'required':'',
+            'name':'opening',
+            'type':'number',
+            'class':'form-control form-control-sm',
+        })
+
+        self.fields['closing'].widget.attrs.update({
+            'required':'',
+            'name':'closing',
+            'type':'number',
+            'class':'form-control form-control-sm',
+        })
+
+        self.fields['dipstick'].widget.attrs.update({
+            'required':'',
+            'name':'dipstick',
+            'type':'number',
+            'class':'form-control form-control-sm',
+        })
+
+
+        self.fields['station'].widget.attrs.update({
+            'required':'',
+            'name':'station',
+            'type':'select',
+            'disabled':True,
+            'class':'form-control form-control-sm',
+        })
+
+        
+        icons = getattr(self.Meta, 'icons', dict())
+
+        for field_name, field in self.fields.items():
+            if field_name in icons:
+                field.icon = icons[field_name]
+
+
+    class Meta:
+        model = DailyLitreRecord
+        fields = ['opening','closing','dipstick','station']
+    
+        icons={ 
+                'opening':'fill-drip',
+                'closing':'fill-drip',
+                'dipstick':'clipboard',
+                'station':'gas-pump'
+              }
+            

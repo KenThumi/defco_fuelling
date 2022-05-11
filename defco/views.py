@@ -1,8 +1,8 @@
 from main.settings import BASE_URL
 from django.http import HttpResponseRedirect
-from defco.models import Flag, FuelReplenish, Price, QrCode, Review, Search, Station, Transaction, User, Vehicle
+from defco.models import DailyLitreRecord, Flag, FuelReplenish, Price, QrCode, Review, Search, Station, Transaction, User, Vehicle
 from defco.decorators import _user, account_not_locked, admin_or_superuser, profile_user, unauthenticated_user
-from defco.forms import EditVehicleForm, FlagForm, PriceForm, ProfileEditForm, ReplenishForm, ReplyForm, ReviewForm, StationForm, TransactionForm, UserRegisterForm, VehicleForm
+from defco.forms import DailyRecordForm, EditVehicleForm, FlagForm, PriceForm, ProfileEditForm, ReplenishForm, ReplyForm, ReviewForm, StationForm, TransactionForm, UserRegisterForm, VehicleForm
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -560,3 +560,43 @@ def eraseFlag(request, id):
     messages.success(request, 'Flag erased successfully.')
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+
+#add daily records
+def addDailyRecords(request):
+
+    form = DailyRecordForm(
+                            initial={
+                                    'station':request.user.station,
+                                    }
+                            )
+
+    if request.method == 'POST':
+        form = DailyRecordForm(request.POST)
+        # print(request.POST)
+        # return
+        if form.is_valid():
+            form.save()  
+
+            messages.success(request, 'Successful Insertion')
+            return redirect('dailyrecords')
+
+    return render(request, 'records/dailyreadingsform.html', {'form':form})
+
+
+# getDailyRecords
+def getDailyRecords(request):
+    records = DailyLitreRecord.objects.all()
+
+    return render(request, 'records/dailyreadings.html', {'records':records} )
+
+
+# delete Records
+def delDailrecord(request, id):
+    record = DailyLitreRecord.objects.get(pk=id)
+
+    record.delete()
+
+    messages.success(request, 'Successful Deletion')
+
+    return redirect('dailyrecords')

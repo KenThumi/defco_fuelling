@@ -1,4 +1,4 @@
-from defco.models import FuelReplenish, QrCode, Reply, Review, Search, Station, Transaction, User, Vehicle
+from defco.models import DailyLitreRecord, Flag, FuelReplenish, Price, QrCode, Reply, Review, Search, Station, Transaction, User, Vehicle
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
@@ -12,3 +12,7 @@ admin.site.register(Review)
 admin.site.register(Reply)
 admin.site.register(QrCode)
 admin.site.register(Search)
+admin.site.register(Price)
+admin.site.register(Flag)
+admin.site.register(DailyLitreRecord)
+

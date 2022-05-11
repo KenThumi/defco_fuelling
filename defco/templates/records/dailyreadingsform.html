@@ -1,0 +1,52 @@
+{%extends 'base.html'%}
+{% load static %}
+{% block content %}
+{{ block.super }}
+<div class="container m-2">
+<div class="card card-primary    my-3 mx-4">
+  <div class="card-header">
+    <h3 class="card-title">Add Daily Readings</h3>
+  </div>
+  
+  
+  <form class="form-horizontal" method="post" enctype="multipart/form-data" >
+    <div class="card-body">
+      {% csrf_token %}
+              
+      {% for field in form %}
+      {{field.label_tag}}
+      <div class="input-group mb-3">
+           <!-- check whether control has an icon -->
+          {% if field.field.icon %} 
+          <div class="input-group-prepend">
+          <span class="input-group-text">
+            <i class="fas fa-{{ field.field.icon }}"></i>
+          </span>
+          </div>
+          {% endif %}
+
+          <!-- display field -->
+        {{ field }}
+      </div>
+      <!-- errors -->
+       
+          <ul class="text-danger my-1">
+            {% for error in field.errors%}      
+                 <li> {{error}} </li>
+              {% endfor %}
+          </ul>
+        
+      <!-- /errors -->
+      {% endfor %}
+      
+
+    </div>
+    
+    <div class="card-footer">
+      <button type="submit" class="btn btn-primary btn-sm">Add Record</button>
+    </div>
+  
+  </form>
+  </div>
+</div>
+{%endblock%}
