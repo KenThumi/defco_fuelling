@@ -13,7 +13,7 @@
       </li>
       <!-- users -->
       <li class="nav-item has-treeview">
-        <a href="/customers" class="nav-link">
+        <a href="{% url 'customers' %}" class="nav-link">
           <i class="nav-icon fas fa-users"></i>
           <p>
             Customers
@@ -22,13 +22,13 @@
         </a>
         <ul class="nav nav-treeview" style="display: none;">
           <li class="nav-item">
-            <a href="/customers" class="nav-link">
+            <a href="{% url 'customers' %}" class="nav-link">
               <i class="far fa-circle nav-icon text-success"></i>
               <p>Customers</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="/newapplications" class="nav-link">
+            <a href="{% url 'newapplications' %}" class="nav-link">
               <i class="far fa-circle nav-icon text-info"></i>
               <p>New Applications</p>
             </a>

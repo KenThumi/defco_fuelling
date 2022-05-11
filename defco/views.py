@@ -33,8 +33,38 @@ def home(request):
     # active flags
     flags = Flag.objects.filter(flagged=True).count()
 
+    # users
+    users = User.objects.filter(is_customer=True).count()
+
+    # new applications
+    applications = User.objects.filter(is_valid=False).exclude(is_superuser=True).count()
+
+    # locked users
+    locked = User.objects.filter(is_locked=True).exclude(is_superuser=True).count()
+
+    #  Approved Vehicles
+    vehicles = Vehicle.objects.filter(approval_status=True).count()
+
+    # unverifiedvehicles
+    unverifiedvehicles = Vehicle.objects.filter(approval_status=False).count()
+
+    # lowfuel (<=1000)
+    qr_set = FuelReplenish.objects.order_by('station','-created_at').distinct('station')
+    
+    lowfuel = 0  #count of station with fuel below 1000 l
+
+    for x in qr_set:
+        if x.current_amount <= 1000:
+            lowfuel+=1
+
     # ctx
-    ctx = {'searches':searches, 'stations':stations, 'petroleum':petroleum, 'diesel':diesel, 'flags':flags}
+    ctx = {
+            'searches':searches, 'stations':stations, 'petroleum':petroleum, 
+            'diesel':diesel, 'flags':flags, 'users':users, 
+            'applications':applications, 'locked':locked,
+            'vehicles':vehicles, 'unverifiedvehicles':unverifiedvehicles,
+            'lowfuel':lowfuel
+          }
 
     return render(request,'index.html',ctx)
 

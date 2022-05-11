@@ -41,6 +41,7 @@
                         <tr>
                             <th>Station</th>
                             <th>Administrator</th>
+                            <th>Current Amount (l)</th>
                             <th>Operating?</th>
                             <th>Action</th>
                         </tr>
@@ -53,6 +54,9 @@
                                 <a href="{% url 'user' station.admin_id%}">
                                       {{ station.admin }}
                                 </a>
+                            </td>
+                            <td>
+                                {{ station.replenishment.first.current_amount }}
                             </td>
                             <td>
                                 {% if station.isOpen and station.open %}

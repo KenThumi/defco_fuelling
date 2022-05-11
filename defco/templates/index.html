@@ -7,7 +7,7 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0 text-dark">Dashboard</h1>
+        <!-- <h1 class="m-0 text-dark">Dashboard</h1> -->
       </div><!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
@@ -26,6 +26,10 @@
   
     <!-- Small boxes (Stat box) -->
     <div class="row">
+      <div class="col-12">
+        <h4>Stations Data</h4> <hr>
+      </div>
+      
       <div class="col-lg-3 col-6">
         <!-- small box -->
         <div class="small-box bg-info">
@@ -75,6 +79,70 @@
       <!-- ./col -->
       <div class="col-lg-3 col-6">
         <!-- small box -->
+        <div class="small-box bg-info">
+          <div class="inner">
+            <h3>{{lowfuel}}</h3>
+
+            <p>Below 1000 litres </p>
+          </div>
+          <div class="icon">
+            <i class="nav-icon fas fa-gas-pump"></i>
+          </div>
+          <a href="{% url 'stations' %}" class="small-box-footer">Fuel Stations <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <!-- ./col -->
+
+      <div class="col-12">
+        <h4>Users Data</h4> <hr>
+      </div>
+      <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-info">
+          <div class="inner">
+            <h3>{{users}}</h3>
+
+            <p>Registered Users</p>
+          </div>
+          <div class="icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <a href="{% url 'customers' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <!-- ./col -->
+      <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-success">
+          <div class="inner">
+            <h3>{{applications}}</h3>
+
+            <p>New Applications</p>
+          </div>
+          <div class="icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <a href="{% url 'newapplications' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <!-- ./col -->
+      <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-danger">
+          <div class="inner">
+            <h3>{{locked}}</h3>
+
+            <p>Locked Users</p>
+          </div>
+          <div class="icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <a href="{% url 'lockusers' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <!-- ./col -->
+      <div class="col-lg-3 col-6">
+        <!-- small box -->
         <div class="small-box bg-warning">
           <div class="inner">
             <h3>{{flags}}
@@ -91,22 +159,46 @@
         </div>
       </div>
       <!-- ./col -->
+
+      <div class="col-12">
+        <h4>Vehicles Data</h4> <hr>
+      </div>
       <div class="col-lg-3 col-6">
         <!-- small box -->
-        <div class="small-box bg-warning">
+        <div class="small-box bg-info">
           <div class="inner">
-            <h3>44</h3>
+            <h3>{{vehicles}}
+              <!-- <sup style="font-size: 20px">Active Flags</sup> -->
+            </h3>
 
-            <p>User Registrations</p>
+            <p>Verified Vehicles</p>
           </div>
           <div class="icon">
-            <i class="ion ion-person-add"></i>
+            <!-- <i class="ion ion-stats-bars"></i> -->
+            <i class="fas fa-car"></i>
           </div>
-          <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+          <a href="{% url 'verifiedvehicles' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
         </div>
       </div>
       <!-- ./col -->
-      
+      <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-success">
+          <div class="inner">
+            <h3>{{unverifiedvehicles}}
+              <!-- <sup style="font-size: 20px">Active Flags</sup> -->
+            </h3>
+
+            <p>Unverified Vehicles</p>
+          </div>
+          <div class="icon">
+            <!-- <i class="ion ion-stats-bars"></i> -->
+            <i class="fas fa-car"></i>
+          </div>
+          <a href="{% url 'unverifiedvehicles' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <!-- ./col -->
       <div class="col-lg-3 col-6">
         <!-- small box -->
         <div class="small-box bg-info">
@@ -128,6 +220,7 @@
         </div>
       </div>
       <!-- ./col -->
+      
     </div>
     <!-- /.row -->
     

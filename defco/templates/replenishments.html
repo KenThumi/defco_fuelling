@@ -40,10 +40,10 @@
                     <thead>
                     <tr>
                         <th>Station</th>
-                        <th>Current Reading(l)</th>
                         <th>Replenishment(l)</th>
                         <th>Batch No.</th>
                         <th>Supplier</th>
+                        <th>Dated</th>
                         <th>Edit</th>
                         <th>Delete</th>
                     </tr>
@@ -52,10 +52,10 @@
                         {%for replenish in replenishes%}
                             <tr>
                                 <td>{{ replenish.station }}</td>
-                                <td>{{ replenish.current_amount }}</td>
                                 <td>{{replenish.replenished_amount}}</td>
                                 <td>{{replenish.batch_no}}</td>
                                 <td>{{replenish.supplier}}</td>
+                                <td>{{ replenish.created_at| date:"d/m/Y @H:i" }}</td>
                                 <td>
                                     <a href="{% url 'editreplenish' replenish.id %}" class="mr-2">
                                         <i class="fas fa-edit text-warning"></i>

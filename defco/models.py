@@ -96,6 +96,7 @@ class FuelReplenish(models.Model):
     replenished_amount = models.IntegerField()
     batch_no = models.CharField(max_length=255)
     supplier = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ['-pk']
