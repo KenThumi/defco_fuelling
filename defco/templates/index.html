@@ -144,6 +144,12 @@
       <div class="col-lg-3 col-6">
         <!-- small box -->
         <div class="small-box bg-warning">
+          <div class="ribbon-wrapper ribbon-lg">
+              
+            <div class="ribbon bg-danger text-lg">
+              Flagged
+              </div>
+        </div>
           <div class="inner">
             <h3>{{flags}}
               <!-- <sup style="font-size: 20px">Active Flags</sup> -->
@@ -220,7 +226,93 @@
         </div>
       </div>
       <!-- ./col -->
+
+      <div class="col-12">
+        <h4>Reviews</h4> <hr>
+      </div>
+      <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-danger">
+          <div class="inner">
+            <h3>{{complaints}}
+              <!-- <sup style="font-size: 20px">Active Flags</sup> -->
+            </h3>
+
+            <p>Complaints</p>
+          </div>
+          <div class="icon">
+            <!-- <i class="ion ion-stats-bars"></i> -->
+            <i class="fas fa-comments"></i>
+          </div>
+          <a href="{% url 'getspecificreviews' 'complaint' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <!-- ./col -->
       
+      <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-warning">
+          <div class="inner">
+            <h3>{{comments}}
+              <!-- <sup style="font-size: 20px">Active Flags</sup> -->
+            </h3>
+
+            <p>Comments</p>
+          </div>
+          <div class="icon">
+            <!-- <i class="ion ion-stats-bars"></i> -->
+            <i class="fas fa-comments"></i>
+          </div>
+          <a href="{% url 'getspecificreviews' 'comment' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <!-- ./col -->
+
+      <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-success">
+          <div class="inner">
+            <h3>{{recommendations}}
+              <!-- <sup style="font-size: 20px">Active Flags</sup> -->
+            </h3>
+
+            <p>Recommendations</p>
+          </div>
+          <div class="icon">
+            <!-- <i class="ion ion-stats-bars"></i> -->
+            <i class="fas fa-comments"></i>
+          </div>
+          <a href="{% url 'getspecificreviews' 'recommendation' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <!-- ./col -->
+
+      <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-secondary">
+          <div class="ribbon-wrapper ribbon-lg">
+              
+              <div class="ribbon bg-danger text-lg">
+                Unread
+                </div>
+          </div>
+          <div class="inner">
+            <h3>{{unread }}
+              <!-- <sup style="font-size: 20px">Active Flags</sup> -->
+            </h3>
+
+            <p>Unread Reviews</p>
+          </div>
+          <div class="icon">
+            <!-- <i class="ion ion-stats-bars"></i> -->
+            <i class="fas fa-comments"></i>
+          </div>
+          <a href="{% url 'getreviews' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <!-- ./col -->
+
+
     </div>
     <!-- /.row -->
     

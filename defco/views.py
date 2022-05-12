@@ -57,13 +57,25 @@ def home(request):
         if x.current_amount <= 1000:
             lowfuel+=1
 
+    # Reviews
+    complaints = Review.objects.filter(review_type='complaint').count()
+
+    recommendations = Review.objects.filter(review_type='recommendation').count()
+
+    comments = Review.objects.filter(review_type='comment').count()
+
+    unread = Review.objects.filter(is_read=False).count()
+
+
     # ctx
     ctx = {
             'searches':searches, 'stations':stations, 'petroleum':petroleum, 
             'diesel':diesel, 'flags':flags, 'users':users, 
             'applications':applications, 'locked':locked,
             'vehicles':vehicles, 'unverifiedvehicles':unverifiedvehicles,
-            'lowfuel':lowfuel
+            'lowfuel':lowfuel, 'complaints':complaints,
+            'recommendations':recommendations,'comments':comments,
+            'unread':unread
           }
 
     return render(request,'index.html',ctx)
