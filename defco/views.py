@@ -1,6 +1,6 @@
 from main.settings import BASE_URL
 from django.http import HttpResponseRedirect
-from defco.models import DailyLitreRecord, Flag, FuelReplenish, Price, QrCode, Review, Search, Station, Transaction, User, UserApproval, UserLock, Vehicle
+from defco.models import DailyLitreRecord, Flag, FuelReplenish, Price, QrCode, Review, Search, Station, Transaction, User, UserApproval, UserLock, Vehicle, VehicleApproval
 from defco.decorators import _user, account_activated, account_not_locked, admin_or_superuser, profile_user, unauthenticated_user
 from defco.forms import DailyRecordForm, EditVehicleForm, FlagForm, PriceForm, ProfileEditForm, ReplenishForm, ReplyForm, ReviewForm, StationForm, TransactionForm, UserRegisterForm, VehicleForm
 from django.shortcuts import get_object_or_404, redirect, render
@@ -239,6 +239,15 @@ def revokeVehApproval(request, id):
 
 def approveVehicle(request, id):
     Vehicle.objects.filter(pk=id).update(approval_status=True)
+
+    # record vehicleapproval
+    ## if records exist
+    record = VehicleApproval.objects.filter(vehicle=Vehicle.objects.get(pk=id))
+    if record:
+        
+        VehicleApproval.objects.filter(vehicle=Vehicle.objects.get(pk=id)).update(created_at=datetime.now())
+    else:
+        VehicleApproval.objects.create(vehicle=Vehicle.objects.get(pk=id))
 
     messages.success(request, 'Successful Vehicle Approval.')
 

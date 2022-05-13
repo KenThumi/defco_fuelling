@@ -43,7 +43,7 @@
                     <th>Make</th>
                     <th>Model</th>
                     <th>Owner</th>
-                    <th>Unit</th>
+                    <th>Date Approved</th>
                     <th>Image</th>
                     <th>Logbook No.</th>
                     <th>Logbook Img</th>
@@ -62,7 +62,7 @@
                                          {{ vehicle.user}}
                                 </a>
                             </td>
-                            <td>{{ vehicle.user.unit}}</td>
+                            <td>{{ vehicle.vehicleapproval.created_at | date:"d M Y"}}</td>
                             <td class="text-center ">
                                 <a href="#" data-toggle="modal" data-target="#modal-veh-{{vehicle.id}}">
                                     <i class="fas fa-eye text-info"></i>
@@ -96,7 +96,7 @@
                             <th>Make</th>
                             <th>Model</th>
                             <th>Owner</th>
-                            <th>Unit</th>
+                            <th>Date Approved</th>
                             <th>Image</th>
                             <th>Logbook No.</th>
                             <th>Logbook Img</th>
