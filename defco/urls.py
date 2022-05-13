@@ -61,6 +61,9 @@ urlpatterns = [
     # Flagging
     path('addflag/<int:id>', views.addFlag, name='addflag'),
     path('listflags/', views.listFlags, name='listflags'),
-    path('eraseflag/<int:id>', views.eraseFlag, name='eraseflag')
+    path('eraseflag/<int:id>', views.eraseFlag, name='eraseflag'),
+
+    # searching / filtering
+    path('searchdateranges/<str:target>', views.searchDateRanges, name='searchdateranges' )
 
 ]

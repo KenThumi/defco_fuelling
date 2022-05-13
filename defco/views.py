@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import Http404
-from datetime import  datetime
+from datetime import  datetime, date, timedelta
 
 # Create your views here.
 @login_required
@@ -98,7 +98,7 @@ def register(request):
 def customers(request):
     users = User.objects.filter(is_valid=True, is_locked=False).exclude(is_superuser=True)#.latest('date_joined')
     
-    return render(request, 'customers.html', {'users':users})
+    return render(request, 'customers.html', {'users':users, 'target':'customers'})
 
 @login_required
 @profile_user
@@ -215,7 +215,6 @@ def verifiedVehicles(request):
     vehicles = Vehicle.objects.filter(approval_status=True)
 
     return render(request, 'vehicles/verifiedVehicles.html', {'vehicles':vehicles})
-
 
 
 def revokeVehApproval(request, id):
@@ -464,14 +463,10 @@ def getVehicle(request,id):
 
 # generateQRCode
 def generateQRCode(request,id):
-    # if request.method=="POST":
-    #   Url=request.POST['url']
     qrcode_url= BASE_URL+'/getvehicle/'+str(id)
 
     QrCode.objects.create(url=qrcode_url, vehicle=Vehicle.objects.get(pk=id))
 
-    # return redirect('home')
-#    qr_codQrCode.objects.all()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
@@ -642,3 +637,36 @@ def delDailrecord(request, id):
     messages.success(request, 'Successful Deletion')
 
     return redirect('dailyrecords')
+
+
+
+# search/filter
+def searchDateRanges(request, target ):
+    
+    if request.POST:
+        #get the dates
+        from_date = request.POST.get('from_date')
+        to_date = request.POST.get('to_date')
+
+        # str to datetime instance 
+        from_date = datetime.strptime(from_date, '%m/%d/%Y')
+        to_date = datetime.strptime(to_date, '%m/%d/%Y') + timedelta(hours=23, minutes=59,seconds = 59, milliseconds=999)
+
+        # print(to_date.strftime("%m/%d/%Y, %H:%M:%S"))
+
+        if to_date < from_date:
+            messages.error(request,'From date cannot be earlier than To date')
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+        
+        # to a manipulatable str >> for model querying
+        from_date = from_date.strftime('%Y-%m-%d')
+        to_date = to_date.strftime('%Y-%m-%d')
+
+        # if search is on curtomers
+        if target == 'customers':
+            users = User.objects.filter(date_joined__range = [from_date,to_date],is_valid=True, is_locked=False).exclude(is_superuser=True)#.latest('date_joined')
+        
+            return render(request, 'customers.html', {'users':users, 'target':'customers'})
+        
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
