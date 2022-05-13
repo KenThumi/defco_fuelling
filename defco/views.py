@@ -156,6 +156,9 @@ def lockusers(request):
 def unlock(request,id):
     User.objects.filter(pk=id).update(is_locked=False)
 
+     # remove lock record from Userlock model
+    UserLock.objects.filter(user=User.objects.get(pk=id)).delete()
+
     messages.success(request, 'User account has been unlocked successfully.')
     return redirect('lockusers')
 
