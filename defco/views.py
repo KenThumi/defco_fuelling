@@ -225,7 +225,7 @@ def unverifiedVehicles(request):
 def verifiedVehicles(request):
     vehicles = Vehicle.objects.filter(approval_status=True)
 
-    return render(request, 'vehicles/verifiedVehicles.html', {'vehicles':vehicles})
+    return render(request, 'vehicles/verifiedVehicles.html', {'vehicles':vehicles, 'target':'veh_verified'})
 
 
 def revokeVehApproval(request, id):
@@ -691,10 +691,15 @@ def searchDateRanges(request, target ):
             users = User.objects.filter(date_joined__range = [from_date,to_date],is_valid=False).exclude(is_superuser=True)
     
             return render(request, 'newapplications.html', {'users':users, 'target':'newapplications'})
-        # if search is locked - mean filter by time when users were locked
+        # if search is 'locked' - mean filter by time when users were locked
         elif target == 'locked':
             users = User.objects.filter(userlock__created_at__range = [from_date,to_date],is_locked=True).exclude(is_superuser=True)
     
             return render(request, 'locked.html', {'users':users, 'target':'locked'})
+        # if search is 'veh_verified' - mean filter by time when veh were verfified/approved
+        elif target =='veh_verified':
+            vehicles = Vehicle.objects.filter(vehicleapproval__created_at__range = [from_date,to_date],approval_status=True)
+
+            return render(request, 'vehicles/verifiedVehicles.html', {'vehicles':vehicles, 'target':'veh_verified'})
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
