@@ -175,8 +175,8 @@
             <img src="{% static 'images/avatar.png' %}" class="img-circle elevation-2" alt="User Image">
 
             <p>
-              {{user.username | title}}
-              <small>Last log in:{{ user.last_login | date:"H:m, d M Y"}}</small>
+              {{ request.user.username | title}}
+              <small>Last log in:{{ request.user.last_login | date:"H:m, d M Y"}}</small>
             </p>
           </li>
           <!-- Menu Body -->
@@ -246,7 +246,7 @@
   </div>
   <!-- /.content-wrapper -->
   <footer class="main-footer">
-    <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong>
+    <strong>Copyright &copy; 2022 <a href="http://adminlte.io">DEFCO</a>.</strong>
     All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
       <b>Version</b> 3.0.5

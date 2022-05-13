@@ -1,7 +1,7 @@
 from main.settings import BASE_URL
 from django.http import HttpResponseRedirect
-from defco.models import DailyLitreRecord, Flag, FuelReplenish, Price, QrCode, Review, Search, Station, Transaction, User, Vehicle
-from defco.decorators import _user, account_not_locked, admin_or_superuser, profile_user, unauthenticated_user
+from defco.models import DailyLitreRecord, Flag, FuelReplenish, Price, QrCode, Review, Search, Station, Transaction, User, UserApproval, Vehicle
+from defco.decorators import _user, account_activated, account_not_locked, admin_or_superuser, profile_user, unauthenticated_user
 from defco.forms import DailyRecordForm, EditVehicleForm, FlagForm, PriceForm, ProfileEditForm, ReplenishForm, ReplyForm, ReviewForm, StationForm, TransactionForm, UserRegisterForm, VehicleForm
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
@@ -12,6 +12,7 @@ from datetime import  datetime, date, timedelta
 # Create your views here.
 @login_required
 @account_not_locked
+@account_activated
 def home(request):
     # get recent search results
     searches = Search.objects.filter(user=request.user)
@@ -123,6 +124,10 @@ def newapplications(request):
 @admin_or_superuser
 def approve(request,id):
     User.objects.filter(pk=id).update(is_valid=True)
+
+
+    # record dates
+    UserApproval.objects.create(user=User.objects.get(pk=id))
 
     messages.success(request, 'User approved successfully.')
     return redirect('newapplications')

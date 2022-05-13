@@ -46,9 +46,21 @@ def account_not_locked(view_func):
     def wrapper_func(request, *args, **kwargs):
 
         if request.user.is_locked:
-            messages.error(request, 'Your account is locked, contact admin.')
-            
+            messages.error(request, 'Your account is locked, contact admin.')           
             return redirect('logout')
+        
+       
+        return view_func(request, *args, **kwargs)
+    return wrapper_func
+
+# Check account activated 
+def account_activated(view_func):
+    def wrapper_func(request, *args, **kwargs):
+
+        if not request.user.is_valid and not request.user.is_superuser:
+            messages.error(request, 'Your account is not approved, contact admin.')           
+            return redirect('logout')
+        
        
         return view_func(request, *args, **kwargs)
     return wrapper_func

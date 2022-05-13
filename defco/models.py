@@ -210,3 +210,20 @@ class DailyLitreRecord(models.Model):
 
      def __repr__(self):
          return self.station+': Opening Litres-'+int(self.opening)+': Closing Litres-'+int(self.opening)
+
+
+# user approval dates
+class UserApproval(models.Model):
+    user = models.OneToOneField(User,related_name='userapproval',on_delete=models.CASCADE, default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __repr__(self):
+        return self.user
+
+# user approval dates
+class VehicleApproval(models.Model):
+    vehicle = models.OneToOneField(Vehicle,related_name='vehicleapproval',on_delete=models.CASCADE, default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __repr__(self):
+        return self.vehicle
