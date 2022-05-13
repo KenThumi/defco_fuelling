@@ -116,7 +116,7 @@ def getuser(request, id):
 def newapplications(request):
     users = User.objects.filter(is_valid=False).exclude(is_superuser=True)
     
-    return render(request, 'newapplications.html', {'users':users})
+    return render(request, 'newapplications.html', {'users':users, 'target':'newapplications'})
 
 
 @login_required
@@ -652,8 +652,7 @@ def searchDateRanges(request, target ):
         from_date = datetime.strptime(from_date, '%m/%d/%Y')
         to_date = datetime.strptime(to_date, '%m/%d/%Y') + timedelta(hours=23, minutes=59,seconds = 59, milliseconds=999)
 
-        # print(to_date.strftime("%m/%d/%Y, %H:%M:%S"))
-
+        # validate
         if to_date < from_date:
             messages.error(request,'From date cannot be earlier than To date')
             return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
@@ -662,11 +661,17 @@ def searchDateRanges(request, target ):
         from_date = from_date.strftime('%Y-%m-%d')
         to_date = to_date.strftime('%Y-%m-%d')
 
-        # if search is on curtomers
+        # if search is on customers
         if target == 'customers':
             users = User.objects.filter(date_joined__range = [from_date,to_date],is_valid=True, is_locked=False).exclude(is_superuser=True)#.latest('date_joined')
         
             return render(request, 'customers.html', {'users':users, 'target':'customers'})
+        # if search is on newapplications
+        elif target == 'newapplications':
+            users = User.objects.filter(date_joined__range = [from_date,to_date],is_valid=False).exclude(is_superuser=True)
+    
+            return render(request, 'newapplications.html', {'users':users, 'target':'newapplications'})
+
         
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
