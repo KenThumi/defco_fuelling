@@ -231,6 +231,9 @@ def verifiedVehicles(request):
 def revokeVehApproval(request, id):
     Vehicle.objects.filter(pk=id).update(approval_status=False)
 
+    #update revoke time
+    VehicleApproval.objects.filter(vehicle=Vehicle.objects.get(pk=id)).update(created_at=datetime.now())
+
     messages.success(request, 'Approval successfully revoked.')
 
     return redirect('verifiedvehicles')
