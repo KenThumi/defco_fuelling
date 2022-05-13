@@ -227,3 +227,11 @@ class VehicleApproval(models.Model):
 
     def __repr__(self):
         return self.vehicle
+
+# user approval dates
+class UserLock(models.Model):
+    user = models.OneToOneField(User,related_name='userlock',on_delete=models.CASCADE, default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __repr__(self):
+        return self.user

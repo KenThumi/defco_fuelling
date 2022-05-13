@@ -1,6 +1,6 @@
 from main.settings import BASE_URL
 from django.http import HttpResponseRedirect
-from defco.models import DailyLitreRecord, Flag, FuelReplenish, Price, QrCode, Review, Search, Station, Transaction, User, UserApproval, Vehicle
+from defco.models import DailyLitreRecord, Flag, FuelReplenish, Price, QrCode, Review, Search, Station, Transaction, User, UserApproval, UserLock, Vehicle
 from defco.decorators import _user, account_activated, account_not_locked, admin_or_superuser, profile_user, unauthenticated_user
 from defco.forms import DailyRecordForm, EditVehicleForm, FlagForm, PriceForm, ProfileEditForm, ReplenishForm, ReplyForm, ReviewForm, StationForm, TransactionForm, UserRegisterForm, VehicleForm
 from django.shortcuts import get_object_or_404, redirect, render
@@ -137,6 +137,9 @@ def approve(request,id):
 def lock(request,id):
     User.objects.filter(pk=id).update(is_locked=True)
 
+    # record lock 
+    UserLock.objects.create(user=User.objects.get(pk=id))
+
     messages.success(request, 'User account has been locked successfully.')
     return redirect('customers')
 
@@ -146,7 +149,7 @@ def lock(request,id):
 def lockusers(request):
     users = User.objects.filter(is_locked=True).exclude(is_superuser=True)
     
-    return render(request, 'locked.html', {'users':users})
+    return render(request, 'locked.html', {'users':users, 'target':'locked'})
 
 @login_required
 @admin_or_superuser
@@ -676,7 +679,10 @@ def searchDateRanges(request, target ):
             users = User.objects.filter(date_joined__range = [from_date,to_date],is_valid=False).exclude(is_superuser=True)
     
             return render(request, 'newapplications.html', {'users':users, 'target':'newapplications'})
-
-        
+        # if search is locked - mean filter by time when users were locked
+        elif target == 'locked':
+            users = User.objects.filter(userlock__created_at__range = [from_date,to_date],is_locked=True).exclude(is_superuser=True)
+    
+            return render(request, 'locked.html', {'users':users, 'target':'locked'})
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
