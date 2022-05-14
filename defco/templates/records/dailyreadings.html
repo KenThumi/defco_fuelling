@@ -33,6 +33,10 @@
                     </a> 
                     {% endif %}
                 </div>
+                <button class="btn btn-sm btn-success float-md-right"  data-toggle="modal" data-target="#modal-date-range">
+                    <i class="mr-1 fas fa-search"></i>
+                    Filter by Date
+                  </button>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
@@ -86,4 +90,5 @@
         </div>
         </div><!-- Main content -->
     </section>
+    {% include 'partials/_dateRange.html' %}
   {%endblock%}

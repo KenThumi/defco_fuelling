@@ -367,8 +367,7 @@ def getTransactions(request):
 
     transactions = Transaction.objects.all()
 
-
-    return render(request,'records/transactions.html', {'transactions':transactions})
+    return render(request,'records/transactions.html', {'transactions':transactions,'target':'transactions'})
 
 
 def addTransaction( request ):
@@ -648,7 +647,7 @@ def addDailyRecords(request):
 def getDailyRecords(request):
     records = DailyLitreRecord.objects.all()
 
-    return render(request, 'records/dailyreadings.html', {'records':records} )
+    return render(request, 'records/dailyreadings.html', {'records':records, 'target':'dailyrecords'} )
 
 
 # delete Records
@@ -709,6 +708,18 @@ def searchDateRanges(request, target ):
             replenishes = FuelReplenish.objects.filter(created_at__gte = from_date, created_at__lte = to_date).all()
 
             return render(request, 'replenishments.html', {'replenishes':replenishes, 'target':'replenishes'})
+        # if search is transactions
+        elif target == 'transactions':
+            transactions = Transaction.objects.filter(date__gte = from_date, date__lte = to_date).all()
+
+            return render(request,'records/transactions.html', {'transactions':transactions,'target':'transactions'})
+        # if search is dailyrecords
+        elif target == 'dailyrecords':
+            records = DailyLitreRecord.objects.filter(created_at__gte = from_date, created_at__lte = to_date).all()
+
+            return render(request, 'records/dailyreadings.html', {'records':records, 'target':'records'} )
+
+    messages.error(request, 'Something went wrong')
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
