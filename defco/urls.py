@@ -65,5 +65,5 @@ urlpatterns = [
 
     # searching / filtering
     path('searchdateranges/<str:target>', views.searchDateRanges, name='searchdateranges' ),
-    
+    path('searchdate/', views.searchDate, name='searchdate')
 ]

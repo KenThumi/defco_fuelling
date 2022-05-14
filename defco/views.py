@@ -312,7 +312,7 @@ def editStation(request,id):
 def replenishments(request):
     replenishes = FuelReplenish.objects.all()
 
-    return render(request, 'replenishments.html', {'replenishes':replenishes})
+    return render(request, 'replenishments.html', {'replenishes':replenishes, 'target':'replenishes'})
 
 
 def stations(request):
@@ -681,28 +681,57 @@ def searchDateRanges(request, target ):
             return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
         
         # to a manipulatable str >> for model querying
-        from_date = from_date.strftime('%Y-%m-%d')
-        to_date = to_date.strftime('%Y-%m-%d')
+        # from_date = from_date.strftime('%Y-%m-%d')
+        # to_date = to_date.strftime('%Y-%m-%d')
 
         # if search is on customers
         if target == 'customers':
-            users = User.objects.filter(date_joined__range = [from_date,to_date],is_valid=True, is_locked=False).exclude(is_superuser=True)#.latest('date_joined')
+            users = User.objects.filter(date_joined__gte = from_date, date_joined__lte = to_date,is_valid=True, is_locked=False).exclude(is_superuser=True)#.latest('date_joined')
         
             return render(request, 'customers.html', {'users':users, 'target':'customers'})
         # if search is on newapplications
         elif target == 'newapplications':
-            users = User.objects.filter(date_joined__range = [from_date,to_date],is_valid=False).exclude(is_superuser=True)
+            users = User.objects.filter(date_joined__gte = from_date, date_joined__lte = to_date,is_valid=False).exclude(is_superuser=True)
     
             return render(request, 'newapplications.html', {'users':users, 'target':'newapplications'})
         # if search is 'locked' - mean filter by time when users were locked
         elif target == 'locked':
-            users = User.objects.filter(userlock__created_at__range = [from_date,to_date],is_locked=True).exclude(is_superuser=True)
+            users = User.objects.filter(userlock__created_at__gte = from_date,userlock__created_at__lte =to_date,is_locked=True).exclude(is_superuser=True)
     
             return render(request, 'locked.html', {'users':users, 'target':'locked'})
         # if search is 'veh_verified' - mean filter by time when veh were verfified/approved
         elif target =='veh_verified':
-            vehicles = Vehicle.objects.filter(vehicleapproval__created_at__range = [from_date,to_date],approval_status=True)
+            vehicles = Vehicle.objects.filter(vehicleapproval__created_at__gte = from_date,vehicleapproval__created_at__lte = to_date,approval_status=True)
 
             return render(request, 'vehicles/verifiedVehicles.html', {'vehicles':vehicles, 'target':'veh_verified'})
+        # if search is 'replenishes
+        elif target == 'replenishes':
+            replenishes = FuelReplenish.objects.filter(created_at__gte = from_date, created_at__lte = to_date).all()
+
+            return render(request, 'replenishments.html', {'replenishes':replenishes, 'target':'replenishes'})
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+# search a single date
+def searchDate(request):
+    if request.POST:
+        # fetch date
+        date = request.POST.get('date')
+
+        # str to datetime instance 
+        date = datetime.strptime(date, '%m/%d/%Y')
+
+        # str to datetime instance 
+        # date = datetime.strptime('%m/%d/%Y')
+        date_1 = date + timedelta(hours=23, minutes=59,seconds = 59, milliseconds=999)
+
+        # filter
+        replenishes = FuelReplenish.objects.filter(created_at__gte = date, created_at__lte = date_1).all()
+
+        return render(request, 'replenishments.html', {'replenishes':replenishes, 'target':'replenishes'})
+
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+
+
