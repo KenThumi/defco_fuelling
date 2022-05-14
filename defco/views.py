@@ -441,7 +441,7 @@ def getReviews(request):
 
     form = ReplyForm()
 
-    return render(request, 'reviews/reviews.html', {'reviews':reviews, 'form':form})
+    return render(request, 'reviews/reviews.html', {'reviews':reviews, 'form':form, 'target':'reviews'})
 
 
 def getSpecificReviews(request, review):
@@ -449,7 +449,7 @@ def getSpecificReviews(request, review):
 
     form = ReplyForm()
 
-    return render(request, 'reviews/reviews.html', {'reviews':reviews, 'form':form})
+    return render(request, 'reviews/reviews.html', {'reviews':reviews, 'form':form, 'target':'None'})
 
 
 def setReviewRead(request,id):
@@ -609,7 +609,7 @@ def addFlag(request,id):
 def listFlags(request):
     flags = Flag.objects.all()
 
-    return render(request, 'flags/allFlags.html', {'flags':flags})
+    return render(request, 'flags/allFlags.html', {'flags':flags, 'target':'flags'})
 
 
 # erase flag
@@ -718,7 +718,19 @@ def searchDateRanges(request, target ):
             records = DailyLitreRecord.objects.filter(created_at__gte = from_date, created_at__lte = to_date).all()
 
             return render(request, 'records/dailyreadings.html', {'records':records, 'target':'records'} )
+        # search reviews,
+        elif target == 'reviews':
+            reviews = Review.objects.filter(created_at__gte = from_date, created_at__lte = to_date).all()
 
+            form = ReplyForm()
+
+            return render(request, 'reviews/reviews.html', {'reviews':reviews, 'form':form, 'target':'reviews'})
+        elif target == 'flags':
+            flags = Flag.objects.filter(created_at__gte = from_date, created_at__lte = to_date).all()
+
+            return render(request, 'flags/allFlags.html', {'flags':flags, 'target':'flags'})
+
+    #if no results
     messages.error(request, 'Something went wrong')
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
