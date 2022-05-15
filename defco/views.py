@@ -139,7 +139,7 @@ def customers(request):
     
     ## admin
     if request.user.is_admin:
-        users = User.objects.filter(unit=request.user.unit,is_customer=True, is_valid=True, is_locked=False).exclude(is_superuser=True).count()
+        users = User.objects.filter(unit=request.user.unit,is_customer=True, is_valid=True, is_locked=False).exclude(is_superuser=True, id=request.user.id)
 
 
     return render(request, 'customers.html', {'users':users, 'target':'customers'})
@@ -159,6 +159,11 @@ def getuser(request, id):
 @admin_or_superuser
 def newapplications(request):
     users = User.objects.filter(is_valid=False).exclude(is_superuser=True)
+
+    ## admin
+    if request.user.is_admin:
+        users = User.objects.filter(unit=request.user.unit,is_valid=False).exclude(is_superuser=True)
+
     
     return render(request, 'newapplications.html', {'users':users, 'target':'newapplications'})
 
@@ -191,6 +196,11 @@ def lock(request,id):
 @admin_or_superuser
 def lockusers(request):
     users = User.objects.filter(is_locked=True).exclude(is_superuser=True)
+
+    ## admin
+    if request.user.is_admin:
+        users = User.objects.filter(unit=request.user.unit,is_locked=True).exclude(is_superuser=True)
+
     
     return render(request, 'locked.html', {'users':users, 'target':'locked'})
 
