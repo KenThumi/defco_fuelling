@@ -5,6 +5,19 @@ from django.core.exceptions import PermissionDenied
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 
+# Action by admin or superadmin
+def superuser(view_func):
+    def wrapper_func(request, *args, **kwargs):
+
+        if not request.user.is_superuser :
+            # raise PermissionDenied
+            messages.error(request, 'Insufficient permission.')
+        
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+       
+        return view_func(request, *args, **kwargs)
+    return wrapper_func
+
 # Redirects login/register routes home if authenticated
 def unauthenticated_user(view_func):
     def wrapper_func(request, *args, **kwargs):

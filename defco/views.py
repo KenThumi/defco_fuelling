@@ -1,7 +1,7 @@
 from main.settings import BASE_URL
 from django.http import HttpResponseRedirect
 from defco.models import DailyLitreRecord, Flag, FuelReplenish, Price, QrCode, Review, Search, Station, Transaction, User, UserApproval, UserLock, Vehicle, VehicleApproval
-from defco.decorators import _user, account_activated, account_not_locked, admin_or_superuser, profile_user, unauthenticated_user
+from defco.decorators import _user, account_activated, account_not_locked, admin_or_superuser, profile_user, superuser, unauthenticated_user
 from defco.forms import DailyRecordForm, EditVehicleForm, FlagForm, PriceForm, ProfileEditForm, ReplenishForm, ReplyForm, ReviewForm, StationForm, TransactionForm, UserRegisterForm, VehicleForm
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
@@ -590,6 +590,7 @@ def switchStationStatus(request, id):
 
 
 # adding prices
+@superuser
 def addPrice(request):
     form = PriceForm()
 
