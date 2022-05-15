@@ -69,17 +69,41 @@
                   </a>
                   {% endif %}
                   <ul class="list-group list-group-unbordered mb-3">
-                      <!-- <li class="list-group-item">
-                          <i class="fas fa-book mr-1"></i>
-                        <b>Card No.</b> <a class="float-right">#</a>
-                      </li> -->
                       <li class="list-group-item">
                           <i class="fas fa-book mr-1"></i>
-                        <b>Card No.</b> <a class="float-right">#</a>
+                        <b>Role</b> 
+                        <span class="float-right">
+                          {% if user.is_superuser%}
+                            Superuser
+                          {% elif user.is_admin%}
+                            Admin
+                          {% elif user.is_attendant %}
+                          Attendant
+                          {% elif user.is_customer%}
+                          Customer
+                          {%endif%}
+
+                          {% if request.user.is_superuser %}
+                          <button class="btn btn-sm btn-warning ml-1"   data-toggle="modal" data-target="#modal-roles">
+                              <b>Edit</b>
+                              <i class="fas fa-edit"></i>
+                          </a>
+                          {% endif %}
+                        </span>
+                      </li>
+                    
+                      <li class="list-group-item">
+                        <i class="fas fa-calendar-alt mr-1"></i>
+                        <b>Date Registered</b> <span class="float-right">
+                            {{ user.date_joined | date:"d M Y" }}
+                        </span>
                       </li>
                       <li class="list-group-item">
-                        <i class="fas fa-clock mr-1"></i>
-                        <b>Date Registered</b> <a class="float-right">#</a>
+                        <i class="fas fa-calendar-alt mr-1"></i>
+                        <b>Approval Registered</b>
+                         <span class="float-right">
+                          {{ user.userapproval.created_at | date:"d M Y"}}   
+                        </span>
                       </li>
                       <li class="list-group-item">
                         <i class="fas fa-flag mr-1"></i>
@@ -214,4 +238,5 @@
       </div>
     </div><!-- Main content -->
 </section>
+{% include 'partials/_roles.html' %}
   {%endblock%}

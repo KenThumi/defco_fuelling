@@ -756,5 +756,20 @@ def searchDate(request):
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
+# update user roles
+def updateRole(request, id):
+    if request.POST:
+        admin= request.POST.get('admin')
+        attendant= request.POST.get('attendant')
+        customer= request.POST.get('customer')
+
+        try:
+            User.objects.update(is_admin= bool(admin), is_attendant= bool(attendant), is_customer= bool(customer))
+            
+            messages.success(request, 'Roles updated successfully.')
+        except:
+            messages.error(request, 'Something went wrong')
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 

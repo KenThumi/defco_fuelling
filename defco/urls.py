@@ -19,6 +19,7 @@ urlpatterns = [
     path('lockusers', views.lockusers, name='lockusers'),
     path('unlock/<int:id>', views.unlock, name='unlock'),
     path('editprofile/<int:id>', views.editProfile, name='editprofile'),
+    path('updaterole/<int:id>', views.updateRole, name='updaterole'),
 
     # vehicles
     path('insertvehicle/', views.insertVehicle, name='insertvehicle'),
