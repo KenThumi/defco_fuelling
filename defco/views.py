@@ -59,13 +59,32 @@ def home(request):
             lowfuel+=1
 
     # Reviews
+
     complaints = Review.objects.filter(review_type='complaint').count()
+
+    ## admin unread from particular station
+    if request.user.is_admin:
+        complaints= Review.objects.filter(transaction__station__admin=request.user ,review_type='complaint').count()
+
 
     recommendations = Review.objects.filter(review_type='recommendation').count()
 
+    ## admin unread from particular station
+    if request.user.is_admin:
+        recommendations= Review.objects.filter(transaction__station__admin=request.user ,review_type='recommendation').count()
+
     comments = Review.objects.filter(review_type='comment').count()
 
+    ## admin unread from particular station
+    if request.user.is_admin:
+        comments= Review.objects.filter(transaction__station__admin=request.user ,review_type='comment').count()
+
+
     unread = Review.objects.filter(is_read=False).count()
+
+    ## admin unread from particular station
+    if request.user.is_admin:
+        unread= Review.objects.filter(transaction__station__admin=request.user ,is_read=False).count()
 
 
     # ctx

@@ -228,7 +228,12 @@
       <!-- ./col -->
 
       <div class="col-12">
-        <h4>Reviews</h4> <hr>
+        <h4>
+          {% if request.user.is_admin %}
+                {{ request.user.station | title}}
+          {% endif%}
+          Reviews
+        </h4> <hr>
       </div>
       <div class="col-lg-3 col-6">
         <!-- small box -->
