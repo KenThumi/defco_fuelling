@@ -90,8 +90,10 @@ def register(request):
 
         if form.is_valid():
             form.save()
+            
+            messages.success(request, 'Registration successful, pending verification and approval.')
 
-            return redirect('home')
+            return redirect('login')
     return render(request, 'registration/register.html',{'form':form})
 
 @login_required
