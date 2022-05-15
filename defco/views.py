@@ -764,7 +764,7 @@ def updateRole(request, id):
         customer= request.POST.get('customer')
 
         try:
-            User.objects.update(is_admin= bool(admin), is_attendant= bool(attendant), is_customer= bool(customer))
+            User.objects.filter(pk=id).update(is_admin= bool(admin), is_attendant= bool(attendant), is_customer= bool(customer))
             
             messages.success(request, 'Roles updated successfully.')
         except:

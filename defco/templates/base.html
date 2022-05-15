@@ -180,7 +180,24 @@
 
             <p>
               {{ request.user.username | title}}
+              <br>
+              <small>
+                <b>Role</b>
+                {% if request.user.is_superuser%}
+                Superuser
+                {%endif%}
+                {% if request.user.is_admin%}
+                  Admin,
+                {%endif%}
+                {% if request.user.is_attendant %}
+                  Attendant,
+                {%endif%}
+                {% if request.user.is_customer%}
+                Customer
+                {%endif%}
+              </small>
               <small>Last log in:{{ request.user.last_login | date:"H:m, d M Y"}}</small>
+
             </p>
           </li>
           <!-- Menu Body -->

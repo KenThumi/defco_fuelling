@@ -75,11 +75,14 @@
                         <span class="float-right">
                           {% if user.is_superuser%}
                             Superuser
-                          {% elif user.is_admin%}
-                            Admin
-                          {% elif user.is_attendant %}
-                          Attendant
-                          {% elif user.is_customer%}
+                          {%endif%}
+                          {% if user.is_admin%}
+                            Admin,
+                          {%endif%}
+                          {% if user.is_attendant %}
+                            Attendant,
+                          {%endif%}
+                          {% if user.is_customer%}
                           Customer
                           {%endif%}
 
