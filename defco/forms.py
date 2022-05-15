@@ -70,9 +70,19 @@ product_types = [
     ('diesel','Diesel')
 ]
 
+units = [
+    ('','- select -'),
+    ('DEFTEC','DEFTEC'),
+    ('KACA','KACA'),
+    ('SOS','SOS'),
+    ('HQ KACS','HQ KACS'),
+    ('CTS','CTS')
+]
+
 class UserRegisterForm(UserCreationForm):
     # email = forms.EmailField()
     rank =   forms.CharField( widget=forms.Select(choices=ranks))
+    unit =   forms.CharField( widget=forms.Select(choices=units))
     image = forms.FileField( label='Upload copy of your Job ID')
 
     def __init__(self, *args, **kwargs):
