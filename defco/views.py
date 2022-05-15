@@ -22,8 +22,9 @@ def home(request):
 
     station = Station.objects.all().last() 
 
-    if station.isOpen():  # find out if its official operating hours
-        stations = Station.objects.filter(open=True).count( )
+    if bool(station):  #stations exists
+        if station.isOpen():  # find out if its official operating hours
+            stations = Station.objects.filter(open=True).count( )
 
     # petroleum price
     petroleum = Price.objects.filter(type='petroleum').last()
@@ -34,14 +35,30 @@ def home(request):
     # active flags
     flags = Flag.objects.filter(flagged=True).count()
 
+    ## admin
+    if request.user.is_admin:
+        flags = Flag.objects.filter(user__unit=request.user.unit,flagged=True).count()
+
     # users
-    users = User.objects.filter(is_customer=True).count()
+    # users = User.objects.filter(is_customer=True).exclude(is_superuser=True).count()
+    users = User.objects.filter(is_customer=True, is_valid=True, is_locked=False).exclude(is_superuser=True).count()
+
+    ## admin
+    if request.user.is_admin:
+        users = User.objects.filter(unit=request.user.unit,is_customer=True, is_valid=True, is_locked=False).exclude(is_superuser=True).count()
 
     # new applications
     applications = User.objects.filter(is_valid=False).exclude(is_superuser=True).count()
 
+    ## admin
+    if request.user.is_admin:
+        applications = User.objects.filter(unit=request.user.unit,is_valid=False).exclude(is_superuser=True).count()
+
     # locked users
     locked = User.objects.filter(is_locked=True).exclude(is_superuser=True).count()
+    ## admin
+    if request.user.is_admin:
+        locked = User.objects.filter(unit=request.user.unit,is_locked=True).exclude(is_superuser=True).count()
 
     #  Approved Vehicles
     vehicles = Vehicle.objects.filter(approval_status=True).count()
@@ -120,6 +137,11 @@ def register(request):
 def customers(request):
     users = User.objects.filter(is_valid=True, is_locked=False).exclude(is_superuser=True)#.latest('date_joined')
     
+    ## admin
+    if request.user.is_admin:
+        users = User.objects.filter(unit=request.user.unit,is_customer=True, is_valid=True, is_locked=False).exclude(is_superuser=True).count()
+
+
     return render(request, 'customers.html', {'users':users, 'target':'customers'})
 
 @login_required
