@@ -26,9 +26,11 @@
   
     <!-- Small boxes (Stat box) -->
     <div class="row">
+      {% if request.user.is_admin or request.user.is_superuser %}
       <div class="col-12">
-        <h4>Stations Data</h4> <hr>
+        <h4>Station Data</h4> <hr>
       </div>
+      {%endif%}
       
       <div class="col-lg-3 col-6">
         <!-- small box -->
@@ -102,11 +104,13 @@
       </div>
       {%endif%}
       <!-- ./col -->
-
+      
       <!-- USERS -->
+      {% if request.user.is_admin or request.user.is_superuser %}
       <div class="col-12">
         <h4>Users Data</h4> <hr>
       </div>
+      {%endif%}
       {% if request.user.is_admin or request.user.is_superuser %}
       <div class="col-lg-3 col-6">
         <!-- small box -->
@@ -183,9 +187,11 @@
       <!-- ./col -->
 
       <!-- VEHICLES -->
+      {% if request.user.is_admin or request.user.is_superuser %}
       <div class="col-12">
-        <h4>Vehicles Data</h4> <hr>
+        <h4>Vehicle Data</h4> <hr>
       </div>
+      {%endif%}
       
       <div class="col-lg-3 col-6">
         <!-- small box -->
@@ -249,6 +255,7 @@
       <!-- ./col -->
 
       <div class="col-12">
+
         <h4>
           {% if request.user.is_admin %}
                 {{ request.user.station | title}}
