@@ -39,6 +39,7 @@ def home(request):
     if request.user.is_admin:
         flags = Flag.objects.filter(user__unit=request.user.unit,flagged=True).count()
 
+    # ----------------- USERS --------------------------------------------------------
     # users
     # users = User.objects.filter(is_customer=True).exclude(is_superuser=True).count()
     users = User.objects.filter(is_customer=True, is_valid=True, is_locked=False).exclude(is_superuser=True).count()
@@ -59,13 +60,22 @@ def home(request):
     ## admin
     if request.user.is_admin:
         locked = User.objects.filter(unit=request.user.unit,is_locked=True).exclude(is_superuser=True).count()
-
+    
+    # ----------------VEHICLES---------------------------------------
     #  Approved Vehicles
     vehicles = Vehicle.objects.filter(approval_status=True).count()
+    ## admin
+    if request.user.is_admin:
+        vehicles = Vehicle.objects.filter(user__unit = request.user.unit,approval_status=True).count()
+
 
     # unverifiedvehicles
     unverifiedvehicles = Vehicle.objects.filter(approval_status=False).count()
+    ## admin
+    if request.user.is_admin:
+        unverifiedvehicles = Vehicle.objects.filter(user__unit = request.user.unit,approval_status=False).count()
 
+    # ----------------- FUEL ------------------------------------------------------------
     # lowfuel (<=1000)
     qr_set = FuelReplenish.objects.order_by('station','-created_at').distinct('station')
     
@@ -75,6 +85,7 @@ def home(request):
         if x.current_amount <= 1000:
             lowfuel+=1
 
+    # ----------------- REVIEWS ----------------------------------------------------------
     # Reviews
 
     complaints = Review.objects.filter(review_type='complaint').count()
@@ -272,11 +283,19 @@ def insertVehicle(request):
 def unverifiedVehicles(request):
     vehicles = Vehicle.objects.filter(approval_status=False)
 
+    ## admin
+    if request.user.is_admin:
+        vehicles = Vehicle.objects.filter(user__unit = request.user.unit,approval_status=False)
+
     return render(request, 'vehicles/unverifiedVehicles.html', {'vehicles':vehicles})
 
 
 def verifiedVehicles(request):
     vehicles = Vehicle.objects.filter(approval_status=True)
+
+    # admin
+    if request.user.is_admin:
+        vehicles = Vehicle.objects.filter(user__unit = request.user.unit,approval_status=True)
 
     return render(request, 'vehicles/verifiedVehicles.html', {'vehicles':vehicles, 'target':'veh_verified'})
 
