@@ -85,6 +85,7 @@
         </div>
       </div>
       <!-- ./col -->
+      {% if request.user.is_admin or request.user.is_superuser or request.user.is_attendant %}
       <div class="col-lg-3 col-6">
         <!-- small box -->
         <div class="small-box bg-info">
@@ -99,11 +100,14 @@
           <a href="{% url 'stations' %}" class="small-box-footer">Fuel Stations <i class="fas fa-arrow-circle-right"></i></a>
         </div>
       </div>
+      {%endif%}
       <!-- ./col -->
 
+      <!-- USERS -->
       <div class="col-12">
         <h4>Users Data</h4> <hr>
       </div>
+      {% if request.user.is_admin or request.user.is_superuser %}
       <div class="col-lg-3 col-6">
         <!-- small box -->
         <div class="small-box bg-info">
@@ -149,6 +153,7 @@
         </div>
       </div>
       <!-- ./col -->
+      {%endif%}
       <div class="col-lg-3 col-6">
         <!-- small box -->
         <div class="small-box bg-warning">
@@ -162,8 +167,11 @@
             <h3>{{flags}}
               <!-- <sup style="font-size: 20px">Active Flags</sup> -->
             </h3>
-
-            <p>Active Flagged Users</p>
+            {% if request.user.is_admin or request.user.is_superuser %}
+              <p>Active Flagged Users</p>
+            {% else %}
+              <p>Active Flags</p>
+            {%endif%}
           </div>
           <div class="icon">
             <!-- <i class="ion ion-stats-bars"></i> -->
@@ -174,9 +182,11 @@
       </div>
       <!-- ./col -->
 
+      <!-- VEHICLES -->
       <div class="col-12">
         <h4>Vehicles Data</h4> <hr>
       </div>
+      
       <div class="col-lg-3 col-6">
         <!-- small box -->
         <div class="small-box bg-info">
@@ -194,6 +204,7 @@
           <a href="{% url 'verifiedvehicles' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
         </div>
       </div>
+      
       <!-- ./col -->
       <div class="col-lg-3 col-6">
         <!-- small box -->
@@ -213,6 +224,7 @@
         </div>
       </div>
       <!-- ./col -->
+      {% if request.user.is_admin or request.user.is_superuser or request.user.is_attendant %}
       <div class="col-lg-3 col-6">
         <!-- small box -->
         <div class="small-box bg-info">
@@ -233,6 +245,7 @@
           {% include 'partials/_searchRecords.html' %}
         </div>
       </div>
+      {%endif%}
       <!-- ./col -->
 
       <div class="col-12">

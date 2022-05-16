@@ -12,6 +12,7 @@
         </a>
       </li>
       <!-- users -->
+      {% if request.user.is_admin or request.user.is_superuser %}
       <li class="nav-item has-treeview">
         <a href="{% url 'customers' %}" class="nav-link">
           <i class="nav-icon fas fa-users"></i>
@@ -42,6 +43,7 @@
           
         </ul>
       </li>
+      {%endif%}
       <!-- /users -->
 
        <!-- vehicles -->

@@ -286,6 +286,8 @@ def unverifiedVehicles(request):
     ## admin
     if request.user.is_admin:
         vehicles = Vehicle.objects.filter(user__unit = request.user.unit,approval_status=False)
+    elif request.user.is_customer:
+        vehicles = Vehicle.objects.filter(user= request.user,approval_status=False)
 
     return render(request, 'vehicles/unverifiedVehicles.html', {'vehicles':vehicles})
 
@@ -296,6 +298,8 @@ def verifiedVehicles(request):
     # admin
     if request.user.is_admin:
         vehicles = Vehicle.objects.filter(user__unit = request.user.unit,approval_status=True)
+    elif request.user.is_customer:
+        vehicles = Vehicle.objects.filter(user= request.user,approval_status=True)
 
     return render(request, 'vehicles/verifiedVehicles.html', {'vehicles':vehicles, 'target':'veh_verified'})
 
