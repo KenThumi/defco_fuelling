@@ -543,7 +543,10 @@ def getReviews(request):
     # admin
     if request.user.is_admin:
         reviews = Review.objects.filter(transaction__station=request.user.station).all()
-    
+    elif request.user.is_customer:
+        reviews = Review.objects.filter(user=request.user).all()
+
+
     form = ReplyForm()
 
     return render(request, 'reviews/reviews.html', {'reviews':reviews, 'form':form, 'target':'reviews'})
@@ -555,6 +558,8 @@ def getSpecificReviews(request, review):
     # admin
     if request.user.is_admin:
         reviews = Review.objects.filter(review_type=review, transaction__station=request.user.station).all()
+    elif request.user.is_customer:
+        reviews = Review.objects.filter(user=request.user,review_type=review,).all()
 
 
     form = ReplyForm()
