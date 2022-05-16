@@ -836,9 +836,6 @@ def searchDateRanges(request, target ):
             messages.error(request,'From date cannot be earlier than To date')
             return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
         
-        # to a manipulatable str >> for model querying
-        # from_date = from_date.strftime('%Y-%m-%d')
-        # to_date = to_date.strftime('%Y-%m-%d')
 
         # if search is on customers
         if target == 'customers':
@@ -873,7 +870,9 @@ def searchDateRanges(request, target ):
             # admin
             if request.user.is_admin:
                 vehicles = Vehicle.objects.filter(user__unit=request.user.unit,vehicleapproval__created_at__gte = from_date,vehicleapproval__created_at__lte = to_date,approval_status=True)
-            
+            elif request.user.is_customer:
+                vehicles = Vehicle.objects.filter(user=request.user,vehicleapproval__created_at__gte = from_date,vehicleapproval__created_at__lte = to_date,approval_status=True)
+
             return render(request, 'vehicles/verifiedVehicles.html', {'vehicles':vehicles, 'target':'veh_verified'})
         # if search is 'replenishes
         elif target == 'replenishes':
@@ -887,13 +886,16 @@ def searchDateRanges(request, target ):
                     replenishes = ''
 
             return render(request, 'replenishments.html', {'replenishes':replenishes, 'target':'replenishes'})
+        
         # if search is transactions
         elif target == 'transactions':
             transactions = Transaction.objects.filter(date__gte = from_date, date__lte = to_date).all()
              # admin
             if request.user.is_admin: # 
                 transactions = Transaction.objects.filter(station__admin =request.user,date__gte = from_date, date__lte = to_date).all()
-            
+            elif request.user.is_customer:
+                transactions = Transaction.objects.filter(vehicle__user =request.user,date__gte = from_date, date__lte = to_date).all()
+
             return render(request,'records/transactions.html', {'transactions':transactions,'target':'transactions'})
         # if search is dailyrecords
         elif target == 'dailyrecords':
@@ -909,7 +911,10 @@ def searchDateRanges(request, target ):
              # admin
             if request.user.is_admin:
                 reviews = Review.objects.filter(transaction__station=request.user.station,created_at__gte = from_date, created_at__lte = to_date).all()
-            
+            elif request.user.is_customer:
+                reviews = Review.objects.filter(user=request.user,created_at__gte = from_date, created_at__lte = to_date).all()
+
+
             form = ReplyForm()
 
             return render(request, 'reviews/reviews.html', {'reviews':reviews, 'form':form, 'target':'reviews'})
@@ -919,7 +924,9 @@ def searchDateRanges(request, target ):
             # admin
             if request.user.is_admin:
                 flags = Flag.objects.filter(reported_by__unit=request.user.unit,created_at__gte = from_date, created_at__lte = to_date).all()
-            
+            elif request.user.is_customer:
+                flags = Flag.objects.filter(user=request.user,created_at__gte = from_date, created_at__lte = to_date).all()
+
             return render(request, 'flags/allFlags.html', {'flags':flags, 'target':'flags'})
 
     #if no results

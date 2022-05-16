@@ -98,12 +98,14 @@
                                             </blockquote>
                                             <!-- / blockquote -->
                                             <hr>
+                                            {% if request.user.is_admin or request.user.is_superuser %}
                                             <!-- chat -->
                                             
                                                 {% include 'reviews/_replies.html' %}
                                             
                                             <!-- / chat -->
                                             <!-- bottom -->
+                                            
                                             <div class="float-md-right">
                                                 {% if not review.is_read %}
                                                 <a href="{% url 'setreviewread' review.id %}" class="btn btn-sm btn-outline-success btn-flat mr-2">
@@ -114,6 +116,7 @@
                                                     Trash
                                                 </a>
                                             </div>
+                                            {%endif%}
                                             <!-- /bottom -->
                                         </div>
                                     
