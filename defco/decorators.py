@@ -47,12 +47,25 @@ def admin_or_superuser(view_func):
     def wrapper_func(request, *args, **kwargs):
 
         if not request.user.is_superuser and not request.user.is_admin:
-            raise PermissionDenied
-            # return redirect('home')
+            # raise PermissionDenied
+            messages.error(request, 'Insufficient permission.')
+        
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
        
         return view_func(request, *args, **kwargs)
     return wrapper_func
 
+# Action by admin or superadmin or attendant
+def admin_or_superuser_attendant(view_func):
+    def wrapper_func(request, *args, **kwargs):
+
+        if not request.user.is_superuser and not request.user.is_admin and not request.user.is_attendant:
+            messages.error(request, 'Insufficient permission.')
+        
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+       
+        return view_func(request, *args, **kwargs)
+    return wrapper_func
 
 # Check account locked 
 def account_not_locked(view_func):
