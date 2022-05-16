@@ -16,7 +16,7 @@
                         <strong>
                             Reg No.: 
                         </strong>
-                            {{ vehicle.reg_no }}
+                            {{ vehicle.reg_no | upper}}
                     </span>
                     <br>
                     <span>
@@ -89,9 +89,10 @@
             </div>
         </div>
        
-        
-        <!-- <a href="#" class="card-link">Card link</a>
-        <a href="#" class="card-link">Another link</a> -->
+        {% if vehicle.approval_status %}
+         <a href="{% url 'addtransaction' %}" class="btn btn-sm btn-outline-success">Add Transaction</a>
+        <!-- <a href="#" class="card-link">Another link</a> -->
+        {% endif %}
     </div>
 </div>
 

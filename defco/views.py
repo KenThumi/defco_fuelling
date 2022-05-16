@@ -464,6 +464,12 @@ def addTransaction( request ):
     if request.method == 'POST':
         form = TransactionForm(request.POST,  user=request.user)
 
+        veh = Vehicle.objects.get(pk=request.POST.get('vehicle'))
+
+        if not veh.approval_status:
+                messages.error(request, 'Vehicle not verified.')
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
         if form.is_valid():
             transaction = form.save(commit=False)  
             transaction.attendant = request.user #consider having a 1:n relationship in model
