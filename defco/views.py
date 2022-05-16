@@ -736,6 +736,8 @@ def listFlags(request):
 
     if request.user.is_admin:
         flags = Flag.objects.filter(reported_by__unit=request.user.unit).all()
+    elif request.user.is_customer:
+        flags = Flag.objects.filter(user=request.user).all()
 
     return render(request, 'flags/allFlags.html', {'flags':flags, 'target':'flags'})
 
