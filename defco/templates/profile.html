@@ -86,7 +86,7 @@
                           Customer
                           {%endif%}
 
-                          {% if request.user.is_superuser %}
+                          {% if request.user.is_superuser or request.user.is_admin %}
                           <button class="btn btn-sm btn-warning ml-1"   data-toggle="modal" data-target="#modal-roles">
                              
                               <i class="fas fa-edit"></i>

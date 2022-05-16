@@ -76,7 +76,8 @@ units = [
     ('KACA','KACA'),
     ('SOS','SOS'),
     ('HQ KACS','HQ KACS'),
-    ('CTS','CTS')
+    ('CTS','CTS'),
+    ('MOD','MOD')
 ]
 
 class UserRegisterForm(UserCreationForm):

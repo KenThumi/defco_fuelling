@@ -1,0 +1,73 @@
+{%extends 'base.html'%}
+
+{% block content %}
+{{ block.super }}
+ <!-- Content Header (Page header) -->
+ <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Customers</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Attendants</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+  <!-- Main content -->
+<section class="content">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Table below shows all {{ request.user.station }} Fuel Station attendants.</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <table id="example1" class="table table-bordered table-hover">
+              <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Name</th>
+                <th>Service No.</th>
+                <th>Username</th>
+                <th>Unit</th>
+              </tr>
+              </thead>
+              <tbody>
+                  {%for user in attendants%}
+                    <tr>
+                        <td>{{ user.rank | title }}</td>
+                        <td>{{ user.name | title}}</td>
+                        <td>{{ user.svc_no }}</td>
+                        <td>
+                            <a href="/user/{{user.id}}">
+                                {{ user.username | title}}
+                            </a>
+                        </td>
+                        <td>{{ user.unit | title }}</td>
+                    </tr>
+                  {%endfor%}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th>Service No.</th>
+                        <th>Username</th>
+                        <th>Unit</th>
+                      </tr>
+                </tfoot>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+    </div><!-- Main content -->
+</section>
+{%endblock%}

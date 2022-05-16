@@ -20,6 +20,7 @@ urlpatterns = [
     path('unlock/<int:id>', views.unlock, name='unlock'),
     path('editprofile/<int:id>', views.editProfile, name='editprofile'),
     path('updaterole/<int:id>', views.updateRole, name='updaterole'),
+    path('getattendants/', views.getAttendants, name='getattendants'),
 
     # vehicles
     path('insertvehicle/', views.insertVehicle, name='insertvehicle'),

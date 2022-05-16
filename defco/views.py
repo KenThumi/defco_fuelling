@@ -1,6 +1,6 @@
 from main.settings import BASE_URL
 from django.http import HttpResponseRedirect
-from defco.models import DailyLitreRecord, Flag, FuelReplenish, Price, QrCode, Review, Search, Station, Transaction, User, UserApproval, UserLock, Vehicle, VehicleApproval
+from defco.models import Attendant, DailyLitreRecord, Flag, FuelReplenish, Price, QrCode, Review, Search, Station, Transaction, User, UserApproval, UserLock, Vehicle, VehicleApproval
 from defco.decorators import _user, account_activated, account_not_locked, admin_or_superuser, profile_user, superuser, unauthenticated_user
 from defco.forms import DailyRecordForm, EditVehicleForm, FlagForm, PriceForm, ProfileEditForm, ReplenishForm, ReplyForm, ReviewForm, StationForm, TransactionForm, UserRegisterForm, VehicleForm
 from django.shortcuts import get_object_or_404, redirect, render
@@ -346,7 +346,7 @@ def editVehicle(request,id):
     return render(request, 'insertVehicle.html', {'form':v_form, 'btn_label':'Update'})
 
 
-
+@superuser
 def addStation(request):
     form = StationForm()
 
@@ -839,10 +839,66 @@ def updateRole(request, id):
         try:
             User.objects.filter(pk=id).update(is_admin= bool(admin), is_attendant= bool(attendant), is_customer= bool(customer))
             
+            # for attendant update attendant model
+            #addAttendant(request.user.station, User.objects.get(pk=id))
+            # print(request.user.station)
+
             messages.success(request, 'Roles updated successfully.')
         except:
-            messages.error(request, 'Something went wrong')
+            messages.error(request, 'Something went wrong updating roles.')
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
+#add station attendant
+# @login_required
+# @admin_or_superuser
+# def addAttendant(request,stn,usr):
+    # stn = Station.objects.get(pk=stn)
+    # usr = User.objects.get(pk=userid)
+   # Attendant.objects.create(station=stn, user=usr)
 
+    # try:
+    #     Attendant.objects.create(station=stn, user=usr)
+
+    #     messages.success(request, 'Attendant successfully added.')
+    #     #redirect
+    # except:
+    #     messages.error(request, 'Something went wrong while adding attendant.')
+
+    # return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+# getAttendants
+@login_required
+@admin_or_superuser
+def getAttendants(request):
+    attendants = User.objects.filter(is_attendant=True)
+
+    # if admin 
+    if request.user.is_admin:
+        attendants = User.objects.filter(unit = request.user.unit,is_attendant=True)
+
+    return render(request, 'attendants.html', {'attendants':attendants})
+
+
+
+
+
+
+
+
+
+
+
+
+# getAttendants
+# @login_required
+# @admin_or_superuser
+# def delAttendant(request,id):
+#     try:
+#         Attendant.objects.get(pk=id).delete()
+#         messages.success(request, 'Attendant successfully deleted.')
+#         #redirect
+#     except:
+#         messages.error(request, 'Something went wrong.')
+
+#     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))

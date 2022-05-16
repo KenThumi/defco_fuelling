@@ -235,3 +235,12 @@ class UserLock(models.Model):
 
     def __repr__(self):
         return self.user
+
+#station attendants
+class Attendant(models.Model):
+    user = models.ForeignKey(User,related_name='attendants',on_delete=models.CASCADE, default=False)
+    station = models.ForeignKey(Station,related_name='attendants',on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __repr__(self):
+        return self.user+' station: '+self.station
