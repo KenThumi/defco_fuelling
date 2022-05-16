@@ -718,6 +718,7 @@ def eraseFlag(request, id):
 
 
 #add daily records
+@admin_has_station
 def addDailyRecords(request):
 
     form = DailyRecordForm(
@@ -728,8 +729,14 @@ def addDailyRecords(request):
 
     if request.method == 'POST':
         form = DailyRecordForm(request.POST)
-        # print(request.POST)
-        # return
+        
+        # check if its actual station admin
+        station_id = request.POST.get('station')
+        if not request.user.station == station_id:
+            messages.error(request, 'You are not assigned this station.')           
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+
         if form.is_valid():
             form.save()  
 
