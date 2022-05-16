@@ -1,7 +1,7 @@
 from main.settings import BASE_URL
 from django.http import HttpResponseRedirect
 from defco.models import Attendant, DailyLitreRecord, Flag, FuelReplenish, Price, QrCode, Review, Search, Station, Transaction, User, UserApproval, UserLock, Vehicle, VehicleApproval
-from defco.decorators import _user, account_activated, account_not_locked, admin_or_superuser, profile_user, superuser, unauthenticated_user
+from defco.decorators import _user, account_activated, account_not_locked, admin_has_station, admin_or_superuser, profile_user, station_admin, superuser, unauthenticated_user
 from defco.forms import DailyRecordForm, EditVehicleForm, FlagForm, PriceForm, ProfileEditForm, ReplenishForm, ReplyForm, ReviewForm, StationForm, TransactionForm, UserRegisterForm, VehicleForm
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
@@ -363,7 +363,7 @@ def addStation(request):
 
     return render(request, 'addstation.html', {'form':form, 'btn_lbl':'Add'})
 
-
+@superuser
 def editStation(request,id):
     station = Station.objects.get(pk=id)
 
@@ -384,6 +384,13 @@ def editStation(request,id):
 def replenishments(request):
     replenishes = FuelReplenish.objects.all()
 
+    ## admin
+    if request.user.is_admin:
+        try:
+            replenishes = FuelReplenish.objects.filter(station=request.user.station).all()
+        except:
+            replenishes = ''
+
     return render(request, 'replenishments.html', {'replenishes':replenishes, 'target':'replenishes'})
 
 
@@ -393,9 +400,13 @@ def stations(request):
 
     return render(request, 'stations.html', { 'stations':stations })
 
-
+@admin_has_station
 def replenish(request):
-    form = ReplenishForm()
+    form = ReplenishForm(
+                            initial = {
+                                    'station':request.user.station
+                            }
+                        )
 
     if request.method == 'POST':
         form = ReplenishForm(request.POST)
@@ -411,7 +422,7 @@ def replenish(request):
     return render(request, 'replenish.html', {'form':form, 'btn_lbl':'Add'})
 
 
-
+@admin_has_station
 def editReplenish(request,id):
     replenish = FuelReplenish.objects.get(pk=id)
     form = ReplenishForm(instance=replenish)
@@ -605,6 +616,7 @@ def recordSearch(request,id):
 
 
 # close / open station
+@station_admin
 def switchStationStatus(request, id):
 
     dt = datetime.today()

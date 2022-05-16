@@ -61,14 +61,19 @@
                             <td>
                                 {% if station.isOpen and station.open %}
                                    Yes
+
+                                   {% if request.user.is_admin or request.user.is_superuser %}
                                    <a href="{% url 'switchstationstatus' station.id %}" class="float-right"   onclick="return confirm('Confirm shutting down station?');">
                                     <i class="fas fa-lock text-warning"></i>
                                    </a>
+                                   {% endif %}
                                 {% else %}
                                     No
+                                    {% if request.user.is_admin or request.user.is_superuser  %}
                                     <a href="{% url 'switchstationstatus' station.id %}" class="float-right"   onclick="return confirm('Confirm opening station?');">
                                         <i class="fas fa-unlock text-success"></i>
                                        </a>
+                                    {% endif %}
                                 {%endif%}
                             </td>
                             <td>

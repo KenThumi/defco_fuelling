@@ -1,4 +1,4 @@
-from defco.models import Vehicle
+from defco.models import Station, Vehicle
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.core.exceptions import PermissionDenied
@@ -100,5 +100,50 @@ def _user(view_func):
         
             return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
        
+        return view_func(request, *args, **kwargs)
+    return wrapper_func
+
+
+#check if admin has a station
+def admin_has_station(view_func):
+    def wrapper_func(request, *args, **kwargs):
+
+        try:
+            request.user.station
+        except:
+            messages.error(request, 'You are not assigned any station yet.')           
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+        
+       
+        return view_func(request, *args, **kwargs)
+    return wrapper_func
+
+
+# checks the real station admin
+def station_admin(view_func):
+    def wrapper_func(request, *args, **kwargs):
+      
+        # super admit not allowed to insert/edit vehicle
+        if request.user.is_admin:
+            id = kwargs.get('id')
+
+            station = Station.objects.get(pk=id)
+            
+            try:
+                if request.user.station ==station:
+                    pass
+                else:
+                     messages.error(request, ' You are not assigned this station.')
+                     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+                     
+            except:
+                messages.error(request, ' You are not assigned any station yet.')
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+        
+            
+        else:
+            messages.error(request, 'Permission denied.')           
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+        
         return view_func(request, *args, **kwargs)
     return wrapper_func
