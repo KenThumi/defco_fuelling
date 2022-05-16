@@ -107,12 +107,12 @@ def _user(view_func):
 #check if admin has a station
 def admin_has_station(view_func):
     def wrapper_func(request, *args, **kwargs):
-
-        try:
-            request.user.station
-        except:
-            messages.error(request, 'You are not assigned any station yet.')           
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+        if request.user.is_admin:
+            try:
+                request.user.station
+            except:
+                messages.error(request, 'You are not assigned any station yet.')           
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
         
        
         return view_func(request, *args, **kwargs)
@@ -135,7 +135,7 @@ def station_admin(view_func):
                 else:
                      messages.error(request, ' You are not assigned this station.')
                      return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
-                     
+
             except:
                 messages.error(request, ' You are not assigned any station yet.')
                 return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))

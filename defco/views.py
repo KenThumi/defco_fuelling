@@ -732,7 +732,8 @@ def addDailyRecords(request):
         
         # check if its actual station admin
         station_id = request.POST.get('station')
-        if not request.user.station == station_id:
+    
+        if int(request.user.station.id) != int(station_id):
             messages.error(request, 'You are not assigned this station.')           
             return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
@@ -747,8 +748,13 @@ def addDailyRecords(request):
 
 
 # getDailyRecords
+@admin_has_station
 def getDailyRecords(request):
     records = DailyLitreRecord.objects.all()
+
+    # admin
+    if request.user.is_admin:
+        records = DailyLitreRecord.objects.filter(station=request.user.station).all()
 
     return render(request, 'records/dailyreadings.html', {'records':records, 'target':'dailyrecords'} )
 
