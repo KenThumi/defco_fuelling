@@ -59,7 +59,7 @@
                     <tbody class="big-table-font">
                         {% for transaction in transactions %}
                             <tr>
-                                <td>{{ transaction.vehicle }}</td>
+                                <td>{{ transaction.vehicle | upper}}</td>
                                 <td>{{ transaction.litres }}</td>
                                 <td>{{ transaction.amount }}</td>
                                 <td>{{ transaction.station }}</td>

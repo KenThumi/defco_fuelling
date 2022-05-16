@@ -450,6 +450,10 @@ def getTransactions(request):
 
     transactions = Transaction.objects.all()
 
+    # admin 
+    if request.user.is_admin:
+        transactions = Transaction.objects.filter(station__admin =request.user ).all()
+
     return render(request,'records/transactions.html', {'transactions':transactions,'target':'transactions'})
 
 
@@ -466,6 +470,7 @@ def addTransaction( request ):
 
         veh = Vehicle.objects.get(pk=request.POST.get('vehicle'))
 
+        # check if vehicle is verified
         if not veh.approval_status:
                 messages.error(request, 'Vehicle not verified.')
                 return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
