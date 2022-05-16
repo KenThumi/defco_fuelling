@@ -421,7 +421,7 @@ def replenish(request):
 
     return render(request, 'replenish.html', {'form':form, 'btn_lbl':'Add'})
 
-
+@admin_or_superuser
 @admin_has_station
 def editReplenish(request,id):
     replenish = FuelReplenish.objects.get(pk=id)
@@ -456,7 +456,7 @@ def getTransactions(request):
 
     return render(request,'records/transactions.html', {'transactions':transactions,'target':'transactions'})
 
-
+@admin_or_superuser
 def addTransaction( request ):
 
     form = TransactionForm(initial={
@@ -492,7 +492,7 @@ def addTransaction( request ):
     return render(request, 'records/addtransaction.html', {'form':form})
 
 
-
+@admin_or_superuser
 def editTransaction( request, id ):
     transaction = Transaction.objects.get(pk=id)
 
@@ -533,6 +533,10 @@ def addReview(request, id):
 def getReviews(request):
     reviews = Review.objects.all()#.order_by('-id')
 
+    # admin
+    if request.user.is_admin:
+        reviews = Review.objects.filter(transaction__station=request.user.station).all()
+
     form = ReplyForm()
 
     return render(request, 'reviews/reviews.html', {'reviews':reviews, 'form':form, 'target':'reviews'})
@@ -541,12 +545,24 @@ def getReviews(request):
 def getSpecificReviews(request, review):
     reviews = Review.objects.filter(review_type=review)#.order_by('-id')
 
+    # admin
+    if request.user.is_admin:
+        reviews = Review.objects.filter(review_type=review, transaction__station=request.user.station).all()
+
+
     form = ReplyForm()
 
     return render(request, 'reviews/reviews.html', {'reviews':reviews, 'form':form, 'target':'None'})
 
 
 def setReviewRead(request,id):
+    # check if the right admin in charge of station on focus
+    review = Review.objects.get(pk=id)
+
+    if str(review.transaction.station) != str(request.user.station):
+        messages.error(request, 'Your account is not approved, contact admin.')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
     Review.objects.filter(pk=id).update(is_read=True)
 
     messages.success(request, 'Review marked as read.')

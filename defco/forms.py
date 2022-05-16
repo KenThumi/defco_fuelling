@@ -487,6 +487,8 @@ class ReviewForm(forms.ModelForm):
             'class':'form-control form-control-sm',
         })
 
+        self.fields['reveal_id'].required = False
+
         
         icons = getattr(self.Meta, 'icons', dict())
 
