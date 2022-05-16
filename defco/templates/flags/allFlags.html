@@ -46,14 +46,22 @@
                     <tbody>
                         {%for flag in flags %}
                             <tr>
-                                <td>{{ flag.user.name | title }}</td>
+                                <td>
+                                    <a href="/user/{{flag.user.id}}">
+                                    {{ flag.user.name | title }}
+                                    </a>
+                                </td>
                                 <td>{{ flag.created_at | date:'H:i,d M Y'   }}</td>
                                 <td>
                                     <small>
                                         {{ flag.description }}
                                     </small>
                                 </td>
-                                <td>{{ flag.reported_by.name | title }}</td>
+                                <td>
+                                    <a href="/user/{{flag.reported_by.id}}">
+                                    {{ flag.reported_by.name | title }}
+                                    </a>
+                                </td>
                                 <td>
                                     {{ flag.flagged|yesno:"Yes,No,No" }}
                                 </td>

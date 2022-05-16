@@ -697,6 +697,7 @@ def addPrice(request):
 
 
 # flagging customers ***GET request prone manipulation, consider hidden input
+@admin_or_superuser
 def addFlag(request,id):
     form = FlagForm()
 
@@ -721,10 +722,14 @@ def addFlag(request,id):
 def listFlags(request):
     flags = Flag.objects.all()
 
+    if request.user.is_admin:
+        flags = Flag.objects.filter(reported_by__unit=request.user.unit).all()
+
     return render(request, 'flags/allFlags.html', {'flags':flags, 'target':'flags'})
 
 
 # erase flag
+@admin_or_superuser
 def eraseFlag(request, id):
     Flag.objects.filter(pk=id).update(flagged=False)
 
