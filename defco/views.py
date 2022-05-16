@@ -39,7 +39,7 @@ def home(request):
     if request.user.is_admin:
         flags = Flag.objects.filter(user__unit=request.user.unit,flagged=True).count()
 
-    # ----------------- USERS --------------------------------------------------------
+    # ----------------- USERS --------------------------------------------------------Q
     # users
     # users = User.objects.filter(is_customer=True).exclude(is_superuser=True).count()
     users = User.objects.filter(is_customer=True, is_valid=True, is_locked=False).exclude(is_superuser=True).count()
