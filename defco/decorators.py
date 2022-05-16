@@ -1,4 +1,4 @@
-from defco.models import Station, Vehicle
+from defco.models import Station, Transaction, Vehicle
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.core.exceptions import PermissionDenied
@@ -145,5 +145,39 @@ def station_admin(view_func):
             messages.error(request, 'Permission denied.')           
             return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
         
+        return view_func(request, *args, **kwargs)
+    return wrapper_func
+
+
+#check if admin has a station
+def owns_transaction(view_func):
+    def wrapper_func(request, *args, **kwargs):
+
+        trans_id = kwargs.get('id')
+
+        trans = Transaction.objects.get(pk=trans_id)
+
+        if request.user != trans.vehicle.user:
+            messages.error(request, 'Permission denied. You cant review for other user.')           
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+       
+        return view_func(request, *args, **kwargs)
+    return wrapper_func
+
+
+#check if admin has a station
+def attendant_transaction(view_func):
+    def wrapper_func(request, *args, **kwargs):
+
+        trans_id = kwargs.get('id')
+
+        trans = Transaction.objects.get(pk=trans_id)
+
+        if request.user != trans.attendant:
+            messages.error(request, 'Permission denied. You cant edit other attendants transaction.')           
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+       
         return view_func(request, *args, **kwargs)
     return wrapper_func

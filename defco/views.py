@@ -1,7 +1,7 @@
 from main.settings import BASE_URL
 from django.http import HttpResponseRedirect
 from defco.models import Attendant, DailyLitreRecord, Flag, FuelReplenish, Price, QrCode, Review, Search, Station, Transaction, User, UserApproval, UserLock, Vehicle, VehicleApproval
-from defco.decorators import _user, account_activated, account_not_locked, admin_has_station, admin_or_superuser, profile_user, station_admin, superuser, unauthenticated_user
+from defco.decorators import _user, account_activated, account_not_locked, admin_has_station, admin_or_superuser, attendant_transaction, owns_transaction, profile_user, station_admin, superuser, unauthenticated_user
 from defco.forms import DailyRecordForm, EditVehicleForm, FlagForm, PriceForm, ProfileEditForm, ReplenishForm, ReplyForm, ReviewForm, StationForm, TransactionForm, UserRegisterForm, VehicleForm
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
@@ -493,6 +493,7 @@ def addTransaction( request ):
 
 
 @admin_or_superuser
+@attendant_transaction
 def editTransaction( request, id ):
     transaction = Transaction.objects.get(pk=id)
 
@@ -511,7 +512,7 @@ def editTransaction( request, id ):
 
     return render(request, 'records/addtransaction.html', {'form':form})
 
-
+@owns_transaction
 def addReview(request, id):
     form = ReviewForm()
 
@@ -816,48 +817,83 @@ def searchDateRanges(request, target ):
         # if search is on customers
         if target == 'customers':
             users = User.objects.filter(date_joined__gte = from_date, date_joined__lte = to_date,is_valid=True, is_locked=False).exclude(is_superuser=True)#.latest('date_joined')
-        
+            
+            # admin
+            if request.user.is_admin:
+                users = User.objects.filter(unit=request.user.unit,date_joined__gte = from_date, date_joined__lte = to_date,is_valid=True, is_locked=False).exclude(is_superuser=True)#.latest('date_joined')
+
             return render(request, 'customers.html', {'users':users, 'target':'customers'})
         # if search is on newapplications
         elif target == 'newapplications':
             users = User.objects.filter(date_joined__gte = from_date, date_joined__lte = to_date,is_valid=False).exclude(is_superuser=True)
-    
+
+             # admin
+            if request.user.is_admin:
+                users = User.objects.filter(unit=request.user.unit,date_joined__gte = from_date, date_joined__lte = to_date,is_valid=False).exclude(is_superuser=True)
+
             return render(request, 'newapplications.html', {'users':users, 'target':'newapplications'})
         # if search is 'locked' - mean filter by time when users were locked
         elif target == 'locked':
             users = User.objects.filter(userlock__created_at__gte = from_date,userlock__created_at__lte =to_date,is_locked=True).exclude(is_superuser=True)
     
+            # admin
+            if request.user.is_admin:
+                users = User.objects.filter(unit=request.user.unit,userlock__created_at__gte = from_date,userlock__created_at__lte =to_date,is_locked=True).exclude(is_superuser=True)
+
             return render(request, 'locked.html', {'users':users, 'target':'locked'})
         # if search is 'veh_verified' - mean filter by time when veh were verfified/approved
         elif target =='veh_verified':
             vehicles = Vehicle.objects.filter(vehicleapproval__created_at__gte = from_date,vehicleapproval__created_at__lte = to_date,approval_status=True)
-
+            # admin
+            if request.user.is_admin:
+                vehicles = Vehicle.objects.filter(user__unit=request.user.unit,vehicleapproval__created_at__gte = from_date,vehicleapproval__created_at__lte = to_date,approval_status=True)
+            
             return render(request, 'vehicles/verifiedVehicles.html', {'vehicles':vehicles, 'target':'veh_verified'})
         # if search is 'replenishes
         elif target == 'replenishes':
             replenishes = FuelReplenish.objects.filter(created_at__gte = from_date, created_at__lte = to_date).all()
 
+             # admin
+            if request.user.is_admin:
+                try:
+                    replenishes = FuelReplenish.objects.filter(station=request.user.station, created_at__gte = from_date, created_at__lte = to_date).all()
+                except:
+                    replenishes = ''
+
             return render(request, 'replenishments.html', {'replenishes':replenishes, 'target':'replenishes'})
         # if search is transactions
         elif target == 'transactions':
             transactions = Transaction.objects.filter(date__gte = from_date, date__lte = to_date).all()
-
+             # admin
+            if request.user.is_admin: # 
+                transactions = Transaction.objects.filter(station__admin =request.user,date__gte = from_date, date__lte = to_date).all()
+            
             return render(request,'records/transactions.html', {'transactions':transactions,'target':'transactions'})
         # if search is dailyrecords
         elif target == 'dailyrecords':
             records = DailyLitreRecord.objects.filter(created_at__gte = from_date, created_at__lte = to_date).all()
-
+             # admin
+            if request.user.is_admin:
+                records = DailyLitreRecord.objects.filter(station=request.user.station,created_at__gte = from_date, created_at__lte = to_date).all()
+            
             return render(request, 'records/dailyreadings.html', {'records':records, 'target':'records'} )
         # search reviews,
         elif target == 'reviews':
             reviews = Review.objects.filter(created_at__gte = from_date, created_at__lte = to_date).all()
-
+             # admin
+            if request.user.is_admin:
+                reviews = Review.objects.filter(transaction__station=request.user.station,created_at__gte = from_date, created_at__lte = to_date).all()
+            
             form = ReplyForm()
 
             return render(request, 'reviews/reviews.html', {'reviews':reviews, 'form':form, 'target':'reviews'})
+        # search flags
         elif target == 'flags':
             flags = Flag.objects.filter(created_at__gte = from_date, created_at__lte = to_date).all()
-
+            # admin
+            if request.user.is_admin:
+                flags = Flag.objects.filter(reported_by__unit=request.user.unit,created_at__gte = from_date, created_at__lte = to_date).all()
+            
             return render(request, 'flags/allFlags.html', {'flags':flags, 'target':'flags'})
 
     #if no results
