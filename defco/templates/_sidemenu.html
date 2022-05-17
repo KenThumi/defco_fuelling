@@ -3,7 +3,7 @@
       <!-- Add icons to the links using the .nav-icon class
            with font-awesome or any other icon font library -->
       <li class="nav-item has-treeview menu-open">
-        <a href="/" class="nav-link active">
+        <a href="/" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %} nav-link">
           <i class="nav-icon fas fa-tachometer-alt"></i>
           <p>
             Dashboard
@@ -13,8 +13,8 @@
       </li>
       <!-- users -->
       {% if request.user.is_admin or request.user.is_superuser %}
-      <li class="nav-item has-treeview">
-        <a href="{% url 'customers' %}" class="nav-link">
+      <li class="nav-item has-treeview ">
+        <a href="{% url 'customers' %}" class="{% if 'customers' in request.path %}active{% endif %} nav-link">
           <i class="nav-icon fas fa-users"></i>
           <p>
             Customers
@@ -23,19 +23,19 @@
         </a>
         <ul class="nav nav-treeview" style="display: none;">
           <li class="nav-item">
-            <a href="{% url 'customers' %}" class="nav-link">
+            <a href="{% url 'customers' %}" class="{% if request.resolver_match.url_name == 'customers' %}active{% endif %} nav-link">
               <i class="far fa-circle nav-icon text-success"></i>
               <p>Customers</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="{% url 'newapplications' %}" class="nav-link">
+            <a href="{% url 'newapplications' %}" class="{% if request.resolver_match.url_name == 'newapplications' %}active{% endif %} nav-link">
               <i class="far fa-circle nav-icon text-info"></i>
               <p>New Applications</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="{% url 'lockusers' %}" class="nav-link">
+            <a href="{% url 'lockusers' %}" class="nav-link {% if request.resolver_match.url_name == 'lockusers' %}active{% endif %}">
               <i class="far fa-circle nav-icon text-warning"></i>
               <p>Locked</p>
             </a>
@@ -48,7 +48,7 @@
 
        <!-- vehicles -->
        <li class="nav-item has-treeview">
-        <a href="#" class="nav-link">
+        <a href="#" class="nav-link {% if 'vehicles' in request.path %}active{% endif %}">
           <i class="nav-icon fas fa-car"></i>
           <p>
             Vehicles
@@ -57,13 +57,13 @@
         </a>
         <ul class="nav nav-treeview" style="display: none;">
           <li class="nav-item">
-            <a href="{% url 'verifiedvehicles'%}" class="nav-link">
+            <a href="{% url 'verifiedvehicles' %}" class="nav-link {% if request.resolver_match.url_name == 'verifiedvehicles' %}active{% endif %}">
               <i class="far fa-circle nav-icon text-success"></i>
               <p>Verified</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="{% url 'unverifiedvehicles' %}" class="nav-link">
+            <a href="{% url 'unverifiedvehicles' %}" class="nav-link {% if request.resolver_match.url_name == 'unverifiedvehicles' %}active{% endif %}">
               <i class="far fa-circle nav-icon text-info"></i>
               <p>Unverified</p>
             </a>
@@ -75,7 +75,7 @@
 
       <!-- fuel point -->
       <li class="nav-item has-treeview">
-        <a href="#" class="nav-link">
+        <a href="#" class="nav-link  {% if 'fuelpoint' in request.get_full_path %}active{% endif %}">
           <i class="nav-icon fas fa-gas-pump"></i>
           <p>
             Fuel Point
@@ -85,34 +85,34 @@
         <ul class="nav nav-treeview" style="display: none;">
           
           <li class="nav-item">
-            <a href="{% url 'stations' %}" class="nav-link">
+            <a href="{% url 'stations' %}" class="nav-link {% if request.resolver_match.url_name == 'stations' %}active{% endif %}">
               <i class="far fa-circle nav-icon text-info"></i>
               <p>Fuel Stations</p>
             </a>
           </li>
           {% if request.user.is_admin or request.user.is_superuser or request.user.is_attendant %}
           <li class="nav-item">
-            <a href="{% url 'replenishments' %}" class="nav-link">
+            <a href="{% url 'replenishments' %}" class="nav-link {% if request.resolver_match.url_name == 'replenishments' %}active{% endif %}">
               <i class="far fa-circle nav-icon text-info"></i>
               <p>Replenishment</p>
             </a>
           </li>
           {%endif%}
           <li class="nav-item">
-            <a href="{% url 'transactions' %}" class="nav-link">
+            <a href="{% url 'transactions' %}" class="nav-link {% if request.resolver_match.url_name == 'transactions' %}active{% endif %}">
               <i class="far fa-circle nav-icon text-info"></i>
               <p>Fueling Transactions</p>
             </a>
           </li>
           {% if request.user.is_admin or request.user.is_superuser or request.user.is_attendant %}
           <li class="nav-item">
-            <a href="{% url 'dailyrecords' %}" class="nav-link">
+            <a href="{% url 'dailyrecords' %}" class="nav-link {% if request.resolver_match.url_name == 'dailyrecords' %}active{% endif %}">
               <i class="far fa-circle nav-icon text-info"></i>
               <p>Daily Records</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="{% url 'getattendants' %}" class="nav-link">
+            <a href="{% url 'getattendants' %}" class="nav-link {% if request.resolver_match.url_name == 'getattendants' %}active{% endif %}">
               <i class="far fa-circle nav-icon text-info"></i>
               <p>Attendants</p>
             </a>
@@ -124,7 +124,7 @@
 
       <!-- reviews  -->
       <li class="nav-item has-treeview">
-        <a href="#" class="nav-link">
+        <a href="#" class="nav-link  {% if 'reviews' in request.get_full_path %}active{% endif %}">
           <i class="nav-icon fas fa-comments"></i>
           <p>
             Reviews
@@ -133,25 +133,25 @@
         </a>
         <ul class="nav nav-treeview" style="display: none;">
           <li class="nav-item">
-            <a href="{% url 'getreviews' %}" class="nav-link">
+            <a href="{% url 'getreviews' %}" class="nav-link {% if request.resolver_match.url_name == 'getreviews' %}active{% endif %}">
               <i class="far fa-circle nav-icon text-info"></i>
               <p>All</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="{% url 'getspecificreviews' 'complaint' %}" class="nav-link">
+            <a href="{% url 'getspecificreviews' 'complaint' %}" class="nav-link {% if 'complaint' in request.get_full_path %}active{% endif %}">
               <i class="far fa-circle nav-icon text-danger"></i>
               <p>Complains</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="{% url 'getspecificreviews' 'comment' %}" class="nav-link">
+            <a href="{% url 'getspecificreviews' 'comment' %}" class="nav-link {% if 'comment' in request.get_full_path  %}active{% endif %}">
               <i class="far fa-circle nav-icon text-warning"></i>
               <p>Comments</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="{% url 'getspecificreviews' 'recommendation' %}" class="nav-link">
+            <a href="{% url 'getspecificreviews' 'recommendation' %}" class="nav-link {% if 'recommendation' in request.get_full_path %}active{% endif %}">
               <i class="far fa-circle nav-icon text-success"></i>
               <p>Recommendations</p>
             </a>
@@ -162,7 +162,7 @@
 
       <!-- flags -->
       <li class="nav-item has-treeview">
-        <a href="{% url 'listflags' %}" class="nav-link">
+        <a href="{% url 'listflags' %}" class="nav-link  {% if 'listflags' in request.get_full_path %}active{% endif %}">
           <i class="nav-icon fas fa-flag"></i>
           <p>
             Flags
