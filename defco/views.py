@@ -271,6 +271,7 @@ def editProfile(request,id):
     return render(request,'registration/updateprofile.html',ctx)
 
 @_user
+@login_required
 def insertVehicle(request):
     form = VehicleForm()
 
@@ -292,7 +293,7 @@ def insertVehicle(request):
 
     return render(request, 'insertVehicle.html',ctx)
 
-
+@login_required
 def unverifiedVehicles(request):
     vehicles = Vehicle.objects.filter(approval_status=False)
 
@@ -304,7 +305,7 @@ def unverifiedVehicles(request):
 
     return render(request, 'vehicles/unverifiedVehicles.html', {'vehicles':vehicles})
 
-
+@login_required
 def verifiedVehicles(request):
     vehicles = Vehicle.objects.filter(approval_status=True)
 
@@ -316,7 +317,8 @@ def verifiedVehicles(request):
 
     return render(request, 'vehicles/verifiedVehicles.html', {'vehicles':vehicles, 'target':'veh_verified'})
 
-
+@login_required
+@admin_or_superuser
 def revokeVehApproval(request, id):
     Vehicle.objects.filter(pk=id).update(approval_status=False)
 
@@ -328,7 +330,8 @@ def revokeVehApproval(request, id):
     return redirect('verifiedvehicles')
 
 
-
+@login_required
+@admin_or_superuser
 def approveVehicle(request, id):
     Vehicle.objects.filter(pk=id).update(approval_status=True)
 
@@ -410,13 +413,14 @@ def replenishments(request):
 
     return render(request, 'replenishments.html', {'replenishes':replenishes, 'target':'replenishes'})
 
-
+@login_required
 def stations(request):
     stations = Station.objects.all()
 
 
     return render(request, 'stations.html', { 'stations':stations })
 
+@login_required
 @admin_has_station
 def replenish(request):
     form = ReplenishForm(
@@ -462,7 +466,7 @@ def editReplenish(request,id):
     return render(request, 'replenish.html', {'form':form, 'btn_lbl':'Update'})
 
 
-
+@login_required
 def getTransactions(request):
 
     transactions = Transaction.objects.all()
@@ -475,7 +479,8 @@ def getTransactions(request):
 
     return render(request,'records/transactions.html', {'transactions':transactions,'target':'transactions'})
 
-@admin_or_superuser
+@login_required
+@admin_or_superuser_attendant
 def addTransaction( request ):
 
     form = TransactionForm(initial={
@@ -510,8 +515,8 @@ def addTransaction( request ):
 
     return render(request, 'records/addtransaction.html', {'form':form})
 
-
-@admin_or_superuser
+@login_required
+@admin_or_superuser_attendant
 @attendant_transaction
 def editTransaction( request, id ):
     transaction = Transaction.objects.get(pk=id)
@@ -531,6 +536,7 @@ def editTransaction( request, id ):
 
     return render(request, 'records/addtransaction.html', {'form':form})
 
+@login_required
 @owns_transaction
 def addReview(request, id):
     form = ReviewForm()
@@ -549,7 +555,7 @@ def addReview(request, id):
 
     return render(request, 'reviews/review.html', {'form':form})
 
-
+@login_required
 def getReviews(request):
     reviews = Review.objects.all()#.order_by('-id')
 
@@ -564,7 +570,7 @@ def getReviews(request):
 
     return render(request, 'reviews/reviews.html', {'reviews':reviews, 'form':form, 'target':'reviews'})
 
-
+@login_required
 def getSpecificReviews(request, review):
     reviews = Review.objects.filter(review_type=review)#.order_by('-id')
 
@@ -579,7 +585,8 @@ def getSpecificReviews(request, review):
 
     return render(request, 'reviews/reviews.html', {'reviews':reviews, 'form':form, 'target':'None'})
 
-
+@login_required
+@admin_or_superuser
 def setReviewRead(request,id):
     # check if the right admin in charge of station on focus
     review = Review.objects.get(pk=id)
@@ -594,6 +601,8 @@ def setReviewRead(request,id):
     
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
+@login_required
+@admin_or_superuser
 def addReply(request,id):
     if request.method == 'POST':
         form = ReplyForm(request.POST)
@@ -609,7 +618,8 @@ def addReply(request,id):
 
 
 # QRCode
-
+@login_required
+@admin_or_superuser_attendant
 def getVehicle(request,id):
     try:
         vehicle = Vehicle.objects.get(pk=id)
@@ -619,6 +629,7 @@ def getVehicle(request,id):
     return render(request, 'vehicles/vehicle.html',{'vehicle':vehicle})
 
 # generateQRCode
+@login_required
 def generateQRCode(request,id):
     qrcode_url= BASE_URL+'/getvehicle/'+str(id)
 
@@ -628,6 +639,8 @@ def generateQRCode(request,id):
 
 
 #verify
+@login_required
+@admin_or_superuser_attendant
 def verifyVehicle(request):
     if request.method == 'POST':
         reg_no = request.POST.get('vehicle','') 
@@ -660,6 +673,8 @@ def verifyVehicle(request):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 # record recent searchs
+@login_required
+@admin_or_superuser_attendant
 def recordSearch(request,id):
     vehicle = Vehicle.objects.get(pk=id)
 
@@ -669,6 +684,7 @@ def recordSearch(request,id):
 
 # close / open station
 @station_admin
+@login_required
 def switchStationStatus(request, id):
 
     dt = datetime.today()
@@ -722,7 +738,8 @@ def addPrice(request):
 
 
 # flagging customers ***GET request prone manipulation, consider hidden input
-@admin_or_superuser
+@admin_or_superuser_attendant
+@login_required
 def addFlag(request,id):
     form = FlagForm()
 
@@ -744,6 +761,7 @@ def addFlag(request,id):
 
 
 # list flags
+@login_required
 def listFlags(request):
     flags = Flag.objects.all()
 
@@ -756,7 +774,8 @@ def listFlags(request):
 
 
 # erase flag
-@admin_or_superuser
+@admin_or_superuser_attendant
+@login_required
 def eraseFlag(request, id):
     Flag.objects.filter(pk=id).update(flagged=False)
 
@@ -766,7 +785,7 @@ def eraseFlag(request, id):
 
 
 #add daily records
-@admin_has_station
+@admin_has_station #****************************************************************
 def addDailyRecords(request):
 
     form = DailyRecordForm(
@@ -797,6 +816,7 @@ def addDailyRecords(request):
 
 # getDailyRecords
 @admin_has_station
+@login_required
 def getDailyRecords(request):
     records = DailyLitreRecord.objects.all()
 
@@ -808,6 +828,8 @@ def getDailyRecords(request):
 
 
 # delete Records
+@login_required
+@admin_or_superuser_attendant
 def delDailrecord(request, id):
     record = DailyLitreRecord.objects.get(pk=id)
 
@@ -820,6 +842,7 @@ def delDailrecord(request, id):
 
 
 # search/filter
+@login_required
 def searchDateRanges(request, target ):
     
     if request.POST:
@@ -956,6 +979,8 @@ def searchDate(request):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 # update user roles
+@login_required
+@admin_or_superuser
 def updateRole(request, id):
     if request.POST:
         admin= request.POST.get('admin')

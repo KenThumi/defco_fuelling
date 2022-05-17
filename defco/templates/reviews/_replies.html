@@ -25,6 +25,7 @@
         {% endfor %}
     {%endif%}
     <div>
+        {% if request.user.is_admin or request.user.is_superuser %}
         <!-- reply form -->
         <form class="form-horizontal" action="{% url 'addreply' id=review.id %}" method="post" enctype="multipart/form-data" >
             <div class="card-body">
@@ -56,5 +57,6 @@
           
           </form>
         <!-- / reply form -->
+        {%endif%}
     </div>
 </div>
