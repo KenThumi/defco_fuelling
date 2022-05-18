@@ -27,9 +27,9 @@
                 <h3 class="card-title">Table below shows all verified vehicles</h3>
 
                 <div class="float-right mx-3">
-                    {% if not request.user.is_superuser %}
+                    {% if not request.user.is_superuser%}
                     <a class="btn btn-success btn-sm" href="{% url 'insertvehicle' %}">
-                        Add Vehicle
+                        Add My Vehicle
                         <i class="fas fa-plus-circle"></i>
                     </a> 
                     {% endif %}
