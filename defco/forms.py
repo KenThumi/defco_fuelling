@@ -328,6 +328,7 @@ class ReplenishForm(forms.ModelForm):
             'required':'',
             'name':'station',
             'type':'select',
+            'disabled':True,
             'class':'form-control form-control-sm',
         })
 

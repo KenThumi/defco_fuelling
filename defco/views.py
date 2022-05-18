@@ -437,6 +437,12 @@ def replenish(request):
 
         if form.is_valid():
             record = form.save(commit=False)
+
+            # forbit zero entry
+            if form.cleaned_data['replenished_amount'] == 0:
+                messages.error(request, 'Replenishment cannot be Zero.')           
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
             record.current_amount = form.cleaned_data['replenished_amount']
             record.save()
 
