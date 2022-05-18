@@ -484,6 +484,7 @@ def getTransactions(request):
 
 @login_required
 @admin_or_superuser_attendant
+@admin_has_station
 def addTransaction( request ):
 
     form = TransactionForm(initial={
