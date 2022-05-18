@@ -201,7 +201,7 @@ def attendant_transaction(view_func):
 
 
 # station has fuel
-@admin_has_station
+# @admin_has_station
 def station_has_fuel(view_func):
     def wrapper_func(request, *args, **kwargs):
 
