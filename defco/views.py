@@ -302,7 +302,7 @@ def unverifiedVehicles(request):
     ## admin
     if request.user.is_admin:
         vehicles = Vehicle.objects.filter(user__unit = request.user.unit,approval_status=False)
-    elif request.user.is_customer:
+    elif request.user.is_customer and not request.user.is_admin and request.user.is_superuser:
         vehicles = Vehicle.objects.filter(user= request.user,approval_status=False)
 
     return render(request, 'vehicles/unverifiedVehicles.html', {'vehicles':vehicles})
