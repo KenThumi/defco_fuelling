@@ -261,7 +261,9 @@ def editProfile(request,id):
             form.save()
 
             messages.success(request, 'Successful edit.')
-            return redirect('customers')
+
+        
+            return redirect('login')
 
         else:
             messages.warning(request, 'Some errors occurred. Check them below.')
