@@ -38,7 +38,7 @@ def home(request):
     ## admin
     if request.user.is_admin:
         flags = Flag.objects.filter(user__unit=request.user.unit,flagged=True).count()
-    elif request.user.is_customer:
+    elif request.user.is_customer and not request.user.is_admin and not request.user.is_superuser:
         flags = Flag.objects.filter(user=request.user,flagged=True).count()
 
     # ----------------- USERS --------------------------------------------------------Q
@@ -69,7 +69,7 @@ def home(request):
     ## admin
     if request.user.is_admin:
         vehicles = Vehicle.objects.filter(user__unit = request.user.unit,approval_status=True).count()
-    elif request.user.is_customer:
+    elif request.user.is_customer and not request.user.is_admin and not request.user.is_superuser:
         vehicles = Vehicle.objects.filter(user = request.user,approval_status=True).count()
 
     # unverifiedvehicles
@@ -77,7 +77,7 @@ def home(request):
     ## admin
     if request.user.is_admin:
         unverifiedvehicles = Vehicle.objects.filter(user__unit = request.user.unit,approval_status=False).count()
-    elif request.user.is_customer:
+    elif request.user.is_customer and not request.user.is_admin and not request.user.is_superuser:
         unverifiedvehicles = Vehicle.objects.filter(user = request.user,approval_status=False).count()
 
     # ----------------- FUEL ------------------------------------------------------------
@@ -98,7 +98,7 @@ def home(request):
     ## admin unread from particular station
     if request.user.is_admin:
         complaints= Review.objects.filter(transaction__station__admin=request.user ,review_type='complaint').count()
-    elif request.user.is_customer:
+    elif request.user.is_customer and not request.user.is_admin and not request.user.is_superuser:
         complaints= Review.objects.filter(user=request.user ,review_type='complaint').count()
 
 
@@ -107,7 +107,7 @@ def home(request):
     ## admin unread from particular station
     if request.user.is_admin:
         recommendations= Review.objects.filter(transaction__station__admin=request.user ,review_type='recommendation').count()
-    elif request.user.is_customer:
+    elif request.user.is_customer and not request.user.is_admin and not request.user.is_superuser:
         recommendations= Review.objects.filter(user=request.user ,review_type='recommendation').count()
 
 
@@ -116,7 +116,7 @@ def home(request):
     ## admin unread from particular station
     if request.user.is_admin:
         comments= Review.objects.filter(transaction__station__admin=request.user ,review_type='comment').count()
-    elif request.user.is_customer:
+    elif request.user.is_customer and not request.user.is_admin and not request.user.is_superuser:
         comments= Review.objects.filter(user=request.user ,review_type='comment').count()
 
 
@@ -125,7 +125,7 @@ def home(request):
     ## admin unread from particular station
     if request.user.is_admin:
         unread= Review.objects.filter(transaction__station__admin=request.user ,is_read=False).count()
-    elif request.user.is_customer:
+    elif request.user.is_customer and not request.user.is_admin and not request.user.is_superuser:
         unread= Review.objects.filter(user=request.user ,is_read=False).count()
 
     # ctx
@@ -302,7 +302,7 @@ def unverifiedVehicles(request):
     ## admin
     if request.user.is_admin:
         vehicles = Vehicle.objects.filter(user__unit = request.user.unit,approval_status=False)
-    elif request.user.is_customer and not request.user.is_admin and request.user.is_superuser:
+    elif request.user.is_customer and not request.user.is_admin and not request.user.is_superuser:
         vehicles = Vehicle.objects.filter(user= request.user,approval_status=False)
 
     return render(request, 'vehicles/unverifiedVehicles.html', {'vehicles':vehicles})
@@ -314,8 +314,9 @@ def verifiedVehicles(request):
     # admin
     if request.user.is_admin:
         vehicles = Vehicle.objects.filter(user__unit = request.user.unit,approval_status=True)
-    elif request.user.is_customer:
+    elif request.user.is_customer and not request.user.is_admin and not request.user.is_superuser:
         vehicles = Vehicle.objects.filter(user= request.user,approval_status=True)
+    
 
     return render(request, 'vehicles/verifiedVehicles.html', {'vehicles':vehicles, 'target':'veh_verified'})
 
@@ -476,7 +477,7 @@ def getTransactions(request):
     # admin 
     if request.user.is_admin:
         transactions = Transaction.objects.filter(station__admin =request.user ).all()
-    elif request.user.is_customer:
+    elif request.user.is_customer and not request.user.is_admin and not request.user.is_superuser:
         transactions = Transaction.objects.filter(vehicle__user =request.user ).all()
 
     return render(request,'records/transactions.html', {'transactions':transactions,'target':'transactions'})
@@ -564,7 +565,7 @@ def getReviews(request):
     # admin
     if request.user.is_admin:
         reviews = Review.objects.filter(transaction__station=request.user.station).all()
-    elif request.user.is_customer:
+    elif request.user.is_customer and not request.user.is_admin and not request.user.is_superuser:
         reviews = Review.objects.filter(user=request.user).all()
 
 
@@ -579,7 +580,7 @@ def getSpecificReviews(request, review):
     # admin
     if request.user.is_admin:
         reviews = Review.objects.filter(review_type=review, transaction__station=request.user.station).all()
-    elif request.user.is_customer:
+    elif request.user.is_customer and not request.user.is_admin and not request.user.is_superuser:
         reviews = Review.objects.filter(user=request.user,review_type=review,).all()
 
 
@@ -769,7 +770,7 @@ def listFlags(request):
 
     if request.user.is_admin:
         flags = Flag.objects.filter(reported_by__unit=request.user.unit).all()
-    elif request.user.is_customer:
+    elif request.user.is_customer and not request.user.is_admin and not request.user.is_superuser:
         flags = Flag.objects.filter(user=request.user).all()
 
     return render(request, 'flags/allFlags.html', {'flags':flags, 'target':'flags'})
@@ -895,7 +896,7 @@ def searchDateRanges(request, target ):
             # admin
             if request.user.is_admin:
                 vehicles = Vehicle.objects.filter(user__unit=request.user.unit,vehicleapproval__created_at__gte = from_date,vehicleapproval__created_at__lte = to_date,approval_status=True)
-            elif request.user.is_customer:
+            elif request.user.is_customer and not request.user.is_admin and not request.user.is_superuser:
                 vehicles = Vehicle.objects.filter(user=request.user,vehicleapproval__created_at__gte = from_date,vehicleapproval__created_at__lte = to_date,approval_status=True)
 
             return render(request, 'vehicles/verifiedVehicles.html', {'vehicles':vehicles, 'target':'veh_verified'})
@@ -918,7 +919,7 @@ def searchDateRanges(request, target ):
              # admin
             if request.user.is_admin: # 
                 transactions = Transaction.objects.filter(station__admin =request.user,date__gte = from_date, date__lte = to_date).all()
-            elif request.user.is_customer:
+            elif request.user.is_customer and not request.user.is_admin and not request.user.is_superuser:
                 transactions = Transaction.objects.filter(vehicle__user =request.user,date__gte = from_date, date__lte = to_date).all()
 
             return render(request,'records/transactions.html', {'transactions':transactions,'target':'transactions'})
@@ -936,7 +937,7 @@ def searchDateRanges(request, target ):
              # admin
             if request.user.is_admin:
                 reviews = Review.objects.filter(transaction__station=request.user.station,created_at__gte = from_date, created_at__lte = to_date).all()
-            elif request.user.is_customer:
+            elif request.user.is_customer and not request.user.is_admin and not request.user.is_superuser:
                 reviews = Review.objects.filter(user=request.user,created_at__gte = from_date, created_at__lte = to_date).all()
 
 
@@ -949,7 +950,7 @@ def searchDateRanges(request, target ):
             # admin
             if request.user.is_admin:
                 flags = Flag.objects.filter(reported_by__unit=request.user.unit,created_at__gte = from_date, created_at__lte = to_date).all()
-            elif request.user.is_customer:
+            elif request.user.is_customer and not request.user.is_admin and not request.user.is_superuser:
                 flags = Flag.objects.filter(user=request.user,created_at__gte = from_date, created_at__lte = to_date).all()
 
             return render(request, 'flags/allFlags.html', {'flags':flags, 'target':'flags'})
