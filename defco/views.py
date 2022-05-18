@@ -1,7 +1,7 @@
 from main.settings import BASE_URL
 from django.http import HttpResponseRedirect
 from defco.models import Attendant, DailyLitreRecord, Flag, FuelReplenish, Price, QrCode, Review, Search, Station, Transaction, User, UserApproval, UserLock, Vehicle, VehicleApproval
-from defco.decorators import _user, account_activated, account_not_locked, admin_has_station, admin_or_superuser, admin_or_superuser_attendant, attendant_transaction, owns_transaction, profile_user, station_admin, superuser, unauthenticated_user
+from defco.decorators import _user, account_activated, account_not_locked, admin_has_station, admin_or_superuser, admin_or_superuser_attendant, attendant_transaction, owns_transaction, profile_user, station_admin, station_has_fuel, superuser, unauthenticated_user
 from defco.forms import DailyRecordForm, EditVehicleForm, FlagForm, PriceForm, ProfileEditForm, ReplenishForm, ReplyForm, ReviewForm, StationForm, TransactionForm, UserRegisterForm, VehicleForm
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
@@ -485,6 +485,7 @@ def getTransactions(request):
 @login_required
 @admin_or_superuser_attendant
 @admin_has_station
+@station_has_fuel
 def addTransaction( request ):
 
     form = TransactionForm(initial={

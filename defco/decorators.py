@@ -198,3 +198,26 @@ def attendant_transaction(view_func):
        
         return view_func(request, *args, **kwargs)
     return wrapper_func
+
+
+# station has fuel
+@admin_has_station
+def station_has_fuel(view_func):
+    def wrapper_func(request, *args, **kwargs):
+
+        try:
+            request.user.station.replenishment
+        except:
+            messages.error(request, 'No fuel')           
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+        replenishment = request.user.station.replenishment.last()
+
+        if replenishment.current_amount == 0:
+            messages.error(request, 'No fuel')           
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+       
+        return view_func(request, *args, **kwargs)
+    return wrapper_func
+
