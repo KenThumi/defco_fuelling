@@ -1,6 +1,6 @@
 from main.settings import BASE_URL
 from django.http import HttpResponseRedirect
-from defco.models import Attendant, DailyLitreRecord, Flag, FuelReplenish, Price, QrCode, Review, Search, Station, Transaction, User, UserApproval, UserLock, Vehicle, VehicleApproval
+from defco.models import Attendant, DailyLitreRecord, Flag, FuelReplenish, Price, QrCd, QrCode, Review, Search, Station, Transaction, User, UserApproval, UserLock, Vehicle, VehicleApproval
 from defco.decorators import _user, account_activated, account_not_locked, admin_has_station, admin_or_superuser, admin_or_superuser_attendant, attendant_transaction, owns_transaction, profile_user, station_admin, station_has_fuel, superuser, unauthenticated_user
 from defco.forms import DailyRecordForm, EditVehicleForm, FlagForm, PriceForm, ProfileEditForm, ReplenishForm, ReplyForm, ReviewForm, StationForm, TransactionForm, UserRegisterForm, VehicleForm
 from django.shortcuts import get_object_or_404, redirect, render
@@ -8,6 +8,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import Http404
 from datetime import  datetime, date, timedelta
+import qrcode
+from PIL import Image, ImageDraw
+from io import BytesIO
+from django.core.files import File
+import cloudinary.uploader
 
 # Create your views here.
 @login_required
@@ -644,10 +649,58 @@ def getVehicle(request,id):
 def generateQRCode(request,id):
     qrcode_url= BASE_URL+'/getvehicle/'+str(id)
 
-    QrCode.objects.create(url=qrcode_url, vehicle=Vehicle.objects.get(pk=id))
+    #Creating an instance of qrcode
+    qr = qrcode.QRCode(version=1,box_size=10,border=5)
+
+    qr.add_data(qrcode_url)
+    qr.make(fit=True)
+    img = qr.make_image(fill='black', back_color='white')
+    buffer=BytesIO()
+    img.save(buffer,"PNG", save=False)
+
+    # QrCode.objects.create(url=qrcode_url, vehicle=Vehicle.objects.get(pk=id))
+    QrCode.objects.create(
+                            url=qrcode_url, 
+                            vehicle=Vehicle.objects.get(pk=id),
+                            image=buffer.getvalue()
+                            # image = img
+                        )
+
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
+#QR Code to Cloudinary
+def generateQRCodeCloudinary(request, id):
+    qrcode_url= BASE_URL+'/getvehicle/'+str(id)
+
+    #Creating an instance of qrcode
+    qr = qrcode.QRCode(version=1,box_size=10,border=5)
+
+    qr.add_data(qrcode_url)
+    qr.make(fit=True)
+    img = qr.make_image(fill='black', back_color='white')
+    buffer=BytesIO()
+    img.save(buffer,"PNG", save=False)
+
+    resp = cloudinary.uploader.upload(buffer.getvalue())
+
+    resp = remove_prefix(resp['secure_url'],'https://res.cloudinary.com/dtw9t2dom/')
+
+    QrCd.objects.create(
+                            url=qrcode_url, 
+                            vehicle=Vehicle.objects.get(pk=id),
+                            image=resp
+                        )
+
+    messages.success(request, 'QR Code successfully generated.')
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    
+
+def remove_prefix(text, prefix):
+    if text.startswith(prefix):
+        return text[len(prefix):]
+    return text 
 
 #verify
 @login_required
@@ -1064,3 +1117,22 @@ def getAttendants(request):
 #         messages.error(request, 'Something went wrong.')
 
 #     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+
+
+
+# qrcode_img=qrcode.make(qrcode_url)
+#     canvas=Image.new("RGB", (375,375),"white")
+#     draw=ImageDraw.Draw(canvas)
+#     canvas.paste(qrcode_img)
+#     buffer=BytesIO()
+#     img = canvas.save('QRCode.png',File(buffer))
+    # buffer=BytesIO()
+    # canvas.save(buffer,"PNG")
+    # print(img)
+#   self.image.save(f'image{random.randint(0,9999)}.png',File(buffer),save=False)
+    # self.image.save(f'QRcode_{self.vehicle}.png',File(buffer),save=False)
+    # upload_result = cloudinary.uploader.upload(File(buffer))
+    # new_result = remove_prefix(upload_result['secure_url'],'https://res.cloudinary.com/dtw9t2dom/')
+
+    # canvas.close()

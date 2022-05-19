@@ -165,6 +165,14 @@ class QrCode(models.Model):
       canvas.close()
       super().save(*args,**kwargs)
 
+class QrCd(models.Model):
+   url=models.URLField()
+   vehicle = models.OneToOneField(Vehicle,related_name='qrcd',on_delete=models.CASCADE, default=False)
+   image = models.CharField(max_length=1000)
+
+   def __str__(self):
+        return str(self.url)
+
 
 class Search(models.Model):
     vehicle = models.ForeignKey(Vehicle,related_name='searches',on_delete=models.CASCADE, default=False)

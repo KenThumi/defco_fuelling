@@ -190,10 +190,15 @@ MESSAGE_TAGS = {
 #     }
 # }
 
+# base_url
+BASE_URL = config("BASE_URL")
+
+LOCATION = "redis:"+BASE_URL.replace('https:','')+":6379/1"
+
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
+        "LOCATION": LOCATION,
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -216,8 +221,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = '/media/'
 
-# base_url
-BASE_URL = config("BASE_URL")
 
 # Configure Django App for Heroku.
 django_heroku.settings(locals())

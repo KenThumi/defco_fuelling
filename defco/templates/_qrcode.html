@@ -10,14 +10,14 @@
           </button>
         </div>
         <div class="modal-body bg-qrcode">
-            <img src="/media/{{ vehicle.qrcode.image }}" alt="{{vehicle.reg_no}}" class="mx-auto d-block my-3 img-fluid">
+            <img src="https://res.cloudinary.com/dtw9t2dom//{{ vehicle.qrcd.image }}" alt="{{vehicle.reg_no}}" class="mx-auto d-block my-3 img-fluid">
             
-            <button  class="btn btn-success btn-block btn-sm mx-auto d-block mb-1" onclick="PrintElem()">
+            <!-- <button  class="btn btn-success btn-block btn-sm mx-auto d-block mb-1" onclick="PrintElem()">
                 Print <i class="fas fa-print"></i>
-            </button>
+            </button> -->
            
-            <a href="/media/{{ vehicle.qrcode.image }}" download class="btn btn-info btn-sm mx-auto d-block">
-                Download <i class="fas fa-download"></i>
+            <a href="https://res.cloudinary.com/dtw9t2dom/{{ vehicle.qrcd.image }}" download rel="noopener noreferrer" target="_blank" class="btn btn-info btn-sm mx-auto d-block">
+                Open to Save <i class="fas fa-download"></i>
               </a>
         </div>
         
@@ -31,7 +31,7 @@
 
             mywindow.document.write('<html><head><title>' + document.title  + '</title>');
             mywindow.document.write('</head><body >');
-            mywindow.document.write('<img src="/media/{{ vehicle.qrcode.image }}" alt="{{vehicle.reg_no}}" class="mx-auto d-block my-3 img-fluid">');
+            mywindow.document.write('<img src="https://res.cloudinary.com/dtw9t2dom/{{ vehicle.qrcd.image }}" alt="{{vehicle.reg_no}}" class="mx-auto d-block my-3 img-fluid">');
             // mywindow.document.write(document.getElementById(elem).innerHTML);
             mywindow.document.write('</body></html>');
 
