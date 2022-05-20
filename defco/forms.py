@@ -449,10 +449,10 @@ class TransactionForm(forms.ModelForm):
     class Meta:
         model = Transaction
         exclude = ['attendant','date']
-        widgets = {
-            "vehicle": VehicleWidget,
+        # widgets = {
+        #     "vehicle": VehicleWidget,
            
-        }
+        # }
         icons={ 
                 'vehicle':'car',
                 'litres':'fill-drip',
