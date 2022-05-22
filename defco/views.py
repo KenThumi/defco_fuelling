@@ -299,7 +299,7 @@ def insertVehicle(request):
             vehicle.reg_no = request.POST.get('reg_no').replace(' ','').lower()
             vehicle.save()
 
-            messages.success(request, 'Successful insertion.')
+            messages.success(request, 'Successful insertion. Please wait for vehicle verification.')
             return redirect('unverifiedvehicles')
         else:
             ctx = {'form':v_form}
