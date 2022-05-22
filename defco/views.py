@@ -280,6 +280,12 @@ def editProfile(request,id):
 @_user
 @login_required
 def insertVehicle(request):
+    
+    # deny veh reg if already inserted 3
+    if request.user.vehicles.count() == 3:
+        messages.error(request, 'Only 3 vehicles can be registered.')           
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
     form = VehicleForm()
 
     ctx = {'form':form, 'btn_label':'Add'}
