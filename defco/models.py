@@ -64,6 +64,9 @@ class Vehicle(models.Model):
     approval_status = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ['-pk']
+
     def __str__(self):
         return self.reg_no
 
