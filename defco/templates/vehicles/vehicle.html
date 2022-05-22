@@ -23,8 +23,10 @@
                         <strong>
                             Owner:
                         </strong>
+                        <a href="{% url 'user' vehicle.user.id %}" target="_blank" rel="noopener noreferrer">
                             {{ vehicle.user.rank | title}} &nbsp;
                             {{ vehicle.user.name  }}
+                        </a>
                     </span>
                     <br>
                     <span>
@@ -55,6 +57,29 @@
                                     Not Approved
                                 </span>
                             {%endif%}
+                    </span>
+                    <br>
+                    <span>
+                        <strong>
+                            Active Flag(s):
+                        </strong>
+                            {% if vehicle.user.flags.count > 0 %}
+                                            
+                            {% if vehicle.user.is_flagged %}
+                            <div class="font-weight-bold text-danger">
+                            Yes
+                            </div>  
+                            {% else %}
+                          
+                                No
+                            
+                            {% endif %}
+                    
+                        {% else %}
+                                No
+                        {% endif %}
+                        
+                       
                     </span>
                     <br>
                     <span>
@@ -90,7 +115,7 @@
         </div>
        
         {% if vehicle.approval_status %}
-         <a href="{% url 'addtransaction' %}" class="btn btn-sm btn-outline-success">Add Transaction</a>
+         <a href="{% url 'addtransaction' vehicle.id %}" class="btn btn-sm btn-outline-success">Add Transaction</a>
         <!-- <a href="#" class="card-link">Another link</a> -->
         {% endif %}
     </div>

@@ -41,6 +41,7 @@ urlpatterns = [
     path('editreplenish/<int:id>', views.editReplenish, name='editreplenish'),
     path('fuelpoint/transactions/', views.getTransactions, name='transactions'),
     path('fuelpoint/addtransaction/', views.addTransaction, name='addtransaction'),
+    path('fuelpoint/addtransaction/<int:id>', views.addTransaction, name='addtransaction'),
     path('edittransaction/<int:id>', views.editTransaction, name='edittransaction'),
     path('switchstationstatus/<int:id>', views.switchStationStatus, name='switchstationstatus'),
     path('fuelpoint/adddailyrecords/', views.addDailyRecords, name='adddailyrecords'),

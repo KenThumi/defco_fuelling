@@ -497,9 +497,15 @@ def getTransactions(request):
 @admin_or_superuser_attendant
 @admin_has_station
 @station_has_fuel
-def addTransaction( request ):
+def addTransaction( request , id = None): #
+
+    vehicle = None #when no vehicle is initiallty selected to transact
+
+    if id != None:  # if there a vehicle selected
+        vehicle = Vehicle.objects.get(pk=id)
 
     form = TransactionForm(initial={
+                                    'vehicle':vehicle,
                                     'station':request.user.station,
                                     'batch_no':request.user.station.replenishment.latest('id')
                                     }
