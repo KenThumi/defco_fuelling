@@ -33,7 +33,7 @@ def profile_user(view_func):
     def wrapper_func(request, *args, **kwargs):
         id = kwargs['id']
 
-        if request.user.id !=id and not( request.user.is_superuser or  request.user.is_admin):
+        if request.user.id !=id and not( request.user.is_superuser or  request.user.is_admin or request.user.is_attendant ):
             messages.error(request, 'Insufficient permission.')
         
             return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))

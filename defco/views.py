@@ -41,9 +41,9 @@ def home(request):
     flags = Flag.objects.filter(flagged=True).count()
 
     ## admin
-    if request.user.is_admin:
+    if request.user.is_admin or request.user.is_attendant:
         flags = Flag.objects.filter(user__unit=request.user.unit,flagged=True).count()
-    elif request.user.is_customer and not request.user.is_admin and not request.user.is_superuser:
+    elif request.user.is_customer and not request.user.is_admin and not request.user.is_superuser and not request.user.is_attendant:
         flags = Flag.objects.filter(user=request.user,flagged=True).count()
 
     # ----------------- USERS --------------------------------------------------------Q
@@ -72,17 +72,17 @@ def home(request):
     #  Approved Vehicles
     vehicles = Vehicle.objects.filter(approval_status=True).count()
     ## admin
-    if request.user.is_admin:
+    if request.user.is_admin or request.user.is_attendant:
         vehicles = Vehicle.objects.filter(user__unit = request.user.unit,approval_status=True).count()
-    elif request.user.is_customer and not request.user.is_admin and not request.user.is_superuser:
+    elif request.user.is_customer and not request.user.is_admin and not request.user.is_superuser and not request.user.is_attendant:
         vehicles = Vehicle.objects.filter(user = request.user,approval_status=True).count()
 
     # unverifiedvehicles
     unverifiedvehicles = Vehicle.objects.filter(approval_status=False).count()
     ## admin
-    if request.user.is_admin:
+    if request.user.is_admin or request.user.is_attendant:
         unverifiedvehicles = Vehicle.objects.filter(user__unit = request.user.unit,approval_status=False).count()
-    elif request.user.is_customer and not request.user.is_admin and not request.user.is_superuser:
+    elif request.user.is_customer and not request.user.is_admin and not request.user.is_superuser and not request.user.is_attendant:
         unverifiedvehicles = Vehicle.objects.filter(user = request.user,approval_status=False).count()
 
     # ----------------- FUEL ------------------------------------------------------------
@@ -103,7 +103,9 @@ def home(request):
     ## admin unread from particular station
     if request.user.is_admin:
         complaints= Review.objects.filter(transaction__station__admin=request.user ,review_type='complaint').count()
-    elif request.user.is_customer and not request.user.is_admin and not request.user.is_superuser:
+    if request.user.is_attendant and not request.user.is_admin and not request.user.is_superuser:
+        complaints= Review.objects.filter(transaction__station__admin__unit=request.user.unit ,review_type='complaint').count()
+    elif request.user.is_customer and not request.user.is_admin and not request.user.is_superuser and not request.user.is_attendant:
         complaints= Review.objects.filter(user=request.user ,review_type='complaint').count()
 
 
@@ -112,7 +114,9 @@ def home(request):
     ## admin unread from particular station
     if request.user.is_admin:
         recommendations= Review.objects.filter(transaction__station__admin=request.user ,review_type='recommendation').count()
-    elif request.user.is_customer and not request.user.is_admin and not request.user.is_superuser:
+    if request.user.is_attendant and not request.user.is_admin and not request.user.is_superuser:
+        recommendations= Review.objects.filter(transaction__station__admin__unit=request.user.unit ,review_type='recommendation').count()
+    elif request.user.is_customer and not request.user.is_admin and not request.user.is_superuser and not request.user.is_attendant:
         recommendations= Review.objects.filter(user=request.user ,review_type='recommendation').count()
 
 
@@ -121,7 +125,9 @@ def home(request):
     ## admin unread from particular station
     if request.user.is_admin:
         comments= Review.objects.filter(transaction__station__admin=request.user ,review_type='comment').count()
-    elif request.user.is_customer and not request.user.is_admin and not request.user.is_superuser:
+    if request.user.is_attendant and not request.user.is_admin and not request.user.is_superuser:
+        comments= Review.objects.filter(transaction__station__admin__unit=request.user.unit ,review_type='comment').count()
+    elif request.user.is_customer and not request.user.is_admin and not request.user.is_superuser and not request.user.is_attendant:
         comments= Review.objects.filter(user=request.user ,review_type='comment').count()
 
 
@@ -130,7 +136,9 @@ def home(request):
     ## admin unread from particular station
     if request.user.is_admin:
         unread= Review.objects.filter(transaction__station__admin=request.user ,is_read=False).count()
-    elif request.user.is_customer and not request.user.is_admin and not request.user.is_superuser:
+    if request.user.is_attendant and not request.user.is_admin and not request.user.is_superuser:
+        unread= Review.objects.filter(transaction__station__admin__unit=request.user.unit ,is_read=False).count()
+    elif request.user.is_customer and not request.user.is_admin and not request.user.is_superuser and not  request.user.is_attendant:
         unread= Review.objects.filter(user=request.user ,is_read=False).count()
 
     # ctx
