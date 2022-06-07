@@ -15,13 +15,6 @@ Email:kenthumi@gmail.com
 ## Responsiveness
 The website is adaptable to any screen size.
 
-## API Endpoints
-1. https://ken-capstone.herokuapp.com/api/tasks/ :This endpoint returns all tasks details
-
-## Mock Up Design
-Mock up [link](https://www.figma.com/file/ukZI7jUQzfQIzQjFHViQMu/Capstone?node-id=0%3A1)
-
-
 ## Setup instructions
 Below are steps to follow:
 1. Open cli, navigate to your project folder and clone the project: <br/>
@@ -83,23 +76,37 @@ In this project, below is a list of technologies used:
 
 ## Dependencies
 Below are all dependencies for this application: <br>
-asgiref==3.3.4  
-beautifulsoup4==4.9.3  
-certifi==2020.12.5  
-Django==3.2.3  
-django-bootstrap4==3.0.1  
-django-mathfilters==1.0.0  
-djangorestframework==3.12.4  
-psycopg2==2.8.6  
-python-decouple==3.4  
-pytz==2021.1  
-six==1.16.0  
-soupsieve==2.2.1  
-sqlparse==0.4.1  
-urllib3==1.26.5  
+asgiref==3.4.1
+backports.zoneinfo==0.2.1
+certifi==2021.10.8
+cloudinary==1.28.0
+config==0.5.1
+Deprecated==1.2.13
+dj-database-url==0.5.0
+Django==4.0.1
+django-appconf==1.0.5
+django-heroku==0.3.1
+django-redis==5.2.0
+django-select2==7.10.0
+django-simple-autocomplete==1.11
+gunicorn==20.1.0
+packaging==21.3
+Pillow==9.0.1
+psycopg2==2.9.3
+pyparsing==3.0.7
+python-decouple==3.5
+pytz==2022.1
+qrcode==7.3.1
+redis==4.1.4
+six==1.16.0
+sqlparse==0.4.2
+urllib3==1.26.8
+whitenoise==6.1.0
+wrapt==1.13.3
+ 
 
 ## License info
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
 
 - **[MIT license](http://opensource.org/licenses/mit-license.php)**
-- Copyright 2021 © Tasking Application
+- Copyright 2022 © Fuel Tracking and Monitoring Application
