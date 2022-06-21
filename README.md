@@ -18,7 +18,7 @@ The website is adaptable to any screen size.
 ## Setup instructions
 Below are steps to follow:
 1. Open cli, navigate to your project folder and clone the project: <br/>
-         `git clone https://github.com/KenThumi/tasking.git`
+         `git clone https://github.com/KenThumi/defco_fuelling.git`
 2. Install python, preferably python3.
 3. Create a virtual environment: <br/>
          `python3 -m venv virtual`
@@ -76,32 +76,32 @@ In this project, below is a list of technologies used:
 
 ## Dependencies
 Below are all dependencies for this application: <br>
-asgiref==3.4.1
-backports.zoneinfo==0.2.1
-certifi==2021.10.8
-cloudinary==1.28.0
-config==0.5.1
-Deprecated==1.2.13
-dj-database-url==0.5.0
-Django==4.0.1
-django-appconf==1.0.5
-django-heroku==0.3.1
-django-redis==5.2.0
-django-select2==7.10.0
-django-simple-autocomplete==1.11
-gunicorn==20.1.0
-packaging==21.3
-Pillow==9.0.1
-psycopg2==2.9.3
-pyparsing==3.0.7
-python-decouple==3.5
-pytz==2022.1
-qrcode==7.3.1
-redis==4.1.4
-six==1.16.0
-sqlparse==0.4.2
-urllib3==1.26.8
-whitenoise==6.1.0
+asgiref==3.4.1<br>
+backports.zoneinfo==0.2.1<br>
+certifi==2021.10.8<br>
+cloudinary==1.28.0<br>
+config==0.5.1<br>
+Deprecated==1.2.13<br>
+dj-database-url==0.5.0<br>
+Django==4.0.1<br>
+django-appconf==1.0.5<br>
+django-heroku==0.3.1<br>
+django-redis==5.2.0<br>
+django-select2==7.10.0<br>
+django-simple-autocomplete==1.11<br>
+gunicorn==20.1.0<br>
+packaging==21.3<br>
+Pillow==9.0.1<br>
+psycopg2==2.9.3<br>
+pyparsing==3.0.7<br>
+python-decouple==3.5<br>
+pytz==2022.1<br>
+qrcode==7.3.1<br>
+redis==4.1.4<br>
+six==1.16.0<br>
+sqlparse==0.4.2<br>
+urllib3==1.26.8<br>
+whitenoise==6.1.0<br>
 wrapt==1.13.3
  
 
